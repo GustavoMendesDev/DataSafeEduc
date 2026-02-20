@@ -1,6 +1,9 @@
-🎓 DataSafe Educ
+<div align="center">
+# 🎓 **DataSafe Educ**
 
-  <img src="logo.jpeg" alt="DataSafe Educ Logo" width="500"/>
+  <img src="logo.jpeg" alt="DataSafe Educ Logo" width="450"/>
+
+</div>
 
 <br>
 
