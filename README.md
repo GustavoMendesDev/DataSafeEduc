@@ -1,5 +1,7 @@
-<div align="center">
+
 # 🎓 **DataSafe Educ**
+
+<div align="center">
 
   <img src="logo.jpeg" alt="DataSafe Educ Logo" width="450"/>
 
