@@ -1,8 +1,8 @@
 🎓 DataSafe Educ
 
-<div align="center">
-  <img src="logo.jpeg" alt="DataSafe Educ Logo" width="400"/>
-</div>
+  <img src="logo.jpeg" alt="DataSafe Educ Logo" width="500"/>
+
+<br>
 
 O DataSafe Educ é uma plataforma inovadora de Inteligência de Dados voltada à gestão educacional pública. Utilizando análise estratégica de indicadores escolares, ajudamos gestores a identificar riscos de evasão com antecedência, permitindo decisões mais rápidas, assertivas e baseadas em evidências.
 
