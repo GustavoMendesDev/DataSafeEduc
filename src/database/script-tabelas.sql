@@ -55,10 +55,9 @@ CREATE TABLE cliente (
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     telefone VARCHAR(20),
-    id_tipo_cliente INT NOT NULL,
+    senha VARCHAR(40),
     status BOOLEAN DEFAULT TRUE,
-    data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_tipo_cliente) REFERENCES tipo_cliente(id_tipo_cliente)
+    data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE instituicao (
@@ -223,3 +222,5 @@ CREATE TABLE historico_indicador (
     FOREIGN KEY (id_instituicao) REFERENCES instituicao(id_instituicao),
     FOREIGN KEY (id_tipo_indicador) REFERENCES tipo_indicador(id_tipo_indicador)
 );
+
+SELECT * FROM cliente;
