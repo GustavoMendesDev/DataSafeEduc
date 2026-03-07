@@ -1,255 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>DataSafe | Página Inicial</title>
-
-  <script src="./js/sessao.js"></script>
-
-  <link rel="stylesheet" href="./css/estilo.css">
-  <link rel="icon" href="./assets/icon/ ">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <title>Datasafe Educ | Home</title>
 </head>
-
 <body>
-  <header>
-    <h2>DataSafe Educ.</h2>
-
-    <!-- NavBar -->
+  <nav>
+    <a href="#heros" class="nav-logo">Data<span>Safe</span></a>
     <ul>
-      <li><a href="#">Quem Somos</a></li>
-      <li><a href="./cadastro.html">Cadastre-se</a></li>
-      <li><a href="./login.html">Entrar</a></li>
+      <li><a href="#contexto">Contexto</a></li>
+      <li><a href="#solução">Solução</a></li>
+      <li><a href="#escopo">Escopo</a></li>
+      <li><a href="#equipe">Equipe</a></li>
+      <li><a href="refs">Referencias</a></li>
     </ul>
-  </header>
-  <!-- Conteúdo Princiapal -->
-  <section class="hero">
-    <div class="overlay"></div>
+  </nav>
 
-    <div class="content">
-      <span class="tag"><b>NEGÓCIOS DO AMANHÃ</b></span>
-      <h1>Inteligência de<br>Dados<br>Educacionais.</h1>
-    </div>
-  </section>
-
-  <!-- Conteúdo quem somos (Pelo que prezamos) -->
-  <div class="main">
-    <h2 class="section-title">Pelo que prezamos?</h2>
-
-    <div class="main_section">
-      <div class="image-box">
-        <img src="assets/imgs/section1.png" alt="">
-      </div>
-
-      <div class="text-box">
-        <p>
-          Os negócios do amanhã precisam ser construídos sobre alicerces equilibrados:
-          empatia e pragmatismo; previsão e insight; humanidade e tecnologia.
-          Na Consult, tratamos as empresas como parceiras, com forte foco na colaboração.
-        </p>
-
-        <h3>
-          Vemos nossos clientes como humanos e trabalhamos com os desafios que eles enfrentam.
-        </h3>
-      </div>
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- Serviços -->
-
-  <section class="services">
-    <h2 class="services-title">Serviços</h2>
-
-    <div class="services-cards">
-      <div class="service-card">
-        <img src="assets/imgs/serv1.png" alt="Análise de evasão escolar">
-        <p>ANÁLISE DE EVASÃO<br>ESCOLAR</p>
-      </div>
-
-      <div class="service-card">
-        <img src="assets/imgs/serv2.png" alt="Apoio à tomada de decisão">
-        <p>APOIO À TOMADA DE<br>DECISÃO COM DADOS</p>
-      </div>
-
-      <div class="service-card">
-        <img src="assets/imgs/serv3.png" alt="Gestão educacional">
-        <p>FOCO EM GESTÃO<br>EDUCACIONAL</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- <section class="cta">
-    <div class="cta-left">
-      <h2>
-        Cada desafio é único.<br>
-        Vamos falar<br>
-        sobre o seu.
-      </h2>
-
-      <p>
-        Calcule aqui a sua<br>
-        economia potencial<br>
-        com a DataSafe<br>
-        Educ
-      </p>
-    </div> -->
-<!-- 
-    <div class="cta-right">
-      <form class="cta-form">
-        <label>Endereço de e-mail</label>
-        <input type="email">
-
-        <label>Quantidade de alunos</label>
-        <input type="number">
-
-        <label>Custo médio por aluno</label>
-        <input type="number">
-
-        <label>Repasse perdido por aluno evadido (ex: FUNDEB)</label>
-        <input type="number">
-
-        <button type="submit">Enviar</button>
-      </form>
-    </div>
-  </section> -->
-
-  <section class="impact">
-    <div class="impact-left">
-      <p class="impact-description">
-        Esta simulação demonstra como a redução da evasão escolar pode gerar
-        impacto financeiro positivo, auxiliando gestores na tomada de decisões
-        estratégicas.
-      </p>
-
-      <div class="chart-container">
-        <canvas id="impactChart"></canvas>
-      </div>
-    </div>
-
-    <div class="impact-right">
-      <h2>Impacto<br>Financeiro<br>Estimado</h2>
-
-      <p>
-        Com base nos dados informados, esta simulação estima o impacto financeiro
-        da evasão escolar e o potencial de economia com a redução desse índice por
-        meio de ações preventivas.
-      </p>
-    </div>
-  </section>
-
-  <section class="faq">
-    <div class="faq-content">
-      <h2>PERGUNTAS<br>FREQUENTES</h2>
-
-      <div class="faq-item">
-        <h3>QUAIS MERCADOS VOCÊS ATENDEM ATUALMENTE?</h3>
-        <p>
-          Temos sedes na América do Norte, Ásia-Pacífico e Europa, o que nos dá
-          um amplo alcance. Atualmente, estamos bem posicionados para atender
-          clientes em mercados emergentes e desenvolvidos.
-        </p>
-      </div>
-
-      <div class="faq-item">
-        <h3>COMO POSSO MARCAR UMA CONSULTA E UMA DEMONSTRAÇÃO?</h3>
-        <p>
-          Oferecemos uma consulta inicial gratuita a novos clientes, para melhor
-          entender suas necessidades e explicar nossos serviços. Basta enviar-nos
-          um email para marcar a sua sessão.
-        </p>
-      </div>
-    </div>
-
-    <div class="faq-image">
-      <img src="assets/imgs/ultima-sec.jpg" alt="Pessoa trabalhando em notebook">
-    </div>
-  </section>
-
-  <footer class="footer">
-  <div class="footer-top">
-    <span class="footer-logo">DataSafe Educ.</span>
-
-    <h2 class="footer-slogan">
-      Construindo os negócios de amanhã.
-    </h2>
-  </div>
-
-  <div class="footer-bottom">
-    <div class="footer-column">
-      <h4>FALE CONOSCO</h4>
-      <p>Instagram</p>
-      <p>Facebook</p>
-      <p>Twitter</p>
-    </div>
-
-    <div class="footer-column">
-      <h4>ESCRITÓRIOS</h4>
-      <p>Rua Qualquer, 123<br>Cidade Qualquer</p>
-    </div>
-
-    <div class="footer-column">
-      <h4>&nbsp;</h4>
-      <p>Rua Qualquer, 123<br>Cidade Qualquer</p>
-    </div>
-
-    <div class="footer-column footer-email">
-      <p>alo@sitebacana.com.br</p>
-    </div>
-  </div>
-</footer>
-
+  <!-- Seção Hero-->
+<section id="hero">
+  <div class="tag">Desenvolvendo sua empresa</div>
+  <h1>Inteligência de dados para o reforço educacional</h1>
+  <p>A DataSafe transforma os microdados públicos do ENEM em análises acionáveis para cursinhos preparatórios, substituindo decisões baseadas em intuição por decisões baseadas em evidências.</p>
+  <a href="#solucao" class="btn btn-branco">Conheça a solução</a>
+  <!-- <a href="https://github.com/GustavoMendesDev/DataSafeEduc" target="_blank" class="btn btn-outline">GitHub</a> -->
+</section>
 </body>
-
 </html>
-
-<script>
-  // início do gráfico em chartJs
-  document.addEventListener("DOMContentLoaded", () => {
-    const ctx = document.getElementById("impactChart");
-
-    if (!ctx) {
-      console.error("Canvas impactChart não encontrado");
-      return;
-    }
-
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["Item 1", "Item 2", "Item 3"],
-        datasets: [
-          {
-            label: "Série 1",
-            data: [3, 8, 16],
-            backgroundColor: "#ff9f50",
-            borderRadius: 6
-          },
-          {
-            label: "Série 2",
-            data: [6, 14, 18],
-            backgroundColor: "#ff6a00",
-            borderRadius: 6
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: "top"
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  });
-</script>

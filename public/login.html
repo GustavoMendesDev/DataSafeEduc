@@ -19,22 +19,24 @@
 
     <div class="container-formulario">
 
+        <h2>Login</h2>
+
         <div class="input">
-            <label for="nome">Nome Completo:</label><br>
+            <label for="nome" id="nome_input">Nome Completo:</label><br>
             <input type="text" id="nome">
         </div>
 
         <div class="input">
-            <label for="email">Endereço de e-mail:</label><br>
+            <label for="email" id="email_input">Endereço de e-mail:</label><br>
             <input type="text" id="email">
         </div>
 
         <div class="input">
-            <label for="senha">Senha</label><br>
+            <label for="senha" id="senha_input">Senha</label><br>
             <input type="text" id="senha">
         </div>
 
-        <button>Entrar</button>
+        <button onclick="entrar()">Entrar</button>
     </div>
 
     <div class="container">
@@ -52,10 +54,11 @@
     function entrar() {
         aguardar();
 
+        var nomeVar = nome_input.value;
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
 
-        if (emailVar == "" || senhaVar == "") {
+        if (nome_input == "" || emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
             finalizarAguardar();
@@ -65,8 +68,13 @@
             setInterval(sumirMensagem, 5000)
         }
 
+        console.log("FORM NOME:", nomeVar);
         console.log("FORM LOGIN: ", emailVar);
         console.log("FORM SENHA: ", senhaVar);
+
+        setTimeout(function () {
+            window.location = "public\index.html";
+        }, 1000); // apenas para exibir o loading
 
         fetch("/usuarios/autenticar", {
             method: "POST",
@@ -74,6 +82,7 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
+                nomeServer: nomeVar,
                 emailServer: emailVar,
                 senhaServer: senhaVar
             })
@@ -86,14 +95,9 @@
                 resposta.json().then(json => {
                     console.log(json);
                     console.log(JSON.stringify(json));
-                    sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.ID_USUARIO = json.id;
-                    sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
-
-                    setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
-                    }, 1000); // apenas para exibir o loading
 
                 });
 
