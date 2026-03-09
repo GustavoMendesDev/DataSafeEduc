@@ -99,6 +99,10 @@
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.ID_USUARIO = json.id;
 
+                    setTimeout(function () {
+                        window.location = "./dashboard/cards.html";
+                    }, 1000);
+
                 });
 
             } else {

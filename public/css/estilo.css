@@ -1,10 +1,10 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --azul:    #1a3c5e;
-      --azul-md: #2563a8;
-      --azul-lt: #dbeafe;
-      --verde:   #16a34a;
+      --cor-principal:#ec9731;
+      --cor-secundaria: #223488;
+      --cor-base: #314595;
+      --cor-terciaria:#fff;
       --cinza:   #f4f6f9;
       --texto:   #1e293b;
       --suave:   #64748b;
@@ -36,11 +36,11 @@
       font-family: 'Sora', sans-serif;
       font-weight: 700;
       font-size: 1.25rem;
-      color: var(--azul);
+      color: var(--cor-base);
       text-decoration: none;
     }
 
-    .nav-logo span { color: var(--azul-md); }
+    .nav-logo span { color: var(--cor-principal); }
 
     nav ul {
       list-style: none;
@@ -56,11 +56,11 @@
       transition: color .2s;
     }
 
-    nav ul a:hover { color: var(--azul-md); }
+    nav ul a:hover { color: var(--cor-principal); }
 
     /* ── HERO ── */
     #hero {
-      background: linear-gradient(135deg, var(--azul) 0%, var(--azul-md) 100%);
+      background: var(--cor-principal);
       color: #fff;
       padding: 90px 6% 80px;
       text-align: center;
@@ -108,24 +108,24 @@
 
     .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.2); }
 
-    .btn-branco { background: #fff; color: var(--azul); }
+    .btn-branco { background: #fff; color: var(--cor-base); }
     .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,.6); color: #fff; margin-left: 12px; }
 
     /* ── SEÇÕES GENÉRICAS ── */
     section { padding: 72px 6%; }
-    section:nth-child(even) { background: var(--cinza); }
+    section:nth-child(even) { background: var(--cor-principal); }
 
     .secao-titulo {
       font-family: 'Sora', sans-serif;
       font-size: 1.7rem;
       font-weight: 700;
-      color: var(--azul);
+      color: var(--cor-base);
       margin-bottom: 12px;
     }
 
     .secao-sub {
       font-size: 1rem;
-      color: var(--suave);
+      color: var(--cor-terciaria);
       max-width: 620px;
       line-height: 1.7;
       margin-bottom: 48px;
@@ -142,13 +142,13 @@
     #contexto .texto p {
       font-size: 0.97rem;
       line-height: 1.8;
-      color: var(--suave);
+      color: var(--cor-secundaria);
       margin-bottom: 16px;
     }
 
     .destaque-box {
-      background: var(--azul-lt);
-      border-left: 4px solid var(--azul-md);
+      background: var(--cor-terciaria);
+      border-left: 4px solid var(--cor-principal);
       border-radius: 0 8px 8px 0;
       padding: 20px 24px;
       margin-bottom: 20px;
@@ -157,7 +157,7 @@
      .destaque-box strong {
       display: block;
       font-family: 'Sora', sans-serif;
-      color: var(--azul);
+      color: var(--cor-secundaria);
       margin-bottom: 6px;
     }
 
@@ -171,8 +171,8 @@
     }
 
     .card {
-      background: #fff;
-      border: 1px solid #e2e8f0;
+      background: var(--cor-terciaria);
+      border: 1px solid var(--cor-secundaria);
       border-radius: 12px;
       padding: 28px 24px;
       transition: box-shadow .2s, transform .2s;
@@ -184,7 +184,7 @@
       width: 44px;
       height: 44px;
       border-radius: 10px;
-      background: var(--azul-lt);
+      background: var(--cor-secundaria);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -195,7 +195,7 @@
     .card h3 {
       font-family: 'Sora', sans-serif;
       font-size: 1rem;
-      color: var(--azul);
+      color: var(--cor-base);
       margin-bottom: 10px;
     }
 
@@ -227,7 +227,7 @@
       display: block;
       font-family: 'Sora', sans-serif;
       font-size: 0.9rem;
-      color: var(--azul);
+      color: var(--cor-terciaria);
       margin-bottom: 4px;
     }
 
@@ -252,8 +252,8 @@
       width: 56px;
       height: 56px;
       border-radius: 50%;
-      background: var(--azul);
-      color: #fff;
+      background: var(--cor-terciaria);
+      color: #000;
       font-family: 'Sora', sans-serif;
       font-weight: 700;
       font-size: 1.2rem;
@@ -264,7 +264,7 @@
     }
 
     .membro strong { display: block; font-size: 0.85rem; color: var(--texto); font-family: 'Sora', sans-serif; margin-bottom: 4px; }
-    .membro span { font-size: 0.78rem; color: var(--suave); }
+    .membro span { font-size: 0.78rem; color: var(--cor-base); }
 
     /* ── REFS ── */
     #refs ul {
@@ -276,19 +276,19 @@
 
     #refs ul li {
       font-size: 0.9rem;
-      color: var(--suave);
+      color: var(--cor-terciaria);
       padding-left: 16px;
-      border-left: 3px solid var(--azul-lt);
+      border-left: 3px solid var(--cor-base);
       line-height: 1.6;
     }
 
-    #refs ul li a { color: var(--azul-md); text-decoration: none; }
+    #refs ul li a { color: var(--cor-principal); text-decoration: none; }
     #refs ul li a:hover { text-decoration: underline; }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--azul);
-      color: rgba(255,255,255,.7);
+      background: var(--cor-base);
+      color: var(--cor-terciaria);
       text-align: center;
       padding: 28px 6%;
       font-size: 0.85rem;
