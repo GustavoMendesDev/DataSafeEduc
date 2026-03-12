@@ -5,17 +5,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu" />
   <title>Datasafe Educ | Home</title>
 </head>
 
 <body>
   <nav>
     <a href="#heros" class="nav-logo">Data<span>Safe</span></a>
-    <ul>
+
+    <span class="material-symbols-outlined" id="btn-hamburguer" role="button">
+      menu
+    </span>
+    <ul id="menu">
       <li><a href="#contexto">Contexto</a></li>
       <li><a href="#solucao">Solução</a></li>
       <!-- <li><a href="#escopo">Escopo</a></li> -->
       <li><a href="#equipe">Equipe</a></li>
+      <li><a href="#contate-nos">Contate-nos</a></li>
       <li><a href="#refs">Referencias</a></li>
       <li><a href="./login.html">Entrar</a></li>
       <li><a href="cadastro.html">Cadastre-se</a></li>
@@ -32,138 +39,194 @@
   </section>
 
   <section id="contexto">
-  <h2 class="secao-titulo">Contexto</h2>
-  <p class="secao-sub">Entender o problema é o primeiro passo para construir uma solução com impacto real.</p>
+    <h2 class="secao-titulo">Contexto</h2>
+    <p class="secao-sub">Entender o problema é o primeiro passo para construir uma solução com impacto real.</p>
 
-  <div class="grid-2">
-    <div class="texto">
-      <p>Todo ano, milhares de estudantes brasileiros buscam ingressar nas melhores universidades por meio do ENEM. Para muitos, esse caminho passa por um cursinho preparatório. No entanto, existe uma contradição estrutural nesse modelo.</p>
-      <p>Enquanto o ENEM aplica uma prova altamente padronizada, baseada em uma matriz de competências bem definida, grande parte dos cursinhos ainda define seus conteúdos de forma empírica, apoiando-se na experiência dos professores e em percepções genéricas de mercado.</p>
-      <p>O resultado são alunos que estudam muito, mas estudam o que é menos cobrado — e recursos investidos em áreas de baixo impacto enquanto os tópicos que mais reprovam continuam negligenciados.</p>
-    </div>
-
-    <div class="destaques">
-      <div class="destaque-box">
-        <strong>Parâmetro de Dificuldade (b)</strong>
-        <p>Indica o nível de exigência de cada questão. Valores altos representam itens difíceis; valores baixos, itens acessíveis.</p>
+    <div class="grid-2">
+      <div class="texto">
+        <p>Todo ano, milhares de estudantes brasileiros buscam ingressar nas melhores universidades por meio do ENEM.
+          Para muitos, esse caminho passa por um cursinho preparatório. No entanto, existe uma contradição estrutural
+          nesse modelo.</p>
+        <p>Enquanto o ENEM aplica uma prova altamente padronizada, baseada em uma matriz de competências bem definida,
+          grande parte dos cursinhos ainda define seus conteúdos de forma empírica, apoiando-se na experiência dos
+          professores e em percepções genéricas de mercado.</p>
+        <p>O resultado são alunos que estudam muito, mas estudam o que é menos cobrado — e recursos investidos em áreas
+          de baixo impacto enquanto os tópicos que mais reprovam continuam negligenciados.</p>
       </div>
-      <div class="destaque-box">
-        <strong>Parâmetro de Discriminação (a)</strong>
-        <p>Mede a capacidade da questão de diferenciar alunos com alto e baixo desempenho. Calculado pelo INEP via Teoria de Resposta ao Item (TRI).</p>
+
+      <div class="destaques">
+        <div class="destaque-box">
+          <strong>Parâmetro de Dificuldade (b)</strong>
+          <p>Indica o nível de exigência de cada questão. Valores altos representam itens difíceis; valores baixos,
+            itens acessíveis.</p>
+        </div>
+        <div class="destaque-box">
+          <strong>Parâmetro de Discriminação (a)</strong>
+          <p>Mede a capacidade da questão de diferenciar alunos com alto e baixo desempenho. Calculado pelo INEP via
+            Teoria de Resposta ao Item (TRI).</p>
+        </div>
+        <div class="destaque-box">
+          <strong>A oportunidade</strong>
+          <p>Mais de 3 milhões de estudantes participam do ENEM a cada ano. Esses dados são públicos — e quase nenhum
+            cursinho os usa estrategicamente.</p>
+        </div>
       </div>
-      <div class="destaque-box">
-        <strong>A oportunidade</strong>
-        <p>Mais de 3 milhões de estudantes participam do ENEM a cada ano. Esses dados são públicos — e quase nenhum cursinho os usa estrategicamente.</p>
+    </div>
+  </section>
+
+  <!-- SOLUÇÃO -->
+  <section id="solucao">
+    <h2 class="secao-titulo">A Solução DataSafe</h2>
+    <p class="secao-sub">Três frentes de análise que transformam dados brutos do ENEM em inteligência pedagógica
+      aplicada.</p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Mapa de Dificuldade por Prova</h3>
+        <p>Compara o nível de exigência entre diferentes edições do ENEM, identificando se determinados ciclos foram
+          significativamente mais difíceis e como calibrar a preparação dos alunos.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <h3>Análise de Qualidade dos Itens via TRI</h3>
+        <p>Cruza os parâmetros de discriminação e dificuldade para identificar quais questões realmente avaliam o
+          estudante de forma eficaz e devem ter maior peso no planejamento pedagógico.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Inteligência de Mercado Educacional</h3>
+        <p>Identifica com precisão os maiores gargalos de aprendizado por área, habilidade e nível cognitivo, permitindo
+          criar conteúdos mais relevantes e campanhas de marketing mais eficientes.</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- SOLUÇÃO -->
-<section id="solucao">
-  <h2 class="secao-titulo">A Solução DataSafe</h2>
-  <p class="secao-sub">Três frentes de análise que transformam dados brutos do ENEM em inteligência pedagógica aplicada.</p>
+  <!-- EQUIPE -->
+  <section id="equipe">
+    <h2 class="secao-titulo">Equipe</h2>
+    <p class="secao-sub">Desenvolvido por alunos da SPTech School ao longo de 3 Sprints acadêmicas.</p>
 
-  <div class="cards">
-    <div class="card">
-      <div class="card-icon">📊</div>
-      <h3>Mapa de Dificuldade por Prova</h3>
-      <p>Compara o nível de exigência entre diferentes edições do ENEM, identificando se determinados ciclos foram significativamente mais difíceis e como calibrar a preparação dos alunos.</p>
+    <div class="grid-equipe">
+      <div class="membro">
+        <div class="avatar">DJ</div>
+        <strong>Davi Jeronimo Da Silva</strong>
+        <span>RA: 1252074</span>
+      </div>
+      <div class="membro">
+        <div class="avatar">LT</div>
+        <strong>Lavinia de Paula Todarelli Faria</strong>
+        <span>RA: 1252001</span>
+      </div>
+      <div class="membro">
+        <div class="avatar">GM</div>
+        <strong>Gustavo Mendes Furquim</strong>
+        <span>RA: 1252015</span>
+      </div>
+      <div class="membro">
+        <div class="avatar">GM</div>
+        <strong>Guilherme Mesquita</strong>
+        <span>RA: 1252017</span>
+      </div>
+      <div class="membro">
+        <div class="avatar">MQ</div>
+        <strong>Mateus Queiroz</strong>
+        <span>RA: 1252125</span>
+      </div>
+      <div class="membro">
+        <div class="avatar">MS</div>
+        <strong>Murilo Marinho Suzuki</strong>
+        <span>RA: 1252098</span>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-icon">🔬</div>
-      <h3>Análise de Qualidade dos Itens via TRI</h3>
-      <p>Cruza os parâmetros de discriminação e dificuldade para identificar quais questões realmente avaliam o estudante de forma eficaz e devem ter maior peso no planejamento pedagógico.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">🎯</div>
-      <h3>Inteligência de Mercado Educacional</h3>
-      <p>Identifica com precisão os maiores gargalos de aprendizado por área, habilidade e nível cognitivo, permitindo criar conteúdos mais relevantes e campanhas de marketing mais eficientes.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- EQUIPE -->
-<section id="equipe">
-  <h2 class="secao-titulo">Equipe</h2>
-  <p class="secao-sub">Desenvolvido por alunos da SPTech School ao longo de 3 Sprints acadêmicas.</p>
+  <section id="contate-nos">
+    <div class="convite">
+      <h2 class="secao-titulo">Contate-nos</h2>
+      <h3>Ficou interessado na DataSafe?
+      </h3>
+      <p>Entre em contato conosco e descubra como podemos ajudar o seu negócio.</p>
+    </div>
 
-  <div class="grid-equipe">
-    <div class="membro">
-      <div class="avatar">DJ</div>
-      <strong>Davi Jeronimo Da Silva</strong>
-      <span>RA: 1252074</span>
-    </div>
-    <div class="membro">
-      <div class="avatar">LT</div>
-      <strong>Lavinia de Paula Todarelli Faria</strong>
-      <span>RA: 1252001</span>
-    </div>
-    <div class="membro">
-      <div class="avatar">GM</div>
-      <strong>Gustavo Mendes Furquim</strong>
-      <span>RA: 1252015</span>
-    </div>
-    <div class="membro">
-      <div class="avatar">GM</div>
-      <strong>Guilherme Mesquita</strong>
-      <span>RA: 1252017</span>
-    </div>
-    <div class="membro">
-      <div class="avatar">MQ</div>
-      <strong>Mateus Queiroz</strong>
-      <span>RA: 1252125</span>
-    </div>
-    <div class="membro">
-      <div class="avatar">MS</div>
-      <strong>Murilo Marinho Suzuki</strong>
-      <span>RA: 1252098</span>
-    </div>
-  </div>
-</section>
-
-<section id="contate-nos">
-  <div class="convite">
-    <h2 class="secao-titulo">Contate-nos</h2>
-    <h3>Ficou enteressado na DataSafe?
-    </h3>
-    <p>Entre em contato conosco e descubra como podemos ajudar o seu negócio.</p>
-  </div>
-
-  <div class="formulario">
+    <div class="formulario">
       <label for="email"><img src="./assets/icon/perfil.png" alt="" id="perfil">Seu Email:</label>
       <input type="text" id="email">
 
       <label for="mensagem"><img src="./assets/icon/msg.png" alt="" id="msg">Mensagem:</label>
       <input type="mensagem">
-  </div>
-</section>
+    </div>
+  </section>
 
-<!-- REFERÊNCIAS -->
-<section id="refs">
-  <h2 class="secao-titulo">Referências Bibliográficas</h2>
-  <p class="secao-sub">Fontes que fundamentam as análises e decisões do projeto.</p>
+  <!-- REFERÊNCIAS -->
+  <section id="refs">
+    <h2 class="secao-titulo">Referências Bibliográficas</h2>
+    <p class="secao-sub">Fontes que fundamentam as análises e decisões do projeto.</p>
 
-  <ul>
-    <li><strong>INEP</strong> – Microdados do ENEM e documentação técnica da TRI. <a href="https://www.gov.br/inep" target="_blank">www.gov.br/inep</a></li>
-    <li><strong>Ministério da Educação</strong> – Matrizes de Referência do ENEM. <a href="https://www.gov.br/mec" target="_blank">www.gov.br/mec</a></li>
-    <li><strong>OCDE</strong> – Relatórios sobre avaliação educacional e políticas baseadas em evidências. <a href="https://www.oecd.org" target="_blank">www.oecd.org</a></li>
-    <li><strong>Gartner</strong> – Estudos sobre Business Intelligence e Data-Driven Decision Making. <a href="https://www.gartner.com" target="_blank">www.gartner.com</a></li>
-    <li><strong>SEMESP</strong> – Publicações sobre marketing educacional e inteligência de mercado. <a href="https://www.semesp.org.br" target="_blank">www.semesp.org.br</a></li>
-    <li><strong>Portal Brasileiro de Dados Abertos</strong> – Diretrizes sobre uso e reutilização de dados governamentais. <a href="https://dados.gov.br" target="_blank">dados.gov.br</a></li>
-    <li><strong>Fundação Lemann</strong> – Gestão educacional baseada em dados e evidências. <a href="https://fundacaolemann.org.br" target="_blank">fundacaolemann.org.br</a></li>
-    <li><strong>QEdu</strong> – Plataforma de visualização de indicadores educacionais públicos. <a href="https://qedu.org.br" target="_blank">qedu.org.br</a></li>
-  </ul>
-</section>
+    <ul>
+      <li><strong>INEP</strong> – Microdados do ENEM e documentação técnica da TRI. <a href="https://www.gov.br/inep"
+          target="_blank">www.gov.br/inep</a></li>
+      <li><strong>Ministério da Educação</strong> – Matrizes de Referência do ENEM. <a href="https://www.gov.br/mec"
+          target="_blank">www.gov.br/mec</a></li>
+      <li><strong>OCDE</strong> – Relatórios sobre avaliação educacional e políticas baseadas em evidências. <a
+          href="https://www.oecd.org" target="_blank">www.oecd.org</a></li>
+      <li><strong>Gartner</strong> – Estudos sobre Business Intelligence e Data-Driven Decision Making. <a
+          href="https://www.gartner.com" target="_blank">www.gartner.com</a></li>
+      <li><strong>SEMESP</strong> – Publicações sobre marketing educacional e inteligência de mercado. <a
+          href="https://www.semesp.org.br" target="_blank">www.semesp.org.br</a></li>
+      <li><strong>Portal Brasileiro de Dados Abertos</strong> – Diretrizes sobre uso e reutilização de dados
+        governamentais. <a href="https://dados.gov.br" target="_blank">dados.gov.br</a></li>
+      <li><strong>Fundação Lemann</strong> – Gestão educacional baseada em dados e evidências. <a
+          href="https://fundacaolemann.org.br" target="_blank">fundacaolemann.org.br</a></li>
+      <li><strong>QEdu</strong> – Plataforma de visualização de indicadores educacionais públicos. <a
+          href="https://qedu.org.br" target="_blank">qedu.org.br</a></li>
+    </ul>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-  <strong>DataSafe</strong> · Projeto Acadêmico — SPTech School · 2026<br>
-  <span style="font-size:.8rem; margin-top:6px; display:block;">
-    <a href="https://github.com/GustavoMendesDev/DataSafeEduc" target="_blank" style="color:rgba(255,255,255,.6); text-decoration:none;">GitHub do Projeto</a>
-  </span>
-</footer>
+  <!-- FOOTER -->
+  <footer>
+    <strong>DataSafe</strong> · Projeto Acadêmico — SPTech School · 2026<br>
+    <span style="font-size:.8rem; margin-top:6px; display:block;">
+      <a href="https://github.com/GustavoMendesDev/DataSafeEduc" target="_blank"
+        style="color:rgba(255,255,255,.6); text-decoration:none;">GitHub do Projeto</a>
+    </span>
+  </footer>
 
 </body>
+
+<script>
+// 1. Seleciona os elementos pelo ID que você colocou no HTML
+const btnHamburguer = document.getElementById('btn-hamburguer');
+const menu = document.getElementById('menu');
+const linksDoMenu = document.querySelectorAll('#menu li a');
+
+// 2. Escuta o clique no ícone
+btnHamburguer.addEventListener('click', () => {
+  
+  // 3. Abre ou fecha o menu (adiciona/remove a classe)
+  menu.classList.toggle('ativo');
+
+  // 4. Bônus: Troca o ícone de "hambúrguer" para "X" (close)
+  // Verifica se o menu está com a classe 'ativo'
+  if (menu.classList.contains('ativo')) {
+    btnHamburguer.textContent = 'menu';
+  } else {
+    btnHamburguer.textContent = 'menu'; // Volta pro ícone de hambúrguer
+  }
+  
+});
+
+linksDoMenu.forEach(link => {
+  link.addEventListener('click', () => {
+    
+    // Quando qualquer link for clicado, removemos a classe 'ativo' para o menu sumir
+    menu.classList.remove('ativo');
+    
+    // E voltamos o ícone do botão para o formato original de hambúrguer
+    btnHamburguer.textContent = 'menu';
+    
+  });
+});
+</script>
 
 </html>
