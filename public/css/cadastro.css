@@ -8,7 +8,8 @@
 
 :root{
     --main: #ffff;
-    --secundaria: #1a3c5e;
+     --seundaria: #223488;
+    --terciaria: #ec9731;
 }
 
 body {
@@ -59,7 +60,7 @@ main{
 .container-formulario{
     height: 100%;
     width: 50%;
-    background-color: #1a3c5e;
+    background-color:var(--seundaria);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,12 +69,12 @@ main{
 
 label{
     color: var(--main);
-    font-size: 1.4vw;
+    font-size: 1rem;
 }
 
 input{
     color: var(--main);
-    background-color:#2563a8;
+    background-color:var(--seundaria);
     border: solid #fcfcfcd0 0.5px;
     border-radius: 6px;
     width: 36vw;
@@ -82,12 +83,30 @@ input{
 }
 
 button{
-    background-color: #2563a8;
+    background-color: var(--terciaria);
     color: var(--main);
-    font-size: 2vw;
-    border-radius: 20px;
+    font-size: 1.4rem;
+    border-radius: 15px;
     border: none;
     width: 36vw;
     height: 7vh;
     cursor: pointer;
+}
+
+@media screen and (max-width: 700px) {
+    .container-formulario .sub{
+    display: block;
+}
+    
+    .container-formulario {
+        width: 100%;
+    }
+    .container{
+        display: none;
+    }
+
+    input, button{
+        width: 15rem;
+    }
+    
 }
