@@ -44,14 +44,17 @@ main{
     border-bottom-left-radius: 70px;
 }
 
-.voltar:first-child{
-   align-self: flex-start;
-   margin-left: 4%;
+.container-formulario .ancora:first-child{
+    align-self: flex-start;
+    margin-left: 4%;
+}
+
+.container-formulario .voltar{
    width: 1.90rem;
    cursor: pointer;
 }
 
-.voltar:first-child:hover{
+.voltar:hover{
     background-color: #ffff;
     border-radius: 50%;
     color: var(--seundaria);
@@ -109,8 +112,8 @@ input{
     border-radius: 6px;
     width: 36vw;
     height: 6vh;
-    font-size: 1.4vw;
-    padding: 5px;
+    font-size: 1.2rem;
+    padding: 8px;
 }
 
 button{
@@ -136,9 +139,16 @@ button{
         display: none;
     }
 
-    input, button{
+    .container-formulario .input input{
+        font-size: 1rem;
+        width: 70vw;
+        }
+    
+    button{
         width: 15rem;
     }
-    
+    .container-formulario img{
+        width: 15rem;
+    }
     
 }
