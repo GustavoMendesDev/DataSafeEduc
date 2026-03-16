@@ -10,7 +10,7 @@
       --suave:   #64748b;
     }
 
-     html { scroll-behavior: smooth; }
+     html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -61,20 +61,24 @@
 
     
     nav ul a {
-      font-size: 0.9rem;
+      font-size: 1rem;
       text-decoration: none;
       color: var(--suave);
       transition: color .2s;
+      font-weight: 600;
     }
 
     nav ul a:hover { color: var(--cor-principal); }
 
     /* ── HERO ── */
     #hero {
-      background: var(--cor-principal);
+      background-image:linear-gradient(rgba(236, 151, 49, 0.83), rgba(236, 151, 49, 0.83)), url(../assets/imgs/cursinho.png);
       color: #fff;
       padding: 90px 6% 80px;
       text-align: center;
+      background-attachment: scroll;
+      background-position: center;
+      background-size: cover;
     }
 
     #hero .tag {
@@ -135,8 +139,8 @@
     }
 
     .secao-sub {
-      font-size: 1rem;
-      color: var(--cor-base);
+      font-size: 1.1rem;
+      color: #000;
       max-width: 620px;
       line-height: 1.7;
       margin-bottom: 48px;
@@ -151,7 +155,7 @@
     }
 
     #contexto .texto p {
-      font-size: 0.97rem;
+      font-size: 1rem;
       line-height: 1.8;
       color: var(--cor-secundaria);
       margin-bottom: 16px;
@@ -172,7 +176,7 @@
       margin-bottom: 6px;
     }
 
-    .destaque-box p { font-size: 0.9rem; color: var(--suave); margin: 0; }
+    .destaque-box p { font-size: 1rem; color: var(--suave); margin: 0; }
 
     /* ── SOLUÇÃO / CARDS ── */
     .cards {
@@ -210,7 +214,7 @@
       margin-bottom: 10px;
     }
 
-    .card p { font-size: 0.9rem; color: var(--suave); line-height: 1.7; }
+    .card p { font-size: 1rem; color: var(--suave); line-height: 1.7; }
 
     /* ── ESCOPO ── */
     #escopo .lista-escopo {
@@ -283,6 +287,10 @@
       display: flex;
       padding: 5% 10%;
       justify-content: space-around;
+      background-image: linear-gradient(rgba(236, 151, 49, 0.7), rgba(236, 151, 49, 0.7)), url(../assets/imgs/contate-nos.jpg);
+      background-attachment: scroll;
+      background-position: center;
+      background-size: cover;
     }
 
     .convite{

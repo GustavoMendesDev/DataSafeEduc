@@ -44,6 +44,19 @@ main{
     border-bottom-left-radius: 70px;
 }
 
+.voltar:first-child{
+   align-self: flex-start;
+   margin-left: 4%;
+   width: 1.90rem;
+   cursor: pointer;
+}
+
+.voltar:first-child:hover{
+    background-color: #ffff;
+    border-radius: 50%;
+    color: var(--seundaria);
+}
+
 .container h1{    
     color: #ffff;
     font-weight: 400;
@@ -97,6 +110,7 @@ input{
     width: 36vw;
     height: 6vh;
     font-size: 1.4vw;
+    padding: 5px;
 }
 
 button{
@@ -125,5 +139,6 @@ button{
     input, button{
         width: 15rem;
     }
+    
     
 }
