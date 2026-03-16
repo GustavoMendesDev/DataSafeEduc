@@ -383,7 +383,7 @@
       }
 
       nav ul{
-        position: absolute;
+        position: fixed;
         top: 64px;
         right: 0;
         width: 50vw;
