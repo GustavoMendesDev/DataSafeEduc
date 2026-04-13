@@ -1,8 +1,8 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cor-principal:#ec9731;
-      --cor-secundaria: #223488;
+      --cor-principal:#9eccfa;
+      --cor-secundaria: #0b1957;
       --cor-base: #314595;
       --cor-terciaria:#fff;
       --cinza:   #f4f6f9;
@@ -63,7 +63,7 @@
     nav ul a {
       font-size: 1rem;
       text-decoration: none;
-      color: var(--suave);
+      color: var(--cor-secundaria);
       transition: color .2s;
       font-weight: 600;
     }
@@ -72,8 +72,9 @@
 
     /* ── HERO ── */
     #hero {
-      background-image:linear-gradient(rgba(236, 151, 49, 0.83), rgba(236, 151, 49, 0.83)), url(../assets/imgs/cursinho.png);
-      color: #fff;
+      background-image:linear-gradient(rgba(158, 204, 250, 0.781), rgba(158, 204, 250, 0.801)), url(../assets/imgs/cursinho.png);
+      color: var(--cor-terciaria);
+      font-weight: 700;
       padding: 90px 6% 80px;
       text-align: center;
       background-attachment: scroll;
@@ -176,7 +177,7 @@
       margin-bottom: 6px;
     }
 
-    .destaque-box p { font-size: 1rem; color: var(--suave); margin: 0; }
+    .destaque-box p { font-size: 1rem; color: var(--texto); margin: 0; }
 
     /* ── SOLUÇÃO / CARDS ── */
     .cards {
@@ -287,7 +288,7 @@
       display: flex;
       padding: 5% 10%;
       justify-content: space-around;
-      background-image: linear-gradient(rgba(236, 151, 49, 0.7), rgba(236, 151, 49, 0.7)), url(../assets/imgs/contate-nos.jpg);
+      background-image: linear-gradient(rgba(158, 204, 250, 0.781), rgba(158, 204, 250, 0.801)), url(../assets/imgs/contate-nos.jpg);
       background-attachment: scroll;
       background-position: center;
       background-size: cover;
@@ -337,12 +338,15 @@
     
     .formulario button{
       background-color: var(--cor-base);
-      color: var(--cor-terciaria);
+      color: var(--cor-principal);
       border: none;
       height: 6vh;
       border-radius: 0.50rem;
       cursor: pointer;
-      
+    }
+
+    .formulario button:hover{
+      transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.2); 
     }
 
     /* ── REFS ── */
