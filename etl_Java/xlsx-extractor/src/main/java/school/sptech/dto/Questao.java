@@ -1,9 +1,7 @@
-package school.sptech;
-
-import java.util.Objects;
+package school.sptech.dto;
 
 
-public class questoesDTO {
+public class Questao {
 
     private String codigoItem;
     private String habilidade;
@@ -13,8 +11,11 @@ public class questoesDTO {
     private Double dificuldade;
     private Double probabilidadeAcertos;
 
+    public Questao() {
 
-    public questoesDTO(String codigoItem, String habilidade, String respostaGabarito,
+    }
+
+    public Questao(String codigoItem, String habilidade, String respostaGabarito,
                        String areaConhecimento, Double descriminacao, Double dificuldade,
                        Double probabilidadeAcertos) {
         this.codigoItem = codigoItem;
