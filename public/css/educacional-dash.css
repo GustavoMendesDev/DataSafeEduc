@@ -170,23 +170,93 @@ body {
 }
 
 /* STATUS DAS HABILIDADES */
+.status-card {
+  grid-column: 1 / -1;
+}
+
+.status-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  padding: 0 0 20px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.status-left,
+.status-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-left h3,
+.status-right h3,
+.status-center h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--texto);
+  margin: 0;
+}
+
+.status-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-center h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  background-color: #fff;
+  color: var(--texto);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background-color: var(--light-gray);
+}
+
 .status-skills {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
 }
 
 .skill-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 50px 1fr 50px 50px 50px;
   align-items: center;
   gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.skill-row:last-child {
+  border-bottom: none;
 }
 
 .skill-label {
-  min-width: 40px;
+  min-width: 50px;
   font-weight: 600;
   color: var(--texto);
   font-size: 0.95rem;
+  text-align: center;
 }
 
 .difficulty-bars {
@@ -207,6 +277,13 @@ body {
   border-right: none;
 }
 
+.bar-count {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--suave);
+  font-weight: 500;
+}
+
 .difficulty-easy {
   background-color: #4caf50;
 }
@@ -217,14 +294,6 @@ body {
 
 .difficulty-hard {
   background-color: var(--cor-secundaria);
-}
-
-.bar-count {
-  min-width: 35px;
-  text-align: right;
-  font-size: 0.85rem;
-  color: var(--suave);
-  font-weight: 500;
 }
 
 /* EIXOS COGNITIVOS */
