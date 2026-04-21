@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Desempenho Educacional</title>
+    
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="stylesheet" href="./css/educacional-dash.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-profile">
+                <div class="profile-photo"></div>
+                <h3 class="profile-name">Ricardo Almeida</h3>
+                <p class="profile-title">Coordenador</p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-btn">Temas Cobrados</button>
+                <button class="nav-btn active">Monitoramento</button>
+                <button class="nav-btn">Atuação Regional</button>
+                <button class="nav-btn">Conteúdo por Habilidade</button>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- HEADER -->
+            <header class="dashboard-header">
+                <h1>PAINEL DE DESEMPENHO EDUCACIONAL</h1>
+            </header>
+
+            <!-- CONTENT SECTIONS -->
+            <div class="dashboard-content">
+                <!-- TOP ROW: Left Panel -->
+                <section class="section-left">
+                    <!-- STATUS DAS HABILIDADES -->
+                    <div class="card">
+                        <div class="card-title-row">
+                            <h2>Status das Habilidades (Por Histórico)</h2>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="status-skills">
+                                <div class="skill-row">
+                                    <span class="skill-label">H23</span>
+                                    <div class="difficulty-bars">
+                                        <div class="bar-section difficulty-easy"></div>
+                                        <div class="bar-section difficulty-medium"></div>
+                                        <div class="bar-section difficulty-hard"></div>
+                                    </div>
+                                    <span class="bar-count">01</span>
+                                    <span class="bar-count">29</span>
+                                </div>
+                                <div class="skill-row">
+                                    <span class="skill-label">H18</span>
+                                    <div class="difficulty-bars">
+                                        <div class="bar-section difficulty-hard" style="width: 45%"></div>
+                                    </div>
+                                    <span class="bar-count">34</span>
+                                    <span class="bar-count">45</span>
+                                </div>
+                                <div class="skill-row">
+                                    <span class="skill-label">H42</span>
+                                    <div class="difficulty-bars">
+                                        <div class="bar-section difficulty-medium"></div>
+                                    </div>
+                                    <span class="bar-count">28</span>
+                                    <span class="bar-count">56</span>
+                                </div>
+                                <div class="skill-row">
+                                    <span class="skill-label">H15</span>
+                                    <div class="difficulty-bars">
+                                        <div class="bar-section difficulty-hard" style="width: 70%"></div>
+                                    </div>
+                                    <span class="bar-count">50</span>
+                                    <span class="bar-count">02</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RADAR CHART -->
+                    <div class="card">
+                        <div class="card-title-row">
+                            <h2>Pessoal Amizade</h2>
+                        </div>
+                        <div class="card-content chart-container">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- STACKED BAR CHART -->
+                    <div class="card">
+                        <div class="card-title-row">
+                            <h2>Recorrência por habilidade</h2>
+                        </div>
+                        <div class="card-content chart-container">
+                            <canvas id="stackedBarChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RIGHT COLUMN -->
+                <section class="section-right">
+                    <!-- EIXOS COGNITIVOS -->
+                    <div class="card">
+                        <div class="card-title-row">
+                            <h2>Eixos cognitivos</h2>
+                        </div>
+                        <div class="card-content eixos-content">
+                            <div class="eixo-item">
+                                <input type="radio" id="eixo1" name="eixos">
+                                <label for="eixo1">Nível 1 - Dominar Linguagens</label>
+                            </div>
+                            <div class="eixo-item">
+                                <input type="radio" id="eixo2" name="eixos">
+                                <label for="eixo2">Nível 2 - Compreender Fenômenos</label>
+                            </div>
+                            <div class="eixo-item">
+                                <input type="radio" id="eixo3" name="eixos">
+                                <label for="eixo3">Nível 3 - Situações Problema</label>
+                            </div>
+                            <div class="eixo-item">
+                                <input type="radio" id="eixo4" name="eixos">
+                                <label for="eixo4">Nível 4 - Construir Argumentação</label>
+                            </div>
+                            <div class="eixo-item">
+                                <input type="radio" id="eixo5" name="eixos">
+                                <label for="eixo5">Nível 5 - Elaborar Resposta</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FREQUENTLY USED SKILLS CHART -->
+                    <div class="card">
+                        <div class="card-title-row">
+                            <h2>Habilidades mais frequentes (2019-2024)</h2>
+                        </div>
+                        <div class="card-content chart-container">
+                            <canvas id="frequentSkillsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- TABLE SECTION -->
+                    <div class="card">
+                        <div class="card-title-row">
+                            <h2>Detalhes</h2>
+                        </div>
+                        <div class="card-content table-container">
+                            <table class="details-table">
+                                <thead>
+                                    <tr>
+                                        <th>Área</th>
+                                        <th>Habilidade</th>
+                                        <th>Dificuldade</th>
+                                        <th>Quantidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="./js/educacional-dados.js"></script>
+    <script src="./js/educacional-dash.js"></script>
+</body>
+
+</html>
