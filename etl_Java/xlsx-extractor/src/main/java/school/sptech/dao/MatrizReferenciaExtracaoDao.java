@@ -43,6 +43,8 @@ public class MatrizReferenciaExtracaoDao {
 
                 Habilidade habilidade = new Habilidade();
 
+                habilidades.add(habilidade);
+
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
 
@@ -72,7 +74,7 @@ public class MatrizReferenciaExtracaoDao {
 
 
 
-    public List<AreaConhecimento> lerAreaConhecimento (String nomeArquivo) {
+    public void lerAreaConhecimento (String nomeArquivo) {
 
         File arquivo = new File(nomeArquivo);
 
@@ -114,16 +116,23 @@ public class MatrizReferenciaExtracaoDao {
             System.out.println("Erro " + e);
         }
 
-        return areasConhecimentos;
     }
 
     public AreaConhecimento buscarAreaConhecimento (SiglaEnum siglaEnum){
         for (AreaConhecimento a : areasConhecimentos){
-            if(siglaEnum.equals(areaConhecimento.getSigla())){
+            if(siglaEnum.equals(a.getSigla())){
                 return a;
             }
         }
         return null;
 
+    }
+
+
+    public void mostrarAreasDeConhecimento (){
+        for (AreaConhecimento areaConhecimento : areasConhecimentos){
+            System.out.println("Nome : " + areaConhecimento.getNome() +
+                              "| Sigla : " + areaConhecimento.getSigla());
+        }
     }
 }
