@@ -4,28 +4,22 @@ package school.sptech.dto;
 public class Questao {
 
     private String codigoItem;
-    private String habilidade;
-    private String respostaGabarito;
-    private String areaConhecimento;
-    private Double descriminacao;
-    private Double dificuldade;
-    private Double probabilidadeAcertos;
+    private Habilidade habilidade;
+    private Dificuldade dificuldade;
+    private String gabarito;
 
-    public Questao() {
+    public Questao(){
 
     }
 
-    public Questao(String codigoItem, String habilidade, String respostaGabarito,
-                       String areaConhecimento, Double descriminacao, Double dificuldade,
-                       Double probabilidadeAcertos) {
+    public Questao(String codigoItem, Habilidade habilidade, Dificuldade dificuldade,
+                   String gabarito) {
         this.codigoItem = codigoItem;
         this.habilidade = habilidade;
-        this.respostaGabarito = respostaGabarito;
-        this.areaConhecimento = areaConhecimento;
-        this.descriminacao = descriminacao;
         this.dificuldade = dificuldade;
-        this.probabilidadeAcertos = probabilidadeAcertos;
+        this.gabarito = gabarito;
     }
+
 
     public String getCodigoItem() {
         return codigoItem;
@@ -35,51 +29,21 @@ public class Questao {
         this.codigoItem = codigoItem;
     }
 
-    public String getHabilidade() {
+    public Habilidade getHabildade() {
         return habilidade;
     }
 
-    public void setHabilidade(String habilidade) {
-        this.habilidade = habilidade;
-    }
-
-    public String getRespostaGabarito() {
-        return respostaGabarito;
-    }
-
-    public void setRespostaGabarito(String respostaGabarito) {
-        this.respostaGabarito = respostaGabarito;
-    }
-
-    public String getAreaConhecimento() {
-        return areaConhecimento;
-    }
-
-    public void setAreaConhecimento(String areaConhecimento) {
-        this.areaConhecimento = areaConhecimento;
-    }
-
-    public Double getDescriminacao() {
-        return descriminacao;
-    }
-
-    public void setDescriminacao(Double descriminacao) {
-        this.descriminacao = descriminacao;
-    }
-
-    public Double getDificuldade() {
+    public Dificuldade getDificuldade() {
         return dificuldade;
     }
 
-    public void setDificuldade(Double dificuldade) {
-        this.dificuldade = dificuldade;
+
+
+    public String getGabarito() {
+        return gabarito;
     }
 
-    public Double getProbabilidadeAcertos() {
-        return probabilidadeAcertos;
-    }
-
-    public void setProbabilidadeAcertos(Double probabilidadeAcertos) {
-        this.probabilidadeAcertos = probabilidadeAcertos;
+    public void setGabarito(String gabarito) {
+        this.gabarito = gabarito;
     }
 }
