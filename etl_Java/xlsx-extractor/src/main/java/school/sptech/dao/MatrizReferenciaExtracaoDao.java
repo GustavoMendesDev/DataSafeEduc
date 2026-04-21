@@ -10,6 +10,7 @@ import school.sptech.dto.Habilidade;
 import school.sptech.enums.SiglaEnum;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -76,10 +77,10 @@ public class MatrizReferenciaExtracaoDao {
 
     public void lerAreaConhecimento (String nomeArquivo) {
 
-        File arquivo = new File(nomeArquivo);
 
-        try {
-            Workbook workbook = new XSSFWorkbook(arquivo);
+        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
+                Workbook workbook = new XSSFWorkbook(arquivo);) {
+
 
             Sheet sheetHabilidades = workbook.getSheetAt(0);
 
@@ -109,12 +110,14 @@ public class MatrizReferenciaExtracaoDao {
                             break;
                     }
 
+                    workbook.close();
 
                 }
             }
         } catch (Exception e) {
             System.out.println("Erro " + e);
         }
+
 
     }
 
