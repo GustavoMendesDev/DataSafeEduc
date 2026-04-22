@@ -7,17 +7,19 @@ public enum SiglaEnum {
 
 
 
-    LC("Linguagens e Códigos" ),
-    MT("Matemática"),
-    CN("Ciências da Natureza" ),
-    CH("Ciências Humanas");
+    LC("Linguagens e Códigos" ,1),
+    MT("Matemática", 2),
+    CN("Ciências da Natureza", 3 ),
+    CH("Ciências Humanas", 4);
 
 
 
     private String areaConhecimento;
+    private Integer codigo;
 
-    SiglaEnum(String areaConhecimento  ) {
+    SiglaEnum(String areaConhecimento, Integer codigo  ) {
         this.areaConhecimento = areaConhecimento;
+        this.codigo = codigo;
 
     }
 
@@ -36,5 +38,9 @@ public enum SiglaEnum {
 
     public String getAreaConhecimento() {
         return areaConhecimento;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
     }
 }

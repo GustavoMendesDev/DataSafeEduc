@@ -7,12 +7,15 @@ import school.sptech.dao.MatrizReferenciaExtracaoDao;
 public class Main {
     public static void main(String[] args) {
 
-        String nomeArquivo = "matriz_referencia_enem.xlsx";
 
-        MatrizReferenciaExtracaoDao leitor = new MatrizReferenciaExtracaoDao();
 
-        leitor.lerAreaConhecimento(nomeArquivo);
+         String nomeArquivo1 = "src\\main\\resources\\matriz_referencia_enem.xlsx";
+         //         String nomeArquivo = "src\\main\\resources\\areaConhecimento.xlsx";
 
-        leitor.mostrarAreasDeConhecimento();
+         MatrizReferenciaExtracaoDao leitor1 = new MatrizReferenciaExtracaoDao();
+
+         leitor1.lerHabilidades(nomeArquivo1);
+
+         leitor1.mostrarhabilidades();
     }
 }

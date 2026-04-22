@@ -1,36 +1,30 @@
 package school.sptech.dto;
 
+import school.sptech.enums.SiglaEnum;
+
 public class Habilidade {
-    private String numero;
+    private String nome;
     private String descricao;
-    private AreaConhecimento areaConhecimento;
+    private SiglaEnum sigla;
 
 
 public Habilidade(){
 
 }
-    public Habilidade(String numero, String descricao, AreaConhecimento areaConhecimento, AreaConhecimento areaConhecimento1) {
-        this.numero = numero;
+    public Habilidade(String numero, String descricao, SiglaEnum sigla) {
+        this.nome = numero;
         this.descricao = descricao;
+        this.sigla = sigla;
 
-        this.areaConhecimento = areaConhecimento1;
+
     }
 
-
-
-    public String getNumero() {
-        return numero;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNumero(String numero) {
-
-        if(this.numero.length() > 2){
-            System.out.println("Habilidade inválida");
-
-            return;
-        }
-
-        this.numero = numero;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getDescricao() {
@@ -41,11 +35,11 @@ public Habilidade(){
         this.descricao = descricao;
     }
 
-    public AreaConhecimento getAreaConhecimento() {
-        return areaConhecimento;
+    public SiglaEnum getSigla() {
+        return sigla;
     }
 
-    public void setAreaConhecimento(AreaConhecimento areaConhecimento) {
-        this.areaConhecimento = areaConhecimento;
+    public void setSigla(SiglaEnum sigla) {
+        this.sigla = sigla;
     }
 }
