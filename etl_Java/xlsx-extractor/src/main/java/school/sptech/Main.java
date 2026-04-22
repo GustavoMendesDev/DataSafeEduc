@@ -10,7 +10,6 @@ public class Main {
 
 
          String nomeArquivo1 = "src\\main\\resources\\matriz_referencia_enem.xlsx";
-         //         String nomeArquivo = "src\\main\\resources\\areaConhecimento.xlsx";
 
          MatrizReferenciaExtracaoDao leitor1 = new MatrizReferenciaExtracaoDao();
 

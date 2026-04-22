@@ -26,7 +26,7 @@ public class MatrizReferenciaExtracaoDao {
 
         try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);){
-
+            System.out.println("[] - (MatrizReferenciaExtracaoDao) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
 
             Sheet sheetHabilidades = workbook.getSheetAt(0);
 
