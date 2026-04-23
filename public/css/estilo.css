@@ -128,7 +128,6 @@
 
     /* ── SEÇÕES GENÉRICAS ── */
     section { padding: 72px 6%; }
-    section:nth-child(even) { background: var(--cor-principal); } 
 
     .secao-titulo {
       font-family: 'Sora', sans-serif;
