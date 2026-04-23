@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import school.sptech.enums.SiglaEnum;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,8 +20,6 @@ public class ItemProvaExtracaoDao {
     List<Questao> questoes = new ArrayList<>();
 
     public List <Questao> lerQuestoes (String nomeArquivo) {
-
-
 
     File arquivo = new File(nomeArquivo);
 
@@ -47,7 +46,12 @@ public class ItemProvaExtracaoDao {
            while (cellIterator.hasNext()) {
                Cell cell = cellIterator.next();
 
-               //Switch
+               switch (cell.getColumnIndex()) {
+                   case 1:
+                       SiglaEnum sigla = SiglaEnum.encontrarSigla(cell.getStringCellValue());
+
+
+               }
            }
        }
    }catch (Exception e){

@@ -2,7 +2,7 @@
 <h1 align="center"><b>🎓 DataSafe Educ</b></h1>
 
 <div align="center">
-  <img src="logo.png" alt="DataSafe Educ Logo" width="450"/>
+  <img src="public\assets\imgs\logoDataSafeRemastered-removebg-preview.png" alt="DataSafe Educ Logo" width="450"/>
 </div>
 
 <br>

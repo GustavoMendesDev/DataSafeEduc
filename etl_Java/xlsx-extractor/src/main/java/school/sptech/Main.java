@@ -1,6 +1,6 @@
 package school.sptech;
 
-import school.sptech.dao.MatrizReferenciaExtracaoDao;
+import school.sptech.dao.LeitorExcelQuestao;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -9,13 +9,28 @@ public class Main {
 
 
 
-         String nomeArquivo1 = "src\\main\\resources\\matriz_referencia_enem.xlsx";
-         //         String nomeArquivo = "src\\main\\resources\\areaConhecimento.xlsx";
+//        String nomeArquivo1 = "src\\main\\resources\\matriz_referencia_enem.xlsx";
+//
+//        LeitorExcelQuestao leitor1 = new LeitorExcelQuestao();
+//
+//        leitor1.lerHabilidades(nomeArquivo1);
+//
+//        leitor1.mostrarHabilidades();
 
-         MatrizReferenciaExtracaoDao leitor1 = new MatrizReferenciaExtracaoDao();
 
-         leitor1.lerHabilidades(nomeArquivo1);
+        String nomeArquivo = "src\\main\\resources\\questoesEnem.xlsx";
 
-         leitor1.mostrarhabilidades();
+        LeitorExcelQuestao leitor2 = new LeitorExcelQuestao();
+
+        leitor2.lerQuestoes(nomeArquivo);
+
+        leitor2.mostrarQuestoes();
+
+
+        leitor2.mostrarQuestoes();
+
+
+
+
     }
 }
