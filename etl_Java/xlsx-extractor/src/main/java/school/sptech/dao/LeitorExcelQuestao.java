@@ -81,7 +81,6 @@ public class LeitorExcelQuestao {
         try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);){
 
-            System.out.println("[] - (LeitorExcelQuestao) - (lerQuestoes) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
 
             Sheet sheetHabilidades = workbook.getSheetAt(0);
 
@@ -90,6 +89,7 @@ public class LeitorExcelQuestao {
             if (rowIterator.hasNext()) {
                 rowIterator.next();
             }
+            System.out.println("[] - (LeitorExcelQuestao) - (lerQuestoes) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
@@ -157,12 +157,18 @@ public class LeitorExcelQuestao {
 
 
 
-    public void mostrarhabilidades (){
+    public void mostrarHabilidades (){
         for (Habilidade habilidade : habilidades){
             System.out.println(
              "Sigla : "+ habilidade.getSigla() +
             "| Habilidade : "+ habilidade.getNome() +
             "| Descricao: "+ habilidade.getDescricao() );
+        }
+    }
+
+    public void mostrarQuestoes(){
+        for (Questao questao : questoes){
+            questao.toString();
         }
     }
 

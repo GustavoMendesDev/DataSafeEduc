@@ -9,13 +9,26 @@ public class Main {
 
 
 
-         String nomeArquivo1 = "src\\main\\resources\\matriz_referencia_enem.xlsx";
+//        String nomeArquivo1 = "src\\main\\resources\\matriz_referencia_enem.xlsx";
+//
+//        LeitorExcelQuestao leitor1 = new LeitorExcelQuestao();
+//
+//        leitor1.lerHabilidades(nomeArquivo1);
+//
+//        leitor1.mostrarHabilidades();
 
-         LeitorExcelQuestao leitor1 = new LeitorExcelQuestao();
 
-         leitor1.lerHabilidades(nomeArquivo1);
+        String nomeArquivo = "src\\main\\resources\\questoesEnem.xlsx";
 
-         leitor1.mostrarhabilidades();
+        LeitorExcelQuestao leitor2 = new LeitorExcelQuestao();
+
+        leitor2.lerQuestoes(nomeArquivo);
+
+        leitor2.mostrarQuestoes();
+
+
+        leitor2.mostrarQuestoes();
+
 
 
 

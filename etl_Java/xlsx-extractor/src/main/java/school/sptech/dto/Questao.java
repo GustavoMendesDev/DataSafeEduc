@@ -69,5 +69,14 @@ public class Questao {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "Questao{" +
+                "codigoItem='" + codigoItem + '\'' +
+                ", habilidade=" + habilidade +
+                ", dificuldade=" + dificuldade +
+                ", gabarito='" + gabarito + '\'' +
+                ", area=" + area +
+                '}';
+    }
 }
