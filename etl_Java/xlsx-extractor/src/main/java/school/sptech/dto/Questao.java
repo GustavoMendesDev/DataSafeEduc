@@ -1,12 +1,15 @@
 package school.sptech.dto;
 
 
+import school.sptech.enums.SiglaEnum;
+
 public class Questao {
 
     private String codigoItem;
     private Habilidade habilidade;
     private Dificuldade dificuldade;
     private String gabarito;
+    private SiglaEnum area;
 
     public Questao(){
 
@@ -37,7 +40,25 @@ public class Questao {
         return dificuldade;
     }
 
+    public Habilidade getHabilidade() {
+        return habilidade;
+    }
 
+    public void setHabilidade(Habilidade habilidade) {
+        this.habilidade = habilidade;
+    }
+
+    public void setDificuldade(Dificuldade dificuldade) {
+        this.dificuldade = dificuldade;
+    }
+
+    public SiglaEnum getArea() {
+        return area;
+    }
+
+    public void setArea(SiglaEnum area) {
+        this.area = area;
+    }
 
     public String getGabarito() {
         return gabarito;
@@ -46,4 +67,7 @@ public class Questao {
     public void setGabarito(String gabarito) {
         this.gabarito = gabarito;
     }
+
+
+
 }
