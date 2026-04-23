@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Desempenho</title>
+
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="stylesheet" href="./css/educacional-dash.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+<div class="dashboard-container">
+
+    <!-- SIDEBAR (COPIADA IGUAL) -->
+    <aside class="sidebar">
+        <div class="sidebar-profile">
+            <div class="profile-photo"></div>
+            <h3 class="profile-name">Ricardo Almeida</h3>
+            <p class="profile-title">Coordenador</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-btn">Temas Cobrados</button>
+            <button class="nav-btn active">Monitoramento</button>
+            <button class="nav-btn">Atuação Regional</button>
+            <button class="nav-btn">Conteúdo por Habilidade</button>
+        </nav>
+    </aside>
+
+    <!-- CONTEÚDO -->
+    <main class="main-content">
+
+        <header class="dashboard-header">
+            <h1>Painel de Análise de Desempenho Educacional</h1>
+        </header>
+
+        <!-- CARDS -->
+        <section class="cards-top">
+            <div class="mini-card laranja">
+                <p>Matemática</p>
+                <strong>529</strong>
+            </div>
+
+            <div class="mini-card verde">
+                <p>Ciências da Natureza</p>
+                <strong>495</strong>
+            </div>
+
+            <div class="mini-card azul">
+                <p>Ciências Humanas</p>
+                <strong>517</strong>
+            </div>
+
+            <div class="mini-card roxo">
+                <p>Linguagens</p>
+                <strong>528</strong>
+            </div>
+        </section>
+
+        <!-- GRÁFICO -->
+        <section class="card">
+            <div class="card-content">
+                <canvas id="linhaChart"></canvas>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+const ctx = document.getElementById('linhaChart');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['2019', '2021', '2022', '2023', '2024'],
+        datasets: [
+            {
+                label: 'Matemática',
+                data: [500, 502, 480, 520, 530],
+                borderColor: '#ec9731',
+                tension: 0.4
+            },
+            {
+                label: 'Natureza',
+                data: [500, 498, 512, 500, 488],
+                borderColor: '#4caf50',
+                tension: 0.4
+            },
+            {
+                label: 'Humanas',
+                data: [515, 510, 520, 505, 522],
+                borderColor: '#2196f3',
+                tension: 0.4
+            },
+            {
+                label: 'Linguagens',
+                data: [510, 482, 508, 500, 520],
+                borderColor: '#9c27b0',
+                tension: 0.4
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top'
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
