@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Gerenciamento</title>
+
+<link rel="stylesheet" href="./css/estilo.css">
+<link rel="stylesheet" href="./css/dashboards.css">
+</head>
+
+<body>
+<div class="dashboard-container">
+
+    <aside class="sidebar">
+        <div class="sidebar-profile">
+            <div class="profile-photo"></div>
+            <h3 class="profile-name">Ricardo Almeida</h3>
+            <p class="profile-title">Coordenador</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-btn">Monitoramento</button>
+            <button class="nav-btn">Atuação Regional</button>
+            <button class="nav-btn">Conteúdo por Habilidade</button>
+            <button class="nav-btn active">Gerenciamento</button>
+        </nav>
+    </aside>
+
+<main class="main-content">
+
+    <header class="dashboard-header">
+        <h1>Gerenciamento de Professores</h1>
+    </header>
+
+    <div class="dashboard-content">
+
+        <div class="card">
+
+            <div class="card-title-row" style="display:flex; justify-content:space-between; align-items:center;">
+                <h2>Lista de usuários</h2>
+                <button class="btn-add" onclick="abrirModal()">+ Adicionar usuário</button>
+            </div>
+
+            <div class="card-content table-container">
+
+                <table class="details-table">
+                    <thead>
+                        <tr>
+                            <th>Cod</th>
+                            <th>Email</th>
+                            <th>Senha</th>
+                            <th>Cargo</th>
+                            <th>Editar</th>
+                            <th>Excluir</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>01</td>
+                            <td>prof@gmail.com</td>
+                            <td>********</td>
+                            <td>Professor</td>
+                            <td><button>✏️</button></td>
+                            <td><button>🗑️</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <h2>Cadastro de Usuário</h2>
+
+        <input placeholder="Email">
+        <input placeholder="Senha">
+        <input placeholder="Confirmar senha">
+
+        <select>
+            <option>Professor</option>
+            <option>Coordenador</option>
+        </select>
+
+        <div class="modal-actions">
+            <button onclick="fecharModal()">Cancelar</button>
+            <button>Cadastrar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function abrirModal() {
+    document.getElementById("modal").style.display = "flex";
+}
+
+function fecharModal() {
+    document.getElementById("modal").style.display = "none";
+}
+</script>
+
+</body>
+</html>
