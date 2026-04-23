@@ -16,12 +16,40 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static school.sptech.dto.Habilidade.buscarHabilidade;
+
 public class LeitorExcelQuestao {
 
-    List <Habilidade> habilidades = new ArrayList<>();
+    private List <Habilidade> habilidades = new ArrayList<>();
 
-    List<Questao> questoes = new ArrayList<>();
+    private List<Questao> questoes = new ArrayList<>();
 
+
+     public void adicionarHabilidade(Habilidade habilidade){
+         habilidades.add(habilidade);
+     }
+
+     public void adicionarQuestao(Questao questao){
+         questoes.add(questao);
+     }
+
+
+    public void removerHabilidade(Habilidade habilidade){
+         for(int i = 0; i < habilidades.size(); i++){
+             if(habilidades.get(i).equals(habilidade)){
+                 habilidades.remove(i);
+             }
+         }
+    }
+
+    public void removerQuestao(Questao questao){
+         for(int i = 0; i < questoes.size(); i++){
+             if(questoes.get(i).equals(questao)){
+                 questoes.remove(i);
+                 i--;
+             }
+         }
+    }
 
 
     public List <Habilidade> lerHabilidades (String nomeArquivo) {
@@ -44,7 +72,7 @@ public class LeitorExcelQuestao {
 
                 Habilidade habilidade = new Habilidade();
 
-                habilidades.add(habilidade);
+
 
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
@@ -56,7 +84,7 @@ public class LeitorExcelQuestao {
                             habilidade.setSigla(sigla);
                             break;
                         case 2:
-                            habilidade.setNome(cell.getStringCellValue());
+                            habilidade.setNumero((int) cell.getNumericCellValue());
                             break;
                         case 3:
                             habilidade.setDescricao(cell.getStringCellValue());
@@ -66,6 +94,7 @@ public class LeitorExcelQuestao {
 
 
                 }
+                adicionarHabilidade(habilidade);
             }
         } catch (Exception e) {
             System.out.println("Erro " + e);
@@ -93,11 +122,11 @@ public class LeitorExcelQuestao {
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
+
+                Boolean questaoDuplicada = false;
                 Iterator<Cell> cellIterator = row.cellIterator();
 
                 Questao questao = new Questao();
-
-                questoes.add(questao);
 
                 Dificuldade dificuldade = new Dificuldade();
 
@@ -107,51 +136,68 @@ public class LeitorExcelQuestao {
                     Cell cell = cellIterator.next();
 
                     switch (cell.getColumnIndex()) {
-                        case 2:
-                            Boolean codigoExistente = jaExisteEsseCodigo(cell.getStringCellValue());
-
-                            if (!codigoExistente) {
-                                questao.setCodigoItem(cell.getStringCellValue());
-                                break;
-                            }
-                            questoes.remove(questao);
-
-                            cellIterator.hasNext();
-
-
                         case 1:
                             sigla = SiglaEnum.encontrarSigla(cell.getStringCellValue());
-
                             questao.setArea(sigla);
+
                             break;
+
+                        case 2:
+                            int codigoExcel = (int) cell.getNumericCellValue();
+
+                            // 2. Verificamos na lista global se esse código já existe
+                            if (questao.jaExisteEsseCodigo(questoes, codigoExcel)) {
+                                System.out.println("Pulando questão duplicada: " + codigoExcel);
+                                questaoDuplicada = true;
+                            } else {
+                                questao.setCodigoItem(codigoExcel);
+                            }
+                            break;
+
+
+
+                        case 3:
+
+                            questao.setGabarito(cell.getStringCellValue());
+                            break;
+
                         case 4:
-                            String nomeHabilidade = "H" + cell.getStringCellValue();
-                            Habilidade habilidade = buscarHabilidade(questao.getArea(), nomeHabilidade);
+                            Integer numero = (int) cell.getNumericCellValue();
+
+
+                            Habilidade habilidade = buscarHabilidade(habilidades, questao.getArea(), numero);
                             questao.setHabilidade(habilidade);
 
                             break;
-                        case 3:
-                            questao.setGabarito(cell.getStringCellValue());
-                            break;
                         case 7:
+
                             dificuldade.setParametro_a(cell.getNumericCellValue());
                             break;
                         case 8:
+
                             dificuldade.setParametro_b(cell.getNumericCellValue());
                             break;
                         case 9:
+
                             dificuldade.setParametro_c(cell.getNumericCellValue());
                             questao.setDificuldade(dificuldade);
                             break;
                     }
 
 
+
+                }
+
+
+                if (!questaoDuplicada) {
+                    adicionarQuestao(questao);
                 }
             }
+
         } catch (Exception e) {
             System.out.println("Erro " + e);
         }
-
+        System.out.println(questoes.size() + " questoes encontradas.");
         return questoes;
     }
 
@@ -161,40 +207,20 @@ public class LeitorExcelQuestao {
         for (Habilidade habilidade : habilidades){
             System.out.println(
              "Sigla : "+ habilidade.getSigla() +
-            "| Habilidade : "+ habilidade.getNome() +
+            "| Habilidade : "+ habilidade.getNumero() +
             "| Descricao: "+ habilidade.getDescricao() );
         }
     }
 
     public void mostrarQuestoes(){
         for (Questao questao : questoes){
-            questao.toString();
+            System.out.println(questao.toString());
         }
     }
 
-    public Habilidade buscarHabilidade (SiglaEnum sigla, String nome ){
 
-        for(Habilidade habilidade : habilidades){
-            if(habilidade.getSigla().equals(sigla) &&
-               habilidade.getNome().equals(nome)
-            ){
-                return habilidade;
 
-            }
-        }
 
-        System.out.println("Habilidade não encontrada!");
 
-        return null;
-    }
 
-    public boolean jaExisteEsseCodigo (String codQuestao) {
-
-        for (Questao questao : questoes){
-            if(questao.getCodigoItem().equals(codQuestao)){
-                return true;
-            }
-        }
-        return false;
-    }
 }

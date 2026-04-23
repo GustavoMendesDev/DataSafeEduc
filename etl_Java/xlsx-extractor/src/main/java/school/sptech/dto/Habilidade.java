@@ -2,8 +2,10 @@ package school.sptech.dto;
 
 import school.sptech.enums.SiglaEnum;
 
+import java.util.List;
+
 public class Habilidade {
-    private String nome;
+    private Integer numero;
     private String descricao;
     private SiglaEnum sigla;
 
@@ -12,8 +14,8 @@ public class Habilidade {
 public Habilidade(){
 
 }
-    public Habilidade(String numero, String descricao, SiglaEnum sigla) {
-        this.nome = numero;
+    public Habilidade(Integer numero, String descricao, SiglaEnum sigla) {
+        this.numero = numero;
         this.descricao = descricao;
         this.sigla = sigla;
 
@@ -22,12 +24,31 @@ public Habilidade(){
 
 
 
-    public String getNome() {
-        return nome;
+    public static  Habilidade buscarHabilidade (List<Habilidade> habilidades, SiglaEnum sigla, Integer numero ){
+
+
+
+        for(Habilidade habilidade : habilidades){
+            if(habilidade.getSigla().equals(sigla) &&
+                    habilidade.getNumero().equals(numero)){
+
+                return habilidade;
+
+            }
+        }
+
+        System.out.println("Habilidade não encontrada!");
+
+        return null;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
     }
 
     public String getDescricao() {

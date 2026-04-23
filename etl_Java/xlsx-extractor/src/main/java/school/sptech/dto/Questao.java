@@ -3,19 +3,24 @@ package school.sptech.dto;
 
 import school.sptech.enums.SiglaEnum;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Questao {
 
-    private String codigoItem;
+    private Integer codigoItem;
     private Habilidade habilidade;
     private Dificuldade dificuldade;
     private String gabarito;
     private SiglaEnum area;
 
+
+
     public Questao(){
 
     }
 
-    public Questao(String codigoItem, Habilidade habilidade, Dificuldade dificuldade,
+    public Questao(Integer codigoItem, Habilidade habilidade, Dificuldade dificuldade,
                    String gabarito) {
         this.codigoItem = codigoItem;
         this.habilidade = habilidade;
@@ -24,11 +29,36 @@ public class Questao {
     }
 
 
-    public String getCodigoItem() {
+
+
+
+
+    public boolean jaExisteEsseCodigo(List<Questao> listaQuestoes, Integer codQuestao) {
+
+        for (Questao questao : listaQuestoes) {
+            if (questao.getCodigoItem() != null && questao.getCodigoItem().equals(codQuestao)) {
+
+                return true;
+            }
+
+
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+    public Integer getCodigoItem() {
         return codigoItem;
     }
 
-    public void setCodigoItem(String codigoItem) {
+    public void setCodigoItem(Integer codigoItem) {
         this.codigoItem = codigoItem;
     }
 
