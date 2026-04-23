@@ -574,3 +574,25 @@ canvas {
   cursor: pointer;
   font-size: 16px;
 }
+
+.habilidades-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.habilidades-box label {
+  font-size: 0.9rem;
+}
+
+.questoes-box {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.questao-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
