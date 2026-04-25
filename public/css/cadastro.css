@@ -132,6 +132,11 @@ button{
     cursor: pointer;
 }
 
+button:hover{
+    background-color: white;
+    color: black;
+}
+
 @media screen and (max-width: 700px) {
     .container-formulario .sub{
     display: block;

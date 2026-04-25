@@ -1,91 +1,109 @@
-CREATE DATABASE datasafe;
-USE datasafe;
+CREATE DATABASE dataSafe;
+USE dataSafe;
 
--- PLANOS DO SISTEMA
-CREATE TABLE plano (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    limite_usuarios INT,
-    limite_consultas INT
+-- MUNICIPIO
+CREATE TABLE municipio (
+    idMunicipio INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL,
+    estado CHAR(2) NOT NULL
 );
 
--- CLIENTES (CURSINHOS)
-CREATE TABLE cliente (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    plano_id INT,
-    nome VARCHAR(200) NOT NULL,
-    email VARCHAR(200),
-    ativo TINYINT(1) DEFAULT 1,
-    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (plano_id) REFERENCES plano(id)
+-- NIVEL_ACESSO
+CREATE TABLE nivel_acesso (
+    idnivel_acesso INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL
 );
 
--- ROLES (ADMIN, ANALISTA...)
-CREATE TABLE role (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(30) NOT NULL
-);
-
--- USUÁRIOS DO SISTEMA
+-- USUARIO
 CREATE TABLE usuario (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    cliente_id INT,
-    role_id INT,
-    nome VARCHAR(200),
-    email VARCHAR(200),
-    senha_hash TEXT,
-    ativo TINYINT(1) DEFAULT 1,
-    FOREIGN KEY (cliente_id) REFERENCES cliente(id),
-    FOREIGN KEY (role_id) REFERENCES role(id)
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(80) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    nivel_acesso_idnivel_acesso INT,
+    municipio_idMunicipio INT,
+    
+    FOREIGN KEY (nivel_acesso_idnivel_acesso)
+        REFERENCES nivel_acesso(idnivel_acesso),
+        
+    FOREIGN KEY (municipio_idMunicipio)
+        REFERENCES municipio(idMunicipio)
 );
 
--- EDIÇÕES DO ENEM
-CREATE TABLE edicao (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    ano SMALLINT NOT NULL,
-    ativa TINYINT(1) DEFAULT 1
+
+
+-- AREA_CONHECIMENTO
+CREATE TABLE area_conhecimento (
+    id_AreaConhecimento INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL,
+    sigla CHAR(3)
 );
 
--- ÁREAS DO CONHECIMENTO
-CREATE TABLE area (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    codigo CHAR(2),
-    nome VARCHAR(80)
+-- DIFICULDADE
+CREATE TABLE dificuldade (
+    idDificuldade INT PRIMARY KEY AUTO_INCREMENT,
+    nivel VARCHAR(45),
+    parametro_a DECIMAL(5,2),
+    parametro_b DECIMAL(5,2),
+    parametro_c DECIMAL(5,2)
 );
 
--- HABILIDADES DA MATRIZ ENEM
+-- HABILIDADE
 CREATE TABLE habilidade (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    area_id INT,
-    codigo_inep VARCHAR(10),
-    descricao TEXT,
-
-    FOREIGN KEY (area_id) REFERENCES area(id)
+    idHabilidade INT PRIMARY KEY AUTO_INCREMENT,
+    numero CHAR(5),
+    descricao VARCHAR(45)
 );
 
--- NÍVEIS DE DIFICULDADE
-CREATE TABLE nivel_dificuldade (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(20),
-    valor_min DECIMAL(8,4),
-    valor_max DECIMAL(8,4)
+-- QUESTAO
+CREATE TABLE questao (
+    idQuestao INT PRIMARY KEY AUTO_INCREMENT,
+    codigoItem VARCHAR(20),
+    ano_exame YEAR,
+    habilidade_idHabilidade INT,
+    area_conhecimento_id_AreaConhecimento INT,
+    dificuldade_idDificuldade INT,
+    
+    FOREIGN KEY (habilidade_idHabilidade)
+        REFERENCES habilidade(idHabilidade),
+        
+    FOREIGN KEY (area_conhecimento_id_AreaConhecimento)
+        REFERENCES area_conhecimento(id_AreaConhecimento),
+        
+    FOREIGN KEY (dificuldade_idDificuldade)
+        REFERENCES dificuldade(idDificuldade)
 );
 
--- ITENS (QUESTÕES DO ENEM)
-CREATE TABLE item (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    edicao_id INT,
-    area_id INT,
-    habilidade_id INT,
-    co_item VARCHAR(20),
-    co_prova VARCHAR(20),
-    param_a DECIMAL(8,4), -- discriminação
-    param_b DECIMAL(8,4), -- dificuldade
-    nivel_id INT,
-    anulada TINYINT(1) DEFAULT 0,
-    FOREIGN KEY (edicao_id) REFERENCES edicao(id),
-    FOREIGN KEY (area_id) REFERENCES area(id),
-    FOREIGN KEY (habilidade_id) REFERENCES habilidade(id),
-    FOREIGN KEY (nivel_id) REFERENCES nivel_dificuldade(id)
+-- SIMULADO
+CREATE TABLE simulado (
+    idSimulado INT PRIMARY KEY AUTO_INCREMENT,
+    quantidadeQuestoes INT,
+    usuario_idUsuario INT,
+    nomeSimulado VARCHAR(45),
+    
+    FOREIGN KEY (usuario_idUsuario)
+        REFERENCES usuario(idUsuario)
 );
+
+-- TABELA DE RELAÇÃO (N:N)
+CREATE TABLE questao_has_simulado (
+    questao_idQuestao INT,
+    simulado_idSimulado INT,
+    
+    PRIMARY KEY (questao_idQuestao, simulado_idSimulado),
+    
+    FOREIGN KEY (questao_idQuestao)
+        REFERENCES questao(idQuestao),
+        
+    FOREIGN KEY (simulado_idSimulado)
+        REFERENCES simulado(idSimulado)
+);
+
+-- LOG_ACESSO
+CREATE TABLE log_acesso (
+    idlog_acesso INT PRIMARY KEY AUTO_INCREMENT,
+    ip VARCHAR(45),
+    dataCriacao DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+SELECT * FROM usuario;
