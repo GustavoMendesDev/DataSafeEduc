@@ -31,15 +31,13 @@ main{
 .container{
     height: 100%;
     width: 50%;
-    background-image:linear-gradient(rgba(255, 153, 0, 0.4), rgba(255, 153, 0, 0.4)), url(../assets/imgs/login.png);
-
+    background-color: orange;
     background-size: cover;
     background-position: center;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     padding-left: 2%;
-    
     border-top-left-radius: 70px;
     border-bottom-left-radius: 70px;
 }
