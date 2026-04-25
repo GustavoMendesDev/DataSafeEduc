@@ -7,9 +7,10 @@
 }
 
 :root{
-    --main: #ffff;
-    --seundaria: #223488;
-    --terciaria: #ec9731;
+    --main: #0b1957;
+    --Contrast: #000;
+    --seundaria: #f9f3ea;
+    --terciaria: #93ccfa;
 }
 
 body {
@@ -18,6 +19,11 @@ body {
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-style: normal;
+}
+
+#Logo{
+    padding-bottom: 20px;
+    margin: -150px;
 }
 
 main{
@@ -31,7 +37,7 @@ main{
 .container{
     height: 100%;
     width: 50%;
-    background-image:linear-gradient(rgba(255, 153, 0, 0.4), rgba(255, 153, 0, 0.4)), url(../assets/imgs/cadastro.png);
+    background-color: var(--main);
 
     background-size: cover;
     background-position: center;
@@ -106,14 +112,14 @@ main{
 }
 
 label{
-    color: var(--main);
+    color: var(--Contrast);
     font-size: 1rem;
 }
 
 input{
     color: var(--main);
     background-color: var(--seundaria);
-    border: solid #fcfcfcd0 0.5px;
+    border: solid var(--Contrast) 0.5px;
     border-radius: 6px;
     width: 36vw;
     height: 6vh;
