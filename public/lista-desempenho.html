@@ -1,113 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>Lista de Desempenho</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lista de Desempenho</title>
 
-<link rel="stylesheet" href="./css/estilo.css">
-<link rel="stylesheet" href="./css/educacional-dash.css">
+    <link rel="stylesheet" href="./css/gerenciamento-professores-estilo.css" />
+    <link
+      rel="stylesheet"
+      href="./css/gerenciamento-de-professores-educacional.css"
+    />
 
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans&family=Sora:wght@700&display=swap" rel="stylesheet">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans&family=Sora:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
-<div class="dashboard-container">
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+  <body>
+    <div class="dashboard-container">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
         <div class="sidebar-profile">
-            <div class="profile-photo"></div>
-            <h3 class="profile-name">Ricardo Almeida</h3>
-            <p class="profile-title">Coordenador</p>
+          <div class="profile-photo"></div>
+          <h3 class="profile-name">Ricardo Almeida</h3>
+          <p class="profile-title">Coordenador</p>
         </div>
 
         <nav class="sidebar-nav">
-            <button class="nav-btn active">Monitoramento</button>
-            <button class="nav-btn">Atuação Regional</button>
-            <button class="nav-btn">Conteúdo por Habilidade</button>
-            <button class="nav-btn">Gerenciamento de Usuários</button>
+          <button class="nav-btn active">Painel de Monitoramento</button>
+          <button class="nav-btn">Atuação Regional</button>
+          <button class="nav-btn">Conteúdo por Habilidade</button>
+          <button class="nav-btn">Gerenciamento de Usuários</button>
+          <button style="cursor: pointer">
+            <img
+              src="assets/imgs/duckIA-removebg-preview.png"
+              alt="duckIA"
+              width="100%"
+              height="50px"
+            />
+          </button>
         </nav>
-    </aside>
+      </aside>
 
-    <!-- CONTEÚDO -->
-    <main class="main-content">
-
+      <!-- CONTEÚDO -->
+      <main class="main-content">
         <header class="dashboard-header">
-            <h1>Lista de desempenho nas questões</h1>
-            <p>Exame Nacional do Ensino Médio</p>
+          <h1>Lista de desempenho nas questões</h1>
+          <p>Exame Nacional do Ensino Médio</p>
         </header>
 
         <!-- FILTROS -->
         <div class="filtros">
-            <span>LC</span>
-            <span>NÍVEL 1</span>
-            <span>DIFÍCIL</span>
-            <span>São Paulo</span>
-            <span>Leste</span>
+          <span>LC</span>
+          <span>NÍVEL 1</span>
+          <span>DIFÍCIL</span>
+          <span>São Paulo</span>
+          <span>Leste</span>
         </div>
 
         <!-- TABELA -->
         <div class="card tabela-container">
+          <table class="tabela-desempenho">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Área</th>
+                <th>Habilidade</th>
+                <th>Dificuldade</th>
+                <th>Município</th>
+                <th>Nota média</th>
+              </tr>
+            </thead>
 
-            <table class="tabela-desempenho">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Área</th>
-                        <th>Habilidade</th>
-                        <th>Dificuldade</th>
-                        <th>Município</th>
-                        <th>Nota média</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>023893</td>
-                        <td>LC</td>
-                        <td>H3</td>
-                        <td>Difícil</td>
-                        <td>São Paulo</td>
-                        <td>430</td>
-                    </tr>
-                    <tr>
-                        <td>023891</td>
-                        <td>LC</td>
-                        <td>H1</td>
-                        <td>Difícil</td>
-                        <td>São Paulo</td>
-                        <td>400</td>
-                    </tr>
-                    <tr>
-                        <td>023292</td>
-                        <td>LC</td>
-                        <td>H6</td>
-                        <td>Difícil</td>
-                        <td>São Paulo</td>
-                        <td>470</td>
-                    </tr>
-                    <tr>
-                        <td>023212</td>
-                        <td>LC</td>
-                        <td>H1</td>
-                        <td>Difícil</td>
-                        <td>São Paulo</td>
-                        <td>410</td>
-                    </tr>
-                    <tr>
-                        <td>023275</td>
-                        <td>LC</td>
-                        <td>H1</td>
-                        <td>Difícil</td>
-                        <td>São Paulo</td>
-                        <td>320</td>
-                    </tr>
-                </tbody>
-            </table>
-
+            <tbody>
+              <tr>
+                <td>023893</td>
+                <td>LC</td>
+                <td>H3</td>
+                <td>Difícil</td>
+                <td>São Paulo</td>
+                <td>430</td>
+              </tr>
+              <tr>
+                <td>023891</td>
+                <td>LC</td>
+                <td>H1</td>
+                <td>Difícil</td>
+                <td>São Paulo</td>
+                <td>400</td>
+              </tr>
+              <tr>
+                <td>023292</td>
+                <td>LC</td>
+                <td>H6</td>
+                <td>Difícil</td>
+                <td>São Paulo</td>
+                <td>470</td>
+              </tr>
+              <tr>
+                <td>023212</td>
+                <td>LC</td>
+                <td>H1</td>
+                <td>Difícil</td>
+                <td>São Paulo</td>
+                <td>410</td>
+              </tr>
+              <tr>
+                <td>023275</td>
+                <td>LC</td>
+                <td>H1</td>
+                <td>Difícil</td>
+                <td>São Paulo</td>
+                <td>320</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-
-    </main>
-</div>
-</body>
+      </main>
+    </div>
+  </body>
 </html>

@@ -1,169 +1,184 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>Gerenciamento de Gestores</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gerenciamento de Gestores</title>
 
-<link rel="stylesheet" href="./css/estilo.css">
-<link rel="stylesheet" href="./css/educacional-dash.css">
+    <link rel="stylesheet" href="./css/gerenciamento-professores-estilo.css" />
+    <link rel="stylesheet" href="./css/gerenciamento-de-professores-educacional.css" />
 
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans&family=Sora:wght@700&display=swap" rel="stylesheet">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans&family=Sora:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
-
-<div class="dashboard-container">
-
-    <!-- SIDEBAR ADMIN -->
-    <aside class="sidebar">
+  <body>
+    <div class="dashboard-container">
+      <!-- SIDEBAR ADMIN -->
+      <aside class="sidebar">
         <div class="sidebar-profile">
-            <div class="profile-photo"></div>
-            <h3 class="profile-name">Lavínia Todarelli</h3>
-            <p class="profile-title">Administrador</p>
+          <div class="profile-photo"></div>
+          <h3 class="profile-name">Lavínia Todarelli</h3>
+          <p class="profile-title">Administrador</p>
         </div>
 
         <nav class="sidebar-nav">
-            <button class="nav-btn">Painel de monitoramento</button>
-            <button class="nav-btn">Relatório Regional</button>
-            <button class="nav-btn">Conteúdo por Habilidade</button>
-            <button class="nav-btn active">Gerenciamento de Usuários</button>
+          <button class="nav-btn">Painel de Monitoramento</button>
+          <button class="nav-btn">Relatório Regional</button>
+          <button class="nav-btn">Conteúdo por Habilidade</button>
+          <button class="nav-btn active">Gerenciamento de Usuários</button>
+            <button style="cursor: pointer">
+            <img
+              src="assets/imgs/duckIA-removebg-preview.png"
+              alt="duckIA"
+              width="100%"
+              height="50px"
+            />
+          </button>
         </nav>
-    </aside>
+      </aside>
 
-    <!-- MAIN -->
-    <main class="main-content">
-
+      <!-- MAIN -->
+      <main class="main-content">
         <header class="dashboard-header">
-            <h1>Gerenciamento de Gestores</h1>
+          <h1>Gerenciamento de Gestores</h1>
         </header>
 
         <div class="dashboard-content">
-
-            <div class="card">
-
-                <div class="card-title-row" style="display:flex; justify-content:space-between;">
-                    <h2>Lista de gestores</h2>
-                    <button class="btn-add" onclick="abrirModal()">Adicionar usuário</button>
-                </div>
-
-                <div class="card-content table-container">
-
-                    <table class="details-table">
-                        <thead>
-                            <tr>
-                                <th>Cod</th>
-                                <th>Email</th>
-                                <th>Senha</th>
-                                <th>Nome cursinho</th>
-                                <th>Editar</th>
-                                <th>Excluir</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>01</td>
-                                <td>gestor@gmail.com</td>
-                                <td>********</td>
-                                <td>Alpha Brasil</td>
-                                <td><button class="icon-btn" onclick="abrirEditar()">✏️</button></td>
-                                <td><button class="icon-btn">🗑️</button></td>
-                            </tr>
-
-                            <tr>
-                                <td>02</td>
-                                <td>gestor1@gmail.com</td>
-                                <td>********</td>
-                                <td>Alpha Brasil 1</td>
-                                <td><button class="icon-btn" onclick="abrirEditar()">✏️</button></td>
-                                <td><button class="icon-btn">🗑️</button></td>
-                            </tr>
-
-                            <tr>
-                                <td>03</td>
-                                <td>gestor2@gmail.com</td>
-                                <td>********</td>
-                                <td>XPTO</td>
-                                <td><button class="icon-btn" onclick="abrirEditar()">✏️</button></td>
-                                <td><button class="icon-btn">🗑️</button></td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-
-                </div>
-
+          <div class="card">
+            <div
+              class="card-title-row"
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <h2>Lista de gestores</h2>
+              <button class="btn-add" onclick="abrirModal()">
+                Adicionar usuário
+              </button>
             </div>
 
+            <div class="card-content table-container">
+              <table class="details-table">
+                <thead>
+                  <tr>
+                    <th>Cod</th>
+                    <th>Email</th>
+                    <th>Senha</th>
+                    <th>Nome cursinho</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>01</td>
+                    <td>gestor@gmail.com</td>
+                    <td>********</td>
+                    <td>Alpha Brasil</td>
+                    <td>
+                      <button class="icon-btn" onclick="abrirEditar()">
+                        ✏️
+                      </button>
+                    </td>
+                    <td><button class="icon-btn">🗑️</button></td>
+                  </tr>
+
+                  <tr>
+                    <td>02</td>
+                    <td>gestor1@gmail.com</td>
+                    <td>********</td>
+                    <td>Alpha Brasil 1</td>
+                    <td>
+                      <button class="icon-btn" onclick="abrirEditar()">
+                        ✏️
+                      </button>
+                    </td>
+                    <td><button class="icon-btn">🗑️</button></td>
+                  </tr>
+
+                  <tr>
+                    <td>03</td>
+                    <td>gestor2@gmail.com</td>
+                    <td>********</td>
+                    <td>XPTO</td>
+                    <td>
+                      <button class="icon-btn" onclick="abrirEditar()">
+                        ✏️
+                      </button>
+                    </td>
+                    <td><button class="icon-btn">🗑️</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
+      </main>
+    </div>
 
-    </main>
-
-</div>
-
-<!-- MODAL CADASTRO -->
-<div class="modal" id="modalCadastro">
-    <div class="modal-box">
-
+    <!-- MODAL CADASTRO -->
+    <div class="modal" id="modalCadastro">
+      <div class="modal-box">
         <h2>Cadastro de Coordenador</h2>
 
-        <input placeholder="Nome cursinho">
-        <input placeholder="Email">
-        <input type="password" placeholder="Senha">
-        <input type="password" placeholder="Confirmar senha">
+        <input placeholder="Nome cursinho" />
+        <input placeholder="Email" />
+        <input type="password" placeholder="Senha" />
+        <input type="password" placeholder="Confirmar senha" />
 
         <select>
-            <option>Gestor</option>
-            <option>Coordenador</option>
+          <option>Gestor</option>
+          <option>Coordenador</option>
         </select>
 
         <div class="modal-actions">
-            <button onclick="fecharModal()">Cancelar</button>
-            <button class="btn-add">Cadastrar</button>
+          <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
+          <button class="btn-add">Cadastrar</button>
         </div>
-
+      </div>
     </div>
-</div>
 
-<!-- MODAL EDITAR -->
-<div class="modal" id="modalEditar">
-    <div class="modal-box">
-
+    <!-- MODAL EDITAR -->
+    <div class="modal" id="modalEditar">
+      <div class="modal-box">
         <h2>Editar cadastro gestor</h2>
 
-        <input placeholder="Nome cursinho">
-        <input value="gestor@gmail.com">
+        <input placeholder="Nome cursinho" />
+        <input value="gestor@gmail.com" />
 
         <select>
-            <option>Gestor</option>
-            <option>Coordenador</option>
+          <option>Gestor</option>
+          <option>Coordenador</option>
         </select>
 
         <div class="modal-actions">
-            <button onclick="fecharEditar()">Cancelar</button>
-            <button class="btn-add">Atualizar</button>
+          <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
+          <button class="btn-add">Atualizar</button>
         </div>
-
+      </div>
     </div>
-</div>
 
-<script>
-function abrirModal() {
-    document.getElementById("modalCadastro").style.display = "flex";
-}
+    <script>
+      function abrirModal() {
+        document.getElementById("modalCadastro").style.display = "flex";
+      }
 
-function fecharModal() {
-    document.getElementById("modalCadastro").style.display = "none";
-}
+      function fecharModal() {
+        document.getElementById("modalCadastro").style.display = "none";
+      }
 
-function abrirEditar() {
-    document.getElementById("modalEditar").style.display = "flex";
-}
+      function abrirEditar() {
+        document.getElementById("modalEditar").style.display = "flex";
+      }
 
-function fecharEditar() {
-    document.getElementById("modalEditar").style.display = "none";
-}
-</script>
-
-</body>
+      function fecharEditar() {
+        document.getElementById("modalEditar").style.display = "none";
+      }
+    </script>
+  </body>
 </html>
