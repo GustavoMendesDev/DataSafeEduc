@@ -1,192 +1,247 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-<meta charset="UTF-8">
-<title>Simulados</title>
+    <meta charset="UTF-8">
+    <title>Simulados</title>
 
-<link rel="stylesheet" href="./css/estilo.css">
-<link rel="stylesheet" href="./css/educacional-dash.css">
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="stylesheet" href="./css/simulado.css">
 
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans&family=Sora:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans&family=Sora:wght@700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<div class="dashboard-container">
+    <div class="dashboard-container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="sidebar-profile">
-            <div class="profile-photo"></div>
-            <h3 class="profile-name">Ricardo Almeida</h3>
-            <p class="profile-title">Coordenador</p>
-        </div>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-profile">
+                <div class="profile-photo"></div>
+                <h3 class="profile-name">Ricardo Almeida</h3>
+                <p class="profile-title">Coordenador</p>
+            </div>
 
-        <nav class="sidebar-nav">
-            <button class="nav-btn active">Simulados</button>
-        </nav>
-    </aside>
+            <nav class="sidebar-nav">
+                <button class="nav-btn active">Simulados</button>
+            </nav>
+        </aside>
 
-    <!-- MAIN -->
-    <main class="main-content">
+        <!-- MAIN -->
+        <main class="main-content">
 
-        <header class="dashboard-header">
-            <h1>Simulados</h1>
-        </header>
+            <header class="dashboard-header">
+                <h1>Simulados</h1>
+            </header>
 
-        <div class="dashboard-content">
+            <div class="dashboard-content">
 
-            <!-- LISTA -->
-            <div class="card">
+                <!-- LISTA -->
+                <div class="card">
 
-                <div class="card-title-row" style="display:flex; justify-content:space-between;">
-                    <h2>Simulados criados</h2>
-                    <button class="btn-add" onclick="abrirModal()">+ Criar Simulado</button>
+                    <div class="card-title-row" style="display:flex; justify-content:space-between;">
+                        <h2>Simulados criados</h2>
+                        <button class="btn-add" onclick="abrirModal()">+ Criar Simulado</button>
+                    </div>
+
+                    <div class="card-content table-container">
+
+                        <table class="details-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tema</th>
+                                    <th>Habilidades</th>
+                                    <th>Dificuldade</th>
+                                    <th>Qtd</th>
+                                    <th>Gerenciar</th>
+                                    <th>Excluir</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>01</td>
+                                    <td>Códigos e Linguagens</td>
+                                    <td>H1, H2, H5</td>
+                                    <td>Difícil</td>
+                                    <td>15</td>
+                                    <td><button class="icon-btn" onclick="abrirEditar()">⚙️</button></td>
+                                    <td><button class="icon-btn">🗑️</button></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
                 </div>
 
-                <div class="card-content table-container">
+            </div>
 
-                    <table class="details-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tema</th>
-                                <th>Habilidades</th>
-                                <th>Dificuldade</th>
-                                <th>Qtd</th>
-                                <th>Gerenciar</th>
-                                <th>Excluir</th>
-                            </tr>
-                        </thead>
+        </main>
 
-                        <tbody>
-                            <tr>
-                                <td>01</td>
-                                <td>Códigos e Linguagens</td>
-                                <td>H1, H2, H5</td>
-                                <td>Difícil</td>
-                                <td>15</td>
-                                <td><button class="icon-btn" onclick="abrirEditar()">⚙️</button></td>
-                                <td><button class="icon-btn">🗑️</button></td>
-                            </tr>
-                        </tbody>
+    </div>
 
-                    </table>
+    <!-- MODAL CRIAR -->
+    <div class="modal" id="modalCriar">
+        <div class="modal-box" style="width:400px;">
 
+            <h2>Novo Simulado</h2>
+
+            <input placeholder="Nome do simulado">
+
+            <!-- ÁREA -->
+            <label>Área:</label>
+            <div class="filtros">
+                <span onclick="selectArea(this)">Matemática</span>
+                <span onclick="selectArea(this)">Linguagens</span>
+                <span onclick="selectArea(this)">Ciências Humanas</span>
+                <span onclick="selectArea(this)">Ciências da Natureza</span>
+            </div>
+
+            
+            
+            <!-- DIFICULDADE -->
+            <label>Dificuldade:</label>
+            <div class="filtros">
+                <span onclick="selectDificuldade(this)">Fácil</span>
+                <span onclick="selectDificuldade(this)">Médio</span>
+                <span onclick="selectDificuldade(this)">Difícil</span>
+            </div>
+
+            <!-- HABILIDADES -->
+            <label>Habilidades:</label>
+            <div class="habilidades-box">
+                <label><input type="checkbox"> H1</label>
+                <label><input type="checkbox"> H2</label>
+                <label><input type="checkbox"> H3</label>
+                <label><input type="checkbox"> H4</label>
+            </div>
+
+            <!-- QUANTIDADE -->
+            <label>Quantidade de questões:</label>
+            <select>
+                <option>5</option>
+                <option>10</option>
+                <option>15</option>
+            </select>
+
+            <div class="modal-actions">
+                <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
+                <button class="btn-add">Gerar Simulado</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR -->
+    <div class="modal" id="modalEditar">
+        <div class="modal-box-editar">
+
+            <h2>Editar Simulado</h2>
+
+            <div class="indicadores-simulado">
+                <div class="indicador">
+                    <p>15</p>
+                    <p>Questões</p>
                 </div>
 
+                <div class="indicador">
+                    <p>0.57</p>
+                    <p>param .A Médio</p>
+                </div>
+
+                <div class="indicador">
+                    <p>0.75</p>
+                    <p>param .B Médio</p>
+                </div>
+
+                <div class="indicador">
+                    <p>4</p>
+                    <p>Qtd. Habilidades</p>
+                </div>
+            </div>
+
+            <div class="indicadores-simulado-2">
+                <div class="indicador-2">
+                    <p>Linguagens</p>
+                </div>
+
+                <div class="indicador-2">
+                    <p>Difícil</p>
+                </div>
+
+                <div class="indicador-2">
+                    <p>H1, H2, H5</p>
+                </div>
+            </div>
+
+
+            <div class="questoes-box">
+                <div class="questao-item">
+
+                    <div class="questao">
+                    <p>1</p>
+                    <span>item-112897 - habilidade 5</span>
+                    <p>Prova AZUL • CO_PROVA 1401 • Gabarito B</p>
+                    </div>
+
+                    <button class="icon-btn">❌</button>
+                </div>
+
+                <div class="questao-item">
+                   <div class="questao">
+                    <p>2</p>
+                    <span>item-102453 - habilidade 2</span>
+                    <p>Prova AMARELA • CO_PROVA 1319 • Gabarito D</p>
+                    </div>
+                    <button class="icon-btn">❌</button>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
+                <button class="btn-add">Atualizar</button>
             </div>
 
         </div>
-
-    </main>
-
-</div>
-
-<!-- MODAL CRIAR -->
-<div class="modal" id="modalCriar">
-    <div class="modal-box" style="width:400px;">
-
-        <h2>Novo Simulado</h2>
-
-        <input placeholder="Nome do simulado">
-
-        <!-- ÁREA -->
-        <label>Área:</label>
-        <div class="filtros">
-            <span onclick="selectArea(this)">Matemática</span>
-            <span onclick="selectArea(this)">Linguagens</span>
-            <span onclick="selectArea(this)">Ciências Humanas</span>
-            <span onclick="selectArea(this)">Ciências da Natureza</span>
-        </div>
-
-        <!-- DIFICULDADE -->
-        <label>Dificuldade:</label>
-        <div class="filtros">
-            <span onclick="selectDificuldade(this)">Fácil</span>
-            <span onclick="selectDificuldade(this)">Médio</span>
-            <span onclick="selectDificuldade(this)">Difícil</span>
-        </div>
-
-        <!-- HABILIDADES -->
-        <label>Habilidades:</label>
-        <div class="habilidades-box">
-            <label><input type="checkbox"> H1</label>
-            <label><input type="checkbox"> H2</label>
-            <label><input type="checkbox"> H3</label>
-            <label><input type="checkbox"> H4</label>
-        </div>
-
-        <!-- QUANTIDADE -->
-        <label>Quantidade de questões:</label>
-        <select>
-            <option>5</option>
-            <option>10</option>
-            <option>15</option>
-        </select>
-
-        <div class="modal-actions">
-            <button onclick="fecharModal()">Cancelar</button>
-            <button class="btn-add">Gerar Simulado</button>
-        </div>
-
     </div>
-</div>
 
-<!-- MODAL EDITAR -->
-<div class="modal" id="modalEditar">
-    <div class="modal-box">
+    <script>
+        function abrirModal() {
+            document.getElementById("modalCriar").style.display = "flex";
+        }
 
-        <h2>Editar Simulado</h2>
+        function fecharModal() {
+            document.getElementById("modalCriar").style.display = "none";
+        }
 
-        <div class="questoes-box">
-            <div class="questao-item">
-                <span>Questão 1</span>
-                <button class="icon-btn">❌</button>
-            </div>
+        function abrirEditar() {
+            document.getElementById("modalEditar").style.display = "flex";
+        }
 
-            <div class="questao-item">
-                <span>Questão 2</span>
-                <button class="icon-btn">❌</button>
-            </div>
-        </div>
+        function fecharEditar() {
+            document.getElementById("modalEditar").style.display = "none";
+        }
 
-        <div class="modal-actions">
-            <button onclick="fecharEditar()">Cancelar</button>
-            <button class="btn-add">Atualizar</button>
-        </div>
-
-    </div>
-</div>
-
-<script>
-function abrirModal() {
-    document.getElementById("modalCriar").style.display = "flex";
+        function selectArea(el) {
+    // Remove a classe 'active' de todos
+    document.querySelectorAll(".filtros span").forEach(e => e.classList.remove("active"));
+    
+    // Adiciona apenas no clicado
+    el.classList.add("active");
 }
 
-function fecharModal() {
-    document.getElementById("modalCriar").style.display = "none";
+function selectDificuldade(el) {
+    // O toggle faz todo o trabalho: 
+    // Se clicar e não tiver a classe, ele coloca (seleciona).
+    // Se clicar e já tiver a classe, ele tira (desmarca).
+    el.classList.toggle("active-style");
 }
-
-function abrirEditar() {
-    document.getElementById("modalEditar").style.display = "flex";
-}
-
-function fecharEditar() {
-    document.getElementById("modalEditar").style.display = "none";
-}
-
-function selectArea(el){
-    document.querySelectorAll(".filtros span").forEach(e=>e.style.background="white");
-    el.style.background = "#223488";
-    el.style.color = "white";
-}
-
-function selectDificuldade(el){
-    el.style.background = "#223488";
-    el.style.color = "white";
-}
-</script>
+    </script>
 
 </body>
+
 </html>
