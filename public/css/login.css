@@ -7,9 +7,10 @@
 }
 
 :root{
-    --main: #ffff;
-    --seundaria: #223488;
-    --terciaria: #ec9731;
+    --main: #0b1957;
+    --Contrast: #000;
+    --seundaria: #f9f3ea;
+    --terciaria: #93ccfa;
 }
 
 body {
@@ -28,16 +29,23 @@ main{
     color: var(--main);
 }
 
+#Logo{
+    padding-bottom: 80px;
+    margin: -200px;
+}
+
 .container{
     height: 100%;
     width: 50%;
-    background-color: orange;
+    background-image:linear-gradient(var(--main)), url(../assets/imgs/login.png);
+
     background-size: cover;
     background-position: center;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     padding-left: 2%;
+    
     border-top-left-radius: 70px;
     border-bottom-left-radius: 70px;
 }
@@ -99,14 +107,14 @@ main{
 }
 
 label{
-    color: var(--main);
+    color: var(--Contrast);
     font-size: 1rem;
 }
 
 input{
-    color: var(--main);
-    background-color: var(--seundaria);
-    border: solid #fcfcfcd0 0.5px;
+    color: var(--Contrast);
+    background-color: var(--);
+    border: solid var(--Contrast) 0.5px;
     border-radius: 6px;
     width: 36vw;
     height: 6vh;
@@ -123,6 +131,11 @@ button{
     width: 36vw;
     height: 7vh;
     cursor: pointer;
+}
+
+button:hover{
+    background-color: var(--main);
+    color: var(--seundaria);
 }
 
 @media screen and (max-width: 700px) {
