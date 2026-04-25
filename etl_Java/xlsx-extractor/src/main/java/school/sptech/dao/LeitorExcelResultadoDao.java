@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 
 public class LeitorExcelResultadoDao {
 
@@ -110,8 +113,12 @@ public class LeitorExcelResultadoDao {
           NotaMunicipal notaMunicipal = new NotaMunicipal(mediaCn, mediaCh, mediaMt, mediaLc);
 
 
+//      jdbcTemplate.update("INSERT INTO musica ( nome, artista, album, duracao) VALUES ( ?, ?, ?, ?)",
+//              musica.getNome(), musica.getArtista(), musica.getAlbum(), musica.getDuracao());
+
+
       System.out.print(mediaCn + " " +mediaCh + " " +  mediaMt + " " + mediaLc);
-      System.out.println(notasCn.size() + " " +notasCh.size() + " " +  notasMt.size() + " " + notasLc.size());
+      System.out.println("\n" + notasCn.size() + " " +notasCh.size() + " " +  notasMt.size() + " " + notasLc.size());
 
             return  notaMunicipal;
   }

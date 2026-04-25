@@ -5,11 +5,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import org.springframework.jdbc.core.JdbcTemplate;
 import school.sptech.dto.Dificuldade;
 import school.sptech.dto.Habilidade;
 import school.sptech.dto.Questao;
 import school.sptech.enums.SiglaEnum;
-
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 
 import static school.sptech.dto.Habilidade.buscarHabilidade;
 
-public class LeitorExcelQuestao {
+public class LeitorExcelQuestaoDao {
 
     private List <Habilidade> habilidades = new ArrayList<>();
 
@@ -92,7 +93,11 @@ public class LeitorExcelQuestao {
 
 
                 }
+
                 adicionarHabilidade(habilidade);
+               // connection.update("INSERT INTO habilidade (numero, descricao) VALUES (?, ?) ",
+                //habilidade.getNumero(), habilidade.getDescricao());
+
             }
         } catch (Exception e) {
             System.out.println("Erro " + e);

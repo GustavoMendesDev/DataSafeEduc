@@ -26,8 +26,6 @@ public Habilidade(){
 
     public static  Habilidade buscarHabilidade (List<Habilidade> habilidades, SiglaEnum sigla, Integer numero ){
 
-
-
         for(Habilidade habilidade : habilidades){
             if(habilidade.getSigla().equals(sigla) &&
                     habilidade.getNumero().equals(numero)){
