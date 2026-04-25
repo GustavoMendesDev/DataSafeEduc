@@ -72,8 +72,6 @@ public class LeitorExcelQuestao {
 
                 Habilidade habilidade = new Habilidade();
 
-
-
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
 
@@ -139,13 +137,11 @@ public class LeitorExcelQuestao {
                         case 1:
                             sigla = SiglaEnum.encontrarSigla(cell.getStringCellValue());
                             questao.setArea(sigla);
-
                             break;
 
                         case 2:
                             int codigoExcel = (int) cell.getNumericCellValue();
 
-                            // 2. Verificamos na lista global se esse código já existe
                             if (questao.jaExisteEsseCodigo(questoes, codigoExcel)) {
                                 System.out.println("Pulando questão duplicada: " + codigoExcel);
                                 questaoDuplicada = true;
@@ -154,16 +150,12 @@ public class LeitorExcelQuestao {
                             }
                             break;
 
-
-
                         case 3:
-
                             questao.setGabarito(cell.getStringCellValue());
                             break;
 
                         case 4:
                             Integer numero = (int) cell.getNumericCellValue();
-
 
                             Habilidade habilidade = buscarHabilidade(habilidades, questao.getArea(), numero);
                             questao.setHabilidade(habilidade);
