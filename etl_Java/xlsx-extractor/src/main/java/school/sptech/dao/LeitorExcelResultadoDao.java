@@ -101,6 +101,8 @@ public class LeitorExcelResultadoDao {
 
   public NotaMunicipal calcularMediaTemas() {
 
+// 10 , 5 , 2 , 13 , 15 , 18
+ // 10 , 2,
 
 
       Double mediaLc = notasLc.isEmpty() ? 0.0 :

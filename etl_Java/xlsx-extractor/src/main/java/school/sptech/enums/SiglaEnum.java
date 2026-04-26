@@ -18,8 +18,7 @@ public enum SiglaEnum {
     private Integer codigo;
 
 
-    ConexaoBanco conexaoBanco = new ConexaoBanco();
-    JdbcTemplate conexao = conexaoBanco.getConnection();
+
 
     SiglaEnum(String areaConhecimento, Integer codigo) {
         this.areaConhecimento = areaConhecimento;

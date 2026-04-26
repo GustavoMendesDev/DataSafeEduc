@@ -76,7 +76,7 @@ public class LeitorExcelQuestaoDao {
 
         try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);){
-            System.out.println("[] - (LeitorExcelQuestao) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
+            System.out.println("[] - (LeitorExcelQuestao) - (lerHabilidades) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
             Integer id = 0 ;
             Sheet sheetHabilidades = workbook.getSheetAt(0);
             Integer idAreaConhecimento = 0 ;
