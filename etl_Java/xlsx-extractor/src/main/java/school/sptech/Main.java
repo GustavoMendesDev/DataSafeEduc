@@ -5,8 +5,7 @@ import school.sptech.dao.LeitorExcelResultadoDao;
 
 import static school.sptech.TabelasBanco.tabelasBanco;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 public class Main {
     public static void main(String[] args)  {
 
@@ -25,12 +24,12 @@ public class Main {
         // 3. Use o mesmo leitor para carregar as habilidades primeiro
         System.out.println("--- Carregando Habilidades ---");
         leitor.lerHabilidades(caminhoHabilidades);
-        leitor.mostrarHabilidades();
+//        leitor.mostrarHabilidades();
 
         // 4. Use o MESMO leitor para ler as questões
         System.out.println("\n--- Carregando Questões ---");
         leitor.lerQuestoes(caminhoQuestoes);
-        leitor.mostrarQuestoes();
+//        leitor.mostrarQuestoes();
 
         LeitorExcelResultadoDao leitorNotas = new LeitorExcelResultadoDao();
 

@@ -1,4 +1,5 @@
 package school.sptech.dao;
+import school.sptech.ConexaoBanco;
 import school.sptech.dto.NotaMunicipal;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -23,6 +24,10 @@ public class LeitorExcelResultadoDao {
     private List<Double> notasMt = new ArrayList<>();
     private List<Double> notasCn = new ArrayList<>();
 
+
+
+    ConexaoBanco conexaoBanco = new ConexaoBanco();
+    JdbcTemplate conexao = conexaoBanco.getConnection();
 
     public void adicionarNotaLc(Double nota){
         notasLc.add(nota);
@@ -113,11 +118,13 @@ public class LeitorExcelResultadoDao {
           NotaMunicipal notaMunicipal = new NotaMunicipal(mediaCn, mediaCh, mediaMt, mediaLc);
 
 
-//      jdbcTemplate.update("INSERT INTO musica ( nome, artista, album, duracao) VALUES ( ?, ?, ?, ?)",
-//              musica.getNome(), musica.getArtista(), musica.getAlbum(), musica.getDuracao());
+      conexao.update("INSERT INTO notaMunicipal ( matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas) VALUES (?, ?, ?, ? ) ",
+              mediaMt, mediaLc, mediaCn, mediaCh);
+
+      System.out.println("[] - (LeitorExcelResultadoDao) - (extrairExcelResultado) - Inserção das notas  " + mediaCn + " " +mediaCh + " " +  mediaMt + " " + mediaLc+ " Realizada com sucesso! ");
 
 
-      System.out.print(mediaCn + " " +mediaCh + " " +  mediaMt + " " + mediaLc);
+
       System.out.println("\n" + notasCn.size() + " " +notasCh.size() + " " +  notasMt.size() + " " + notasLc.size());
 
             return  notaMunicipal;

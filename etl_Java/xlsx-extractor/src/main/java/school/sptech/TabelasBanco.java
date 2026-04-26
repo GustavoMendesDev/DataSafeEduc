@@ -1,155 +1,153 @@
 package school.sptech;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import school.sptech.dto.NotaMunicipal;
-import school.sptech.dto.Habilidade;
-import school.sptech.dto.Questao;
-import school.sptech.dto.Dificuldade;
-
+import school.sptech.enums.SiglaEnum;
 
 
 public class TabelasBanco {
 
     public static void tabelasBanco() {
-        ConexaoBanco conexaoBanco = new ConexaoBanco();
-        JdbcTemplate connection = conexaoBanco.getConnection();
+
+        ConexaoBanco dbConnectionProvider = new ConexaoBanco();
+        JdbcTemplate connection = dbConnectionProvider.getConnection();
 
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `Nota_Municipal` (
-                      `id`                    INT            NOT NULL AUTO_INCREMENT,
-                      `matematica`            DECIMAL(10,2)  NULL,
-                      `codigosELinguagens`    DECIMAL(10,2)  NULL,
-                      `cienciasDaNatureza`    DECIMAL(10,2)  NULL,
-                      `cienciasHumanas`       DECIMAL(10,2)  NULL,
-                      PRIMARY KEY (`id`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS notaMunicipal (
+              id                 INT            NOT NULL AUTO_INCREMENT,
+              matematica         DECIMAL(5,2)  NULL,
+              codigosELinguagens DECIMAL(5,2)  NULL,
+              cienciasDaNatureza DECIMAL(5,2)  NULL,
+              cienciasHumanas    DECIMAL(5,2)  NULL,
+              PRIMARY KEY (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `municipio` (
-                      `idMunicipio`           INT            NOT NULL AUTO_INCREMENT,
-                      `nome`                  VARCHAR(45)    NULL,
-                      `estado`                CHAR(2)        NULL,
-                      `Nota_Municipal_id`     INT            NOT NULL,
-                      PRIMARY KEY (`idMunicipio`),
-                      CONSTRAINT `fk_municipio_nota`
-                        FOREIGN KEY (`Nota_Municipal_id`)
-                        REFERENCES `Nota_Municipal` (`id`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS municipio (
+              id              INT         NOT NULL AUTO_INCREMENT,
+              nome            VARCHAR(45) NULL,
+              estado          CHAR(2)     NULL,
+              fkNotaMunicipal INT         NOT NULL,
+              PRIMARY KEY (id),
+              CONSTRAINT fkNotaMunicipal
+                FOREIGN KEY (fkNotaMunicipal)
+                REFERENCES notaMunicipal (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `nivel_acesso` (
-                      `idnivel_acesso`        INT            NOT NULL AUTO_INCREMENT,
-                      `nome`                  VARCHAR(45)    NULL,
-                      PRIMARY KEY (`idnivel_acesso`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS nivelAcesso (
+              id   INT         NOT NULL AUTO_INCREMENT,
+              nome VARCHAR(45) NULL,
+              PRIMARY KEY (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `usuario` (
-                      `idUsuario`                   INT            NOT NULL AUTO_INCREMENT,
-                      `nome`                        VARCHAR(80)    NULL,
-                      `senha`                       VARCHAR(255)   NULL,
-                      `dataCriacao`                 DATETIME       NULL,
-                      `nivel_acesso_idnivel_acesso` INT            NOT NULL,
-                      `municipio_idMunicipio`       INT            NOT NULL,
-                      PRIMARY KEY (`idUsuario`),
-                      CONSTRAINT `fk_usuario_nivel`
-                        FOREIGN KEY (`nivel_acesso_idnivel_acesso`)
-                        REFERENCES `nivel_acesso` (`idnivel_acesso`),
-                      CONSTRAINT `fk_usuario_municipio`
-                        FOREIGN KEY (`municipio_idMunicipio`)
-                        REFERENCES `municipio` (`idMunicipio`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS usuario (
+              id            INT          NOT NULL AUTO_INCREMENT,
+              nome          VARCHAR(80)  NULL,
+              senha         VARCHAR(255) NULL,
+              dataCriacao   DATETIME     NULL,
+              fkNivelAcesso INT          NOT NULL,
+              fkMunicipio   INT          NOT NULL,
+              PRIMARY KEY (id),
+              CONSTRAINT fkNivelAcesso
+                FOREIGN KEY (fkNivelAcesso)
+                REFERENCES nivelAcesso (id),
+              CONSTRAINT fkMunicipio
+                FOREIGN KEY (fkMunicipio)
+                REFERENCES municipio (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `simulado` (
-                      `idSimulado`          INT            NOT NULL AUTO_INCREMENT,
-                      `quantidadeQuestoes`  INT            NULL,
-                      `nomeSimulado`        VARCHAR(45)    NULL,
-                      `usuario_idUsuario`   INT            NOT NULL,
-                      PRIMARY KEY (`idSimulado`),
-                      CONSTRAINT `fk_simulado_usuario`
-                        FOREIGN KEY (`usuario_idUsuario`)
-                        REFERENCES `usuario` (`idUsuario`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS simulado (
+              id                 INT         NOT NULL AUTO_INCREMENT,
+              nomeSimulado       VARCHAR(45) NULL,
+              quantidadeQuestoes INT         NULL,
+              fkUsuario          INT         NOT NULL,
+              PRIMARY KEY (id),
+              CONSTRAINT fkUsuario
+                FOREIGN KEY (fkUsuario)
+                REFERENCES usuario (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `log_acesso` (
-                      `idlog_acesso`  INT            NOT NULL AUTO_INCREMENT,
-                      `ip`            VARCHAR(45)    NULL,
-                      `dataCriacao`   DATETIME       NULL,
-                      PRIMARY KEY (`idlog_acesso`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS logAcesso (
+              id          INT         NOT NULL AUTO_INCREMENT,
+              ip          VARCHAR(45) NULL,
+              dataCriacao DATETIME    NULL,
+              PRIMARY KEY (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `habilidade` (
-                      `idHabilidade`                    INT          NOT NULL AUTO_INCREMENT,
-                      `numero`                          CHAR(20)     NULL,
-                      `descricao`                       VARCHAR(455) NULL,
-                      `area_conhecimento_id_AreaConhecimento` INT    NOT NULL,
-                      PRIMARY KEY (`idHabilidade`),
-                      CONSTRAINT `fk_habilidade_area`
-                        FOREIGN KEY (`area_conhecimento_id_AreaConhecimento`)
-                        REFERENCES `area_conhecimento` (`id_AreaConhecimento`)
-                    )
-                """);
+            CREATE TABLE IF NOT EXISTS areaConhecimento (
+              id    INT         NOT NULL,
+              nome  VARCHAR(45) NULL,
+              sigla CHAR(10)    NULL,
+              PRIMARY KEY (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `dificuldade` (
-                      `idDificuldade`  INT            NOT NULL AUTO_INCREMENT,
-                      `nivel`          VARCHAR(45)    NULL,
-                      `parametro_a`    DECIMAL(10,4)  NULL,
-                      `parametro_b`    DECIMAL(10,4)  NULL,
-                      `parametro_c`    DECIMAL(10,4)  NULL,
-                      PRIMARY KEY (`idDificuldade`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS habilidade (
+              id                 INT          NOT NULL,
+              numero             CHAR(20)     NULL,
+              descricao          VARCHAR(455) NULL,
+              fkAreaConhecimento INT          NOT NULL,
+              PRIMARY KEY (id),
+              CONSTRAINT fkAreaConhecimento
+                FOREIGN KEY (fkAreaConhecimento)
+                REFERENCES areaConhecimento (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `habilidade` (
-                      `idHabilidade`  INT            NOT NULL AUTO_INCREMENT,
-                      `numero`        CHAR(20)       NULL,
-                      `descricao`     VARCHAR(455)   NULL,
-                      PRIMARY KEY (`idHabilidade`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS parametroTri (
+              id         INT            NOT NULL ,
+              nivel      VARCHAR(45)    NULL,
+              parametroA DECIMAL(5,2)  NULL,
+              parametroB DECIMAL(5,2)  NULL,
+              parametroC DECIMAL(5,2)  NULL,
+              PRIMARY KEY (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `questao` (
-                      `idQuestao`                     INT            NOT NULL AUTO_INCREMENT,
-                      `codigoItem`                    VARCHAR(20)    NULL,
-                      `ano_exame`                     YEAR           NULL,
-                      `habilidade_idHabilidade`       INT            NOT NULL,
-                      `dificuldade_idDificuldade`     INT            NOT NULL,
-                      PRIMARY KEY (`idQuestao`),
-                      CONSTRAINT `fk_questao_habilidade`
-                        FOREIGN KEY (`habilidade_idHabilidade`)
-                        REFERENCES `habilidade` (`idHabilidade`),
-                      CONSTRAINT `fk_questao_dificuldade`
-                        FOREIGN KEY (`dificuldade_idDificuldade`)
-                        REFERENCES `dificuldade` (`idDificuldade`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS questao (
+              codigoItem     VARCHAR(20) NOT NULL,
+              anoExame       YEAR        NULL,
+              fkHabilidade   INT         NOT NULL,
+              fkParametroTri INT         NOT NULL,
+              PRIMARY KEY (codigoItem),
+              CONSTRAINT fkHabilidade
+                FOREIGN KEY (fkHabilidade)
+                REFERENCES habilidade (id),
+              CONSTRAINT fkParametroTri
+                FOREIGN KEY (fkParametroTri)
+                REFERENCES parametroTri (id)
+            )
+        """);
 
         connection.execute("""
-                    CREATE TABLE IF NOT EXISTS `questao_has_simulado` (
-                      `questao_idQuestao`   INT  NOT NULL,
-                      `simulado_idSimulado` INT  NOT NULL,
-                      PRIMARY KEY (`questao_idQuestao`, `simulado_idSimulado`),
-                      CONSTRAINT `fk_qhs_questao`
-                        FOREIGN KEY (`questao_idQuestao`)
-                        REFERENCES `questao` (`idQuestao`),
-                      CONSTRAINT `fk_qhs_simulado`
-                        FOREIGN KEY (`simulado_idSimulado`)
-                        REFERENCES `simulado` (`idSimulado`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                """);
+            CREATE TABLE IF NOT EXISTS questaoSimulado (
+              fkQuestao  VARCHAR(20) NOT NULL,
+              fkSimulado INT         NOT NULL,
+              PRIMARY KEY (fkQuestao, fkSimulado),
+              CONSTRAINT fkQuestao
+                FOREIGN KEY (fkQuestao)
+                REFERENCES questao (codigoItem),
+              CONSTRAINT fkSimulado
+                FOREIGN KEY (fkSimulado)
+                REFERENCES simulado (id)
+            )
+        """);
+        System.out.println("[] - Tabelas criadas com sucesso!");
+
 
         System.out.println("Banco de dados lido com sucesso!");
     }
