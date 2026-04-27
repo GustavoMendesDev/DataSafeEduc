@@ -1,0 +1,333 @@
+:root {
+  --cor-secundaria: #223488;
+  --cor-base: #314595;
+  --cinza: #f4f6f9;
+  --texto: #1e293b;
+  --suave: #64748b;
+  --azul-escuro: #1a2a5e;
+  --cinza-claro: #f0f2f7;
+  --cor-borda: #e0e0e0;
+  --nivel1: #22c55e;
+  --nivel2: #3b82f6;
+  --nivel3: #a855f7;
+  --nivel4: #f97316;
+  --nivel5: #ef4444;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cinza-claro);
+  color: var(--texto);
+  font-size: 13px;
+}
+
+/* ── CONTAINER PRINCIPAL ── */
+.container-painel {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── BARRA LATERAL ── */
+.barra-lateral {
+  width: 215px;
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid var(--cor-borda);
+  padding: 26px 16px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.perfil-lateral {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.foto-perfil {
+  width: 68px;
+  height: 68px;
+  background: var(--cinza);
+  border-radius: 50%;
+  margin: 0 auto 10px;
+}
+
+.nome-perfil  { font-size: 14px; font-weight: 700; color: var(--texto); }
+.cargo-perfil { font-size: 12px; color: var(--suave); margin-top: 3px; }
+
+.nav-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.botao-nav {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1px solid var(--cor-borda);
+  background: #fff;
+  color: var(--texto);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 7px;
+  cursor: pointer;
+  text-align: left;
+  transition: all .2s;
+  line-height: 1.4;
+}
+.botao-nav:hover  { background: var(--cinza-claro); }
+.botao-nav.ativo  { background: var(--cor-secundaria); color: #fff; border-color: var(--cor-secundaria); }
+
+/* ── CONTEÚDO PRINCIPAL ── */
+.conteudo-principal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.cabecalho-painel {
+  background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--cor-secundaria) 100%);
+  color: #fff;
+  padding: 14px 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.cabecalho-painel h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+/* ── ÁREA DE ROLAGEM ── */
+.area-rolagem {
+  flex: 1;
+  overflow-y: auto;
+  padding: 13px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.area-rolagem::-webkit-scrollbar { width: 5px; }
+.area-rolagem::-webkit-scrollbar-track { background: transparent; }
+.area-rolagem::-webkit-scrollbar-thumb { background: #c0c8e0; border-radius: 3px; }
+
+/* ── CARTÃO DE SEÇÃO ── */
+.cartao-secao {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid var(--cor-borda);
+  padding: 14px 16px;
+}
+
+.titulo-secao {
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--azul-escuro);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--cor-base);
+}
+
+/* ── LINHA DO TOPO: conteúdo + lateral ── */
+.linha-topo {
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+  align-items: flex-start;
+}
+
+/* Seção principal de dificuldades ocupa o espaço restante */
+.linha-topo > #dificuldades {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Seção auxiliar lateral com largura fixa */
+.secao-auxiliares {
+  width: 290px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+/* ── DIFICULDADES ── */
+.grade-dificuldades {
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+  margin-bottom: 14px;
+}
+
+.grade-dificuldades > .bloco-grafico {
+  flex: 1;
+  min-width: 0;
+  
+}
+
+.bloco-grafico {
+  display: flex;
+  flex-direction: column;
+    height: 35vh;
+}
+
+.titulo-bloco-grafico {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--azul-escuro);
+  margin-bottom: 7px;
+  line-height: 1.4;
+  min-height: 34px;
+}
+
+/* ── FILTROS ── */
+.linha-filtro {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 9px;
+}
+
+.botao-filtro {
+  padding: 5px 14px;
+  border: 1.5px solid var(--cor-borda);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+  color: var(--suave);
+  transition: all .15s;
+}
+.botao-filtro.ativo,
+.botao-filtro:hover {
+  background: var(--cor-secundaria);
+  color: #fff;
+  border-color: var(--cor-secundaria);
+}
+
+/* ── ALTURAS DOS GRÁFICOS ── */
+.envoltorio-grafico     { height: 290px; }
+.envoltorio-grafico-med { height: 230px; }
+.envoltorio-radar       { height: 225px; }
+.envoltorio-pilha       { height: 290px; width: 900px; }
+
+/* ── LEGENDA DE NÍVEIS ── */
+.legenda-niveis {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.item-nivel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--texto);
+  line-height: 1.3;
+}
+
+.circulo-nivel {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid;
+  flex-shrink: 0;
+}
+.n1 { border-color: var(--nivel1); }
+.n2 { border-color: var(--nivel2); }
+.n3 { border-color: var(--nivel3); }
+.n4 { border-color: var(--nivel4); }
+.n5 { border-color: var(--nivel5); }
+
+.rotulo-nivel { font-weight: 700; }
+
+/* ── TABELA ── */
+.tabela-habilidades { width: 100%; border-collapse: collapse; }
+.tabela-habilidades th {
+  background: var(--cor-base);
+  color: #fff;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 12px;
+}
+.tabela-habilidades td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--cor-borda);
+  font-size: 12px;
+}
+.tabela-habilidades tr:nth-child(even) td { background: var(--cinza); }
+
+.etiqueta-nivel {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ponto-nivel { width: 9px; height: 9px; border-radius: 50%; }
+
+/* ── RECORRÊNCIA ── */
+.grade-recorrencia {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+/* Radar com largura fixa */
+.grade-recorrencia > div:first-child {
+  width: 570px;
+  flex-shrink: 0;
+}
+
+/* Pilha ocupa o restante */
+.grade-recorrencia > div:last-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.titulo-bloco-rec {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--azul-escuro);
+  margin-bottom: 8px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ── RESPONSIVIDADE ── */
+@media (max-width: 1400px) {
+  .secao-auxiliares { width: 265px; }
+  .envoltorio-grafico     { height: 190px; }
+  .envoltorio-grafico-med { height: 155px; }
+  .envoltorio-radar       { height: 200px; }
+  .envoltorio-pilha       { height: 190px; }
+}
+
+@media (max-width: 1200px) {
+  .secao-auxiliares { width: 240px; }
+  .barra-lateral    { width: 185px; }
+  .envoltorio-grafico     { height: 168px; }
+  .envoltorio-grafico-med { height: 140px; }
+  .envoltorio-radar       { height: 178px; }
+  .envoltorio-pilha       { height: 168px; }
+}
