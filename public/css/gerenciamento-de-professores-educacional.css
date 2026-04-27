@@ -14,7 +14,8 @@
 
 html, body {
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto; 
 }
 
 * {
@@ -32,8 +33,7 @@ body {
 /* LAYOUT */
 .dashboard-container {
   display: flex;
-  height: 100vh;
-  overflow: hidden;
+ min-height: 100vh;
 }
 
 /* SIDEBAR */
@@ -44,8 +44,8 @@ body {
   padding: 30px 20px;
   position: sticky;
   top: 0;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 .sidebar-profile {
@@ -107,11 +107,10 @@ body {
 
 /* MAIN CONTENT */
 .main-content {
-    flex: 1;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
 /* HEADER */
@@ -132,7 +131,7 @@ body {
 /* CONTENT */
 .dashboard-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   padding: 30px 40px;
   flex: 1;
@@ -352,6 +351,8 @@ canvas {
 /* TABLE */
 .table-container {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 500px;
 }
 
 .details-table {
