@@ -1,414 +1,647 @@
 <!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Monitoramento de Desempenho</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../css/dash.css">
-  <link rel="stylesheet" href="../css/layout.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoramento de Desempenho</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/dash.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+     <link rel="stylesheet" href="../css/educacional-dash.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="container-painel">
+      <!-- ----------------------------------------------------------------LAYOUT-----------------------------------------  -->
 
-<div class="container-painel">
-
-
-  <!-- ----------------------------------------------------------------LAYOUT-----------------------------------------  -->
-
-
-  <!-- BARRA LATERAL -->
-  <aside class="barra-lateral">
-    <div class="perfil-lateral">
-      <div class="foto-perfil"></div>
-      <p class="nome-perfil">Ricardo Almeida</p>
-      <p class="cargo-perfil">Coordenador</p>
-    </div>
-    <nav class="nav-lateral">
-      <button class="botao-nav">Temas Cobrados</button>
-      <button class="botao-nav ativo">Painel de Monitoramento</button>
-      <button class="botao-nav">Atuação Regional de Questões</button>
-      <button class="botao-nav">Conteúdo por Habilidade</button>
-      <button class="botao-nav">Gerenciamento de Usuários</button>
-    </nav>
-  </aside>
-  <!-- ----------------------------------------------------------------LAYOUT-----------------------------------------  -->
-
-  <!-- CONTEÚDO PRINCIPAL -->
-  <main class="conteudo-principal">
-    <header class="cabecalho-painel">
-      <h1>PAINEL DE ANÁLISE DE DESEMPENHO EDUCACIONAL</h1>
-    </header>
-
-    <div class="area-rolagem">
-
-      <!-- LINHA DO TOPO: DIFICULDADES + AUXILIARES -->
-      <div class="linha-topo">
-
-        <!-- SEÇÃO: DIFICULDADES -->
-        <section class="cartao-secao" id="dificuldades">
-          <h2 class="titulo-secao">Status das Habilidades (baseado em histórico) — Dificuldades</h2>
-
-          <!-- Barras abaixo / acima -->
-          <div class="grade-dificuldades">
-
-            <div class="bloco-grafico">
-              <p class="titulo-bloco-grafico">Habilidades com mais questões abaixo da média regional</p>
-              <div class="linha-filtro" id="filtroAbaixo">
-                <button class="botao-filtro ativo" data-area="LC">LC</button>
-                <button class="botao-filtro" data-area="MT">MT</button>
-                <button class="botao-filtro" data-area="CN">CN</button>
-                <button class="botao-filtro" data-area="CH">CH</button>
-              </div>
-              <div class="envoltorio-grafico"><canvas id="chartAbaixo"></canvas></div>
-            </div>
-
-            <div class="bloco-grafico">
-              <p class="titulo-bloco-grafico">Habilidades com mais questões acima da média regional</p>
-              <div class="linha-filtro" id="filtroAcima">
-                <button class="botao-filtro ativo" data-area="LC">LC</button>
-                <button class="botao-filtro" data-area="MT">MT</button>
-                <button class="botao-filtro" data-area="CN">CN</button>
-                <button class="botao-filtro" data-area="CH">CH</button>
-              </div>
-              <div class="envoltorio-grafico"><canvas id="chartAcima"></canvas></div>
-            </div>
-
-          </div>
-
-          <!-- Habilidades abaixo da média (barras verticais) -->
-          <div class="bloco-grafico">
-            <p class="titulo-bloco-grafico">Habilidades abaixo da média — notas médias por habilidade</p>
-            <div class="linha-filtro" id="filtroMedia">
-              <button class="botao-filtro ativo" data-area="LC">LC</button>
-              <button class="botao-filtro" data-area="MT">MT</button>
-              <button class="botao-filtro" data-area="CN">CN</button>
-              <button class="botao-filtro" data-area="CH">CH</button>
-            </div>
-            <div class="envoltorio-grafico-med"><canvas id="chartMedia"></canvas></div>
-          </div>
-        </section>
-
-        <!-- SEÇÃO AUXILIAR LATERAL -->
-        <section class="secao-auxiliares">
-
-          <!-- Níveis cognitivos -->
-          <div class="cartao-secao">
-            <h2 class="titulo-secao">Níveis Cognitivos</h2>
-            <div class="legenda-niveis">
-              <div class="item-nivel"><div class="circulo-nivel n1"></div><span><span class="rotulo-nivel">Nível 1</span> — Dominar Linguagens</span></div>
-              <div class="item-nivel"><div class="circulo-nivel n2"></div><span><span class="rotulo-nivel">Nível 2</span> — Compreender Fenômenos</span></div>
-              <div class="item-nivel"><div class="circulo-nivel n3"></div><span><span class="rotulo-nivel">Nível 3</span> — Enfrentar Situações-Problema</span></div>
-              <div class="item-nivel"><div class="circulo-nivel n4"></div><span><span class="rotulo-nivel">Nível 4</span> — Construir Argumentação</span></div>
-              <div class="item-nivel"><div class="circulo-nivel n5"></div><span><span class="rotulo-nivel">Nível 5</span> — Elaborar Resposta</span></div>
-            </div>
-          </div>
-
-          <!-- Tabela habilidades mais frequentes -->
-          <div class="cartao-secao">
-            <h2 class="titulo-secao">Habilidades Mais Frequentes nas Provas (2019–2024)</h2>
-            <table class="tabela-habilidades">
-              <thead>
-                <tr>
-                  <th>Área</th>
-                  <th>Habilidade</th>
-                  <th>Dificuldade</th>
-                  <th>Qtd.</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>CN</td><td>H1</td>
-                  <td><span class="etiqueta-nivel"><span class="ponto-nivel" style="background:var(--nivel1)"></span>Nível 1</span></td>
-                  <td>36</td>
-                </tr>
-                <tr>
-                  <td>CH</td><td>H1</td>
-                  <td><span class="etiqueta-nivel"><span class="ponto-nivel" style="background:var(--nivel1)"></span>Nível 1</span></td>
-                  <td>32</td>
-                </tr>
-                <tr>
-                  <td>MAT</td><td>H3</td>
-                  <td><span class="etiqueta-nivel"><span class="ponto-nivel" style="background:var(--nivel2)"></span>Nível 2</span></td>
-                  <td>39</td>
-                </tr>
-                <tr>
-                  <td>MAT</td><td>H28</td>
-                  <td><span class="etiqueta-nivel"><span class="ponto-nivel" style="background:var(--nivel1)"></span>Nível 1</span></td>
-                  <td>34</td>
-                </tr>
-                <tr>
-                  <td>MAT</td><td>H12</td>
-                  <td><span class="etiqueta-nivel"><span class="ponto-nivel" style="background:var(--nivel3)"></span>Nível 3</span></td>
-                  <td>35</td>
-                </tr>
-                <tr>
-                  <td>LC</td><td>H5</td>
-                  <td><span class="etiqueta-nivel"><span class="ponto-nivel" style="background:var(--nivel2)"></span>Nível 2</span></td>
-                  <td>28</td>
-                </tr>
-                <tr>
-                  <td>CN</td><td>H14</td>
-                  <td><span class="etiqueta-nivel"><span class="ponto-nivel" style="background:var(--nivel3)"></span>Nível 3</span></td>
-                  <td>31</td>
-                </tr>
-                <tr>
-                  <td>CH</td><td>H6</td>
-                  <td><span class="etiqueta-nivel"><span class="ponto-nivel" style="background:var(--nivel2)"></span>Nível 2</span></td>
-                  <td>29</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </section>
-      </div>
-
-      <!-- SEÇÃO: RECORRÊNCIA -->
-      <section class="cartao-secao" id="recorrencia">
-        <h2 class="titulo-secao">Recorrência de Dificuldade</h2>
-        <div class="grade-recorrencia">
-
-          <!-- Radar -->
-          <div>
-            <p class="titulo-bloco-rec">Quantidade de questões por área de conhecimento</p>
-            <div class="envoltorio-radar"><canvas id="chartRadar"></canvas></div>
-          </div>
-
-          <!-- Barras em pilha -->
-          <div>
-            <p class="titulo-bloco-rec">Quantidade de questões por nível cognitivo ao longo dos anos</p>
-            <div class="linha-filtro" id="filtroPilha">
-              <button class="botao-filtro ativo" data-area="todos">Todos</button>
-              <button class="botao-filtro" data-area="LC">LC</button>
-              <button class="botao-filtro" data-area="MT">MT</button>
-              <button class="botao-filtro" data-area="CN">CN</button>
-              <button class="botao-filtro" data-area="CH">CH</button>
-            </div>
-            <div class="envoltorio-pilha"><canvas id="chartPilha"></canvas></div>
-          </div>
-
+      <!-- BARRA LATERAL -->
+      <aside class="barra-lateral">
+        <div class="perfil-lateral">
+          <div class="foto-perfil"></div>
+          <p class="nome-perfil">Lavínia Todarelli</p>
+          <p class="cargo-perfil">Administrador</p>
         </div>
-      </section>
+        <nav class="nav-lateral">
+         <a href="analise-desempenho.html"> <button class="nav-btn">Análise e Desempenho por Tema</button></a>
+          <a href="dashMonitoramento.html"
+            ><button class="nav-btn active">
+              Monitoramento de Desempenho por habilidade
+            </button></a
+          >
+          <a href="lista-desempenho.html"
+            ><button class="nav-btn">Lista de Desempenho por questão</button></a
+          >
+          <a href="simulados.html"
+            ><button class="nav-btn">Simulados</button></a
+          >
+          <a href="gerenciamento-professores.html"
+            ><button class="nav-btn">Gerenciamento de professores</button></a
+          >
+          <a href="gerenciamento-coordenadores.html"
+            ><button class="nav-btn">Gerenciamento de Coordenadores</button></a
+          >
+        </nav>
+      </aside>
+      <!-- ----------------------------------------------------------------LAYOUT-----------------------------------------  -->
 
-    </div><!-- /area-rolagem -->
-  </main>
-</div>
+      <!-- CONTEÚDO PRINCIPAL -->
+      <main class="conteudo-principal">
+        <header class="cabecalho-painel">
+          <h1>PAINEL DE ANÁLISE DE DESEMPENHO EDUCACIONAL</h1>
+        </header>
 
-<script>
-// ── DADOS ──────────────────────────────────────────────────────────────────
+        <div class="area-rolagem">
+          <!-- LINHA DO TOPO: DIFICULDADES + AUXILIARES -->
+          <div class="linha-topo">
+            <!-- SEÇÃO: DIFICULDADES -->
+            <section class="cartao-secao" id="dificuldades">
+              <h2 class="titulo-secao">
+                Status das Habilidades (baseado em histórico) — Dificuldades
+              </h2>
 
-const dadosAbaixo = {
-  LC: { labels: ['H23','H14','H28','H7','H29','H18','H30'], values: [4,7,8,4,6,7,8] },
-  MT: { labels: ['H5','H12','H3','H28','H7','H1','H22'],   values: [6,5,8,4,7,3,6] },
-  CN: { labels: ['H10','H15','H8','H2','H11','H6','H19'],  values: [5,7,4,6,8,3,7] },
-  CH: { labels: ['H4','H9','H21','H13','H16','H20','H25'], values: [6,4,7,5,8,3,6] },
-};
+              <!-- Barras abaixo / acima -->
+              <div class="grade-dificuldades">
+                <div class="bloco-grafico">
+                  <p class="titulo-bloco-grafico">
+                    Habilidades com mais questões abaixo da média regional
+                  </p>
+                  <div class="linha-filtro" id="filtroAbaixo">
+                    <button class="botao-filtro ativo" data-area="LC">
+                      LC
+                    </button>
+                    <button class="botao-filtro" data-area="MT">MT</button>
+                    <button class="botao-filtro" data-area="CN">CN</button>
+                    <button class="botao-filtro" data-area="CH">CH</button>
+                  </div>
+                  <div class="envoltorio-grafico">
+                    <canvas id="chartAbaixo"></canvas>
+                  </div>
+                </div>
 
-const dadosAcima = {
-  LC: { labels: ['H1','H17','H13','H11','H16','H20','H7','H5'], values: [15,14,13,10,11,13,18,15] },
-  MT: { labels: ['H2','H9','H4','H15','H18','H6','H8','H11'],   values: [14,12,11,9,10,12,17,14] },
-  CN: { labels: ['H3','H7','H12','H5','H9','H1','H14','H16'],   values: [13,15,10,11,12,14,16,13] },
-  CH: { labels: ['H8','H11','H2','H14','H7','H3','H10','H15'],  values: [12,13,9,10,11,15,17,12] },
-};
+                <div class="bloco-grafico">
+                  <p class="titulo-bloco-grafico">
+                    Habilidades com mais questões acima da média regional
+                  </p>
+                  <div class="linha-filtro" id="filtroAcima">
+                    <button class="botao-filtro ativo" data-area="LC">
+                      LC
+                    </button>
+                    <button class="botao-filtro" data-area="MT">MT</button>
+                    <button class="botao-filtro" data-area="CN">CN</button>
+                    <button class="botao-filtro" data-area="CH">CH</button>
+                  </div>
+                  <div class="envoltorio-grafico">
+                    <canvas id="chartAcima"></canvas>
+                  </div>
+                </div>
+              </div>
 
-const dadosMedia = {
-  LC: { labels: ['h3','h5','h1','h20','h26','h17','h10','h8','h9'], values: [450,400,470,310,370,430,490,460,440] },
-  MT: { labels: ['h5','h12','h3','h28','h7','h1','h22','h9','h4'],  values: [420,380,460,290,350,410,470,440,420] },
-  CN: { labels: ['h10','h15','h8','h2','h11','h6','h19','h3','h7'], values: [440,410,460,300,360,420,480,450,430] },
-  CH: { labels: ['h4','h9','h21','h13','h16','h20','h25','h8','h3'],values: [430,390,450,310,370,410,470,440,420] },
-};
+              <!-- Habilidades abaixo da média (barras verticais) -->
+              <div class="bloco-grafico">
+                <p class="titulo-bloco-grafico">
+                  Habilidades abaixo da média — notas médias por habilidade
+                </p>
+                <div class="linha-filtro" id="filtroMedia">
+                  <button class="botao-filtro ativo" data-area="LC">LC</button>
+                  <button class="botao-filtro" data-area="MT">MT</button>
+                  <button class="botao-filtro" data-area="CN">CN</button>
+                  <button class="botao-filtro" data-area="CH">CH</button>
+                </div>
+                <div class="envoltorio-grafico-med">
+                  <canvas id="chartMedia"></canvas>
+                </div>
+              </div>
+            </section>
 
-const dadosPilha = {
-  todos: [
-    { label:'Nível 1', color:'#22c55e', values:[38,42,45,40,44] },
-    { label:'Nível 2', color:'#3b82f6', values:[32,35,30,38,36] },
-    { label:'Nível 3', color:'#a855f7', values:[28,30,32,28,30] },
-    { label:'Nível 4', color:'#f97316', values:[22,25,24,26,25] },
-    { label:'Nível 5', color:'#ef4444', values:[18,20,22,20,23] },
-  ],
-  LC: [
-    { label:'Nível 1', color:'#22c55e', values:[10,12,11,13,12] },
-    { label:'Nível 2', color:'#3b82f6', values:[8,9,8,10,9] },
-    { label:'Nível 3', color:'#a855f7', values:[7,8,9,7,8] },
-    { label:'Nível 4', color:'#f97316', values:[5,6,6,6,7] },
-    { label:'Nível 5', color:'#ef4444', values:[5,5,6,5,6] },
-  ],
-  MT: [
-    { label:'Nível 1', color:'#22c55e', values:[9,10,12,10,11] },
-    { label:'Nível 2', color:'#3b82f6', values:[8,9,7,9,9] },
-    { label:'Nível 3', color:'#a855f7', values:[7,7,8,7,7] },
-    { label:'Nível 4', color:'#f97316', values:[6,6,6,6,6] },
-    { label:'Nível 5', color:'#ef4444', values:[5,5,5,5,5] },
-  ],
-  CN: [
-    { label:'Nível 1', color:'#22c55e', values:[10,11,11,9,11] },
-    { label:'Nível 2', color:'#3b82f6', values:[8,9,8,10,9] },
-    { label:'Nível 3', color:'#a855f7', values:[7,8,7,7,8] },
-    { label:'Nível 4', color:'#f97316', values:[6,7,6,7,6] },
-    { label:'Nível 5', color:'#ef4444', values:[4,5,6,5,6] },
-  ],
-  CH: [
-    { label:'Nível 1', color:'#22c55e', values:[9,9,11,8,10] },
-    { label:'Nível 2', color:'#3b82f6', values:[8,8,7,9,9] },
-    { label:'Nível 3', color:'#a855f7', values:[7,7,8,7,7] },
-    { label:'Nível 4', color:'#f97316', values:[5,6,6,7,6] },
-    { label:'Nível 5', color:'#ef4444', values:[4,5,5,5,6] },
-  ],
-};
+            <!-- SEÇÃO AUXILIAR LATERAL -->
+            <section class="secao-auxiliares">
+              <!-- Níveis cognitivos -->
+              <div class="cartao-secao">
+                <h2 class="titulo-secao">Níveis Cognitivos</h2>
+                <div class="legenda-niveis">
+                  <div class="item-nivel">
+                    <div class="circulo-nivel n1"></div>
+                    <span
+                      ><span class="rotulo-nivel">Nível 1</span> — Dominar
+                      Linguagens</span
+                    >
+                  </div>
+                  <div class="item-nivel">
+                    <div class="circulo-nivel n2"></div>
+                    <span
+                      ><span class="rotulo-nivel">Nível 2</span> — Compreender
+                      Fenômenos</span
+                    >
+                  </div>
+                  <div class="item-nivel">
+                    <div class="circulo-nivel n3"></div>
+                    <span
+                      ><span class="rotulo-nivel">Nível 3</span> — Enfrentar
+                      Situações-Problema</span
+                    >
+                  </div>
+                  <div class="item-nivel">
+                    <div class="circulo-nivel n4"></div>
+                    <span
+                      ><span class="rotulo-nivel">Nível 4</span> — Construir
+                      Argumentação</span
+                    >
+                  </div>
+                  <div class="item-nivel">
+                    <div class="circulo-nivel n5"></div>
+                    <span
+                      ><span class="rotulo-nivel">Nível 5</span> — Elaborar
+                      Resposta</span
+                    >
+                  </div>
+                </div>
+              </div>
 
-const anos = ['2019','2021','2022','2023','2024'];
+              <!-- Tabela habilidades mais frequentes -->
+              <div class="cartao-secao">
+                <h2 class="titulo-secao">
+                  Habilidades Mais Frequentes nas Provas (2019–2024)
+                </h2>
+                <table class="tabela-habilidades">
+                  <thead>
+                    <tr>
+                      <th>Área</th>
+                      <th>Habilidade</th>
+                      <th>Dificuldade</th>
+                      <th>Qtd.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>CN</td>
+                      <td>H1</td>
+                      <td>
+                        <span class="etiqueta-nivel"
+                          ><span
+                            class="ponto-nivel"
+                            style="background: var(--nivel1)"
+                          ></span
+                          >Nível 1</span
+                        >
+                      </td>
+                      <td>36</td>
+                    </tr>
+                    <tr>
+                      <td>CH</td>
+                      <td>H1</td>
+                      <td>
+                        <span class="etiqueta-nivel"
+                          ><span
+                            class="ponto-nivel"
+                            style="background: var(--nivel1)"
+                          ></span
+                          >Nível 1</span
+                        >
+                      </td>
+                      <td>32</td>
+                    </tr>
+                    <tr>
+                      <td>MAT</td>
+                      <td>H3</td>
+                      <td>
+                        <span class="etiqueta-nivel"
+                          ><span
+                            class="ponto-nivel"
+                            style="background: var(--nivel2)"
+                          ></span
+                          >Nível 2</span
+                        >
+                      </td>
+                      <td>39</td>
+                    </tr>
+                    <tr>
+                      <td>MAT</td>
+                      <td>H28</td>
+                      <td>
+                        <span class="etiqueta-nivel"
+                          ><span
+                            class="ponto-nivel"
+                            style="background: var(--nivel1)"
+                          ></span
+                          >Nível 1</span
+                        >
+                      </td>
+                      <td>34</td>
+                    </tr>
+                    <tr>
+                      <td>MAT</td>
+                      <td>H12</td>
+                      <td>
+                        <span class="etiqueta-nivel"
+                          ><span
+                            class="ponto-nivel"
+                            style="background: var(--nivel3)"
+                          ></span
+                          >Nível 3</span
+                        >
+                      </td>
+                      <td>35</td>
+                    </tr>
+                    <tr>
+                      <td>LC</td>
+                      <td>H5</td>
+                      <td>
+                        <span class="etiqueta-nivel"
+                          ><span
+                            class="ponto-nivel"
+                            style="background: var(--nivel2)"
+                          ></span
+                          >Nível 2</span
+                        >
+                      </td>
+                      <td>28</td>
+                    </tr>
+                    <tr>
+                      <td>CN</td>
+                      <td>H14</td>
+                      <td>
+                        <span class="etiqueta-nivel"
+                          ><span
+                            class="ponto-nivel"
+                            style="background: var(--nivel3)"
+                          ></span
+                          >Nível 3</span
+                        >
+                      </td>
+                      <td>31</td>
+                    </tr>
+                    <tr>
+                      <td>CH</td>
+                      <td>H6</td>
+                      <td>
+                        <span class="etiqueta-nivel"
+                          ><span
+                            class="ponto-nivel"
+                            style="background: var(--nivel2)"
+                          ></span
+                          >Nível 2</span
+                        >
+                      </td>
+                      <td>29</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
 
-// ── HELPERS ──────────────────────────────────────────────────────────────────
+          <!-- SEÇÃO: RECORRÊNCIA -->
+          <section class="cartao-secao" id="recorrencia">
+            <h2 class="titulo-secao">Recorrência de Dificuldade</h2>
+            <div class="grade-recorrencia">
+              <!-- Radar -->
+              <div>
+                <p class="titulo-bloco-rec">
+                  Quantidade de questões por área de conhecimento
+                </p>
+                <div class="envoltorio-radar">
+                  <canvas id="chartRadar"></canvas>
+                </div>
+              </div>
 
-const azulBase = '#314595';
+              <!-- Barras em pilha -->
+              <div>
+                <p class="titulo-bloco-rec">
+                  Quantidade de questões por nível cognitivo ao longo dos anos
+                </p>
+                <div class="linha-filtro" id="filtroPilha">
+                  <button class="botao-filtro ativo" data-area="todos">
+                    Todos
+                  </button>
+                  <button class="botao-filtro" data-area="LC">LC</button>
+                  <button class="botao-filtro" data-area="MT">MT</button>
+                  <button class="botao-filtro" data-area="CN">CN</button>
+                  <button class="botao-filtro" data-area="CH">CH</button>
+                </div>
+                <div class="envoltorio-pilha">
+                  <canvas id="chartPilha"></canvas>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- /area-rolagem -->
+      </main>
+    </div>
 
-function barrasHorizontaisConfig(labels, values, cor) {
-  return {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{ data: values, backgroundColor: cor || azulBase, borderRadius: 3, borderSkipped: false }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 14 } } },
-        y: { ticks: { font: { size: 15 }, color: '#1e293b' }, grid: { display: false } }
+    <script>
+      // ── DADOS ──────────────────────────────────────────────────────────────────
+
+      const dadosAbaixo = {
+        LC: {
+          labels: ["H23", "H14", "H28", "H7", "H29", "H18", "H30"],
+          values: [4, 7, 8, 4, 6, 7, 8],
+        },
+        MT: {
+          labels: ["H5", "H12", "H3", "H28", "H7", "H1", "H22"],
+          values: [6, 5, 8, 4, 7, 3, 6],
+        },
+        CN: {
+          labels: ["H10", "H15", "H8", "H2", "H11", "H6", "H19"],
+          values: [5, 7, 4, 6, 8, 3, 7],
+        },
+        CH: {
+          labels: ["H4", "H9", "H21", "H13", "H16", "H20", "H25"],
+          values: [6, 4, 7, 5, 8, 3, 6],
+        },
+      };
+
+      const dadosAcima = {
+        LC: {
+          labels: ["H1", "H17", "H13", "H11", "H16", "H20", "H7", "H5"],
+          values: [15, 14, 13, 10, 11, 13, 18, 15],
+        },
+        MT: {
+          labels: ["H2", "H9", "H4", "H15", "H18", "H6", "H8", "H11"],
+          values: [14, 12, 11, 9, 10, 12, 17, 14],
+        },
+        CN: {
+          labels: ["H3", "H7", "H12", "H5", "H9", "H1", "H14", "H16"],
+          values: [13, 15, 10, 11, 12, 14, 16, 13],
+        },
+        CH: {
+          labels: ["H8", "H11", "H2", "H14", "H7", "H3", "H10", "H15"],
+          values: [12, 13, 9, 10, 11, 15, 17, 12],
+        },
+      };
+
+      const dadosMedia = {
+        LC: {
+          labels: ["h3", "h5", "h1", "h20", "h26", "h17", "h10", "h8", "h9"],
+          values: [450, 400, 470, 310, 370, 430, 490, 460, 440],
+        },
+        MT: {
+          labels: ["h5", "h12", "h3", "h28", "h7", "h1", "h22", "h9", "h4"],
+          values: [420, 380, 460, 290, 350, 410, 470, 440, 420],
+        },
+        CN: {
+          labels: ["h10", "h15", "h8", "h2", "h11", "h6", "h19", "h3", "h7"],
+          values: [440, 410, 460, 300, 360, 420, 480, 450, 430],
+        },
+        CH: {
+          labels: ["h4", "h9", "h21", "h13", "h16", "h20", "h25", "h8", "h3"],
+          values: [430, 390, 450, 310, 370, 410, 470, 440, 420],
+        },
+      };
+
+      const dadosPilha = {
+        todos: [
+          { label: "Nível 1", color: "#22c55e", values: [38, 42, 45, 40, 44] },
+          { label: "Nível 2", color: "#3b82f6", values: [32, 35, 30, 38, 36] },
+          { label: "Nível 3", color: "#a855f7", values: [28, 30, 32, 28, 30] },
+          { label: "Nível 4", color: "#f97316", values: [22, 25, 24, 26, 25] },
+          { label: "Nível 5", color: "#ef4444", values: [18, 20, 22, 20, 23] },
+        ],
+        LC: [
+          { label: "Nível 1", color: "#22c55e", values: [10, 12, 11, 13, 12] },
+          { label: "Nível 2", color: "#3b82f6", values: [8, 9, 8, 10, 9] },
+          { label: "Nível 3", color: "#a855f7", values: [7, 8, 9, 7, 8] },
+          { label: "Nível 4", color: "#f97316", values: [5, 6, 6, 6, 7] },
+          { label: "Nível 5", color: "#ef4444", values: [5, 5, 6, 5, 6] },
+        ],
+        MT: [
+          { label: "Nível 1", color: "#22c55e", values: [9, 10, 12, 10, 11] },
+          { label: "Nível 2", color: "#3b82f6", values: [8, 9, 7, 9, 9] },
+          { label: "Nível 3", color: "#a855f7", values: [7, 7, 8, 7, 7] },
+          { label: "Nível 4", color: "#f97316", values: [6, 6, 6, 6, 6] },
+          { label: "Nível 5", color: "#ef4444", values: [5, 5, 5, 5, 5] },
+        ],
+        CN: [
+          { label: "Nível 1", color: "#22c55e", values: [10, 11, 11, 9, 11] },
+          { label: "Nível 2", color: "#3b82f6", values: [8, 9, 8, 10, 9] },
+          { label: "Nível 3", color: "#a855f7", values: [7, 8, 7, 7, 8] },
+          { label: "Nível 4", color: "#f97316", values: [6, 7, 6, 7, 6] },
+          { label: "Nível 5", color: "#ef4444", values: [4, 5, 6, 5, 6] },
+        ],
+        CH: [
+          { label: "Nível 1", color: "#22c55e", values: [9, 9, 11, 8, 10] },
+          { label: "Nível 2", color: "#3b82f6", values: [8, 8, 7, 9, 9] },
+          { label: "Nível 3", color: "#a855f7", values: [7, 7, 8, 7, 7] },
+          { label: "Nível 4", color: "#f97316", values: [5, 6, 6, 7, 6] },
+          { label: "Nível 5", color: "#ef4444", values: [4, 5, 5, 5, 6] },
+        ],
+      };
+
+      const anos = ["2019", "2021", "2022", "2023", "2024"];
+
+      // ── HELPERS ──────────────────────────────────────────────────────────────────
+
+      const azulBase = "#314595";
+
+      function barrasHorizontaisConfig(labels, values, cor) {
+        return {
+          type: "bar",
+          data: {
+            labels,
+            datasets: [
+              {
+                data: values,
+                backgroundColor: cor || azulBase,
+                borderRadius: 3,
+                borderSkipped: false,
+              },
+            ],
+          },
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: "#f0f0f0" }, ticks: { font: { size: 14 } } },
+              y: {
+                ticks: { font: { size: 15 }, color: "#1e293b" },
+                grid: { display: false },
+              },
+            },
+          },
+        };
       }
-    }
-  };
-}
 
-function barrasVerticaisConfig(labels, values) {
-  return {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        data: values,
-        backgroundColor: values.map(v => v < 380 ? '#ef4444' : v < 430 ? '#f97316' : '#314595'),
-        borderRadius: 3,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { font: { size: 15 } }, grid: { display: false } },
-        y: {
-          min: 200, max: 700,
-          grid: { color: '#f0f0f0' },
-          ticks: { font: { size: 10 }, stepSize: 50 },
-          title: { display: true, text: 'Notas', font: { size: 20 }, color: '#64748b' }
-        }
+      function barrasVerticaisConfig(labels, values) {
+        return {
+          type: "bar",
+          data: {
+            labels,
+            datasets: [
+              {
+                data: values,
+                backgroundColor: values.map((v) =>
+                  v < 380 ? "#ef4444" : v < 430 ? "#f97316" : "#314595",
+                ),
+                borderRadius: 3,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { font: { size: 15 } }, grid: { display: false } },
+              y: {
+                min: 200,
+                max: 700,
+                grid: { color: "#f0f0f0" },
+                ticks: { font: { size: 10 }, stepSize: 50 },
+                title: {
+                  display: true,
+                  text: "Notas",
+                  font: { size: 20 },
+                  color: "#64748b",
+                },
+              },
+            },
+          },
+        };
       }
-    }
-  };
-}
 
-// ── INSTÂNCIAS ────────────────────────────────────────────────────────────────
+      // ── INSTÂNCIAS ────────────────────────────────────────────────────────────────
 
-let chartAbaixo, chartAcima, chartMedia, chartRadar, chartPilha;
+      let chartAbaixo, chartAcima, chartMedia, chartRadar, chartPilha;
 
-function criarChartAbaixo(area) {
-  const d = dadosAbaixo[area];
-  if (chartAbaixo) chartAbaixo.destroy();
-  chartAbaixo = new Chart(document.getElementById('chartAbaixo'), barrasHorizontaisConfig(d.labels, d.values, '#ef4444'));
-}
-
-function criarChartAcima(area) {
-  const d = dadosAcima[area];
-  if (chartAcima) chartAcima.destroy();
-  chartAcima = new Chart(document.getElementById('chartAcima'), barrasHorizontaisConfig(d.labels, d.values, '#22c55e'));
-}
-
-function criarChartMedia(area) {
-  const d = dadosMedia[area];
-  if (chartMedia) chartMedia.destroy();
-  chartMedia = new Chart(document.getElementById('chartMedia'), barrasVerticaisConfig(d.labels, d.values));
-}
-
-function criarChartRadar() {
-  chartRadar = new Chart(document.getElementById('chartRadar'), {
-    type: 'radar',
-    data: {
-      labels: ['Matemática','Linguagens','Ciências Humanas','Ciências da Natureza'],
-      datasets: [{
-        label: 'Questões',
-        data: [35, 10, 35, 20],
-        backgroundColor: 'rgba(49,69,149,.2)',
-        borderColor: '#314595',
-        pointBackgroundColor: '#314595',
-        pointRadius: 4,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        r: {
-          min: 0, max: 40, ticks: { stepSize: 10, font: { size: 10 } },
-          pointLabels: { font: { size: 12 }, color: '#1e293b' }
-        }
+      function criarChartAbaixo(area) {
+        const d = dadosAbaixo[area];
+        if (chartAbaixo) chartAbaixo.destroy();
+        chartAbaixo = new Chart(
+          document.getElementById("chartAbaixo"),
+          barrasHorizontaisConfig(d.labels, d.values, "#ef4444"),
+        );
       }
-    }
-  });
-}
 
-function criarChartPilha(area) {
-  const dados = dadosPilha[area] || dadosPilha.todos;
-  if (chartPilha) chartPilha.destroy();
-  chartPilha = new Chart(document.getElementById('chartPilha'), {
-    type: 'bar',
-    data: {
-      labels: anos,
-      datasets: dados.map(d => ({
-        label: d.label,
-        data: d.values,
-        backgroundColor: d.color,
-        borderRadius: 2,
-      }))
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom', labels: { font: { size: 15 }, boxWidth: 15, padding: 8 } }
-      },
-      scales: {
-        x: { stacked: true, ticks: { font: { size: 15 } }, grid: { display: false } },
-        y: { stacked: true, ticks: { font: { size: 11 } }, grid: { color: '#f0f0f0' } }
+      function criarChartAcima(area) {
+        const d = dadosAcima[area];
+        if (chartAcima) chartAcima.destroy();
+        chartAcima = new Chart(
+          document.getElementById("chartAcima"),
+          barrasHorizontaisConfig(d.labels, d.values, "#22c55e"),
+        );
       }
-    }
-  });
-}
 
-// ── FILTROS ───────────────────────────────────────────────────────────────────
+      function criarChartMedia(area) {
+        const d = dadosMedia[area];
+        if (chartMedia) chartMedia.destroy();
+        chartMedia = new Chart(
+          document.getElementById("chartMedia"),
+          barrasVerticaisConfig(d.labels, d.values),
+        );
+      }
 
-function bindFiltros(containerId, callback) {
-  document.getElementById(containerId).querySelectorAll('.botao-filtro').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.getElementById(containerId).querySelectorAll('.botao-filtro').forEach(b => b.classList.remove('ativo'));
-      btn.classList.add('ativo');
-      callback(btn.dataset.area);
-    });
-  });
-}
+      function criarChartRadar() {
+        chartRadar = new Chart(document.getElementById("chartRadar"), {
+          type: "radar",
+          data: {
+            labels: [
+              "Matemática",
+              "Linguagens",
+              "Ciências Humanas",
+              "Ciências da Natureza",
+            ],
+            datasets: [
+              {
+                label: "Questões",
+                data: [35, 10, 35, 20],
+                backgroundColor: "rgba(49,69,149,.2)",
+                borderColor: "#314595",
+                pointBackgroundColor: "#314595",
+                pointRadius: 4,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              r: {
+                min: 0,
+                max: 40,
+                ticks: { stepSize: 10, font: { size: 10 } },
+                pointLabels: { font: { size: 12 }, color: "#1e293b" },
+              },
+            },
+          },
+        });
+      }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
+      function criarChartPilha(area) {
+        const dados = dadosPilha[area] || dadosPilha.todos;
+        if (chartPilha) chartPilha.destroy();
+        chartPilha = new Chart(document.getElementById("chartPilha"), {
+          type: "bar",
+          data: {
+            labels: anos,
+            datasets: dados.map((d) => ({
+              label: d.label,
+              data: d.values,
+              backgroundColor: d.color,
+              borderRadius: 2,
+            })),
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { font: { size: 15 }, boxWidth: 15, padding: 8 },
+              },
+            },
+            scales: {
+              x: {
+                stacked: true,
+                ticks: { font: { size: 15 } },
+                grid: { display: false },
+              },
+              y: {
+                stacked: true,
+                ticks: { font: { size: 11 } },
+                grid: { color: "#f0f0f0" },
+              },
+            },
+          },
+        });
+      }
 
-criarChartAbaixo('LC');
-criarChartAcima('LC');
-criarChartMedia('LC');
-criarChartRadar();
-criarChartPilha('todos');
+      // ── FILTROS ───────────────────────────────────────────────────────────────────
 
-bindFiltros('filtroAbaixo', criarChartAbaixo);
-bindFiltros('filtroAcima',  criarChartAcima);
-bindFiltros('filtroMedia',  criarChartMedia);
-bindFiltros('filtroPilha',  criarChartPilha);
-</script>
-</body>
+      function bindFiltros(containerId, callback) {
+        document
+          .getElementById(containerId)
+          .querySelectorAll(".botao-filtro")
+          .forEach((btn) => {
+            btn.addEventListener("click", () => {
+              document
+                .getElementById(containerId)
+                .querySelectorAll(".botao-filtro")
+                .forEach((b) => b.classList.remove("ativo"));
+              btn.classList.add("ativo");
+              callback(btn.dataset.area);
+            });
+          });
+      }
+
+      // ── INIT ──────────────────────────────────────────────────────────────────────
+
+      criarChartAbaixo("LC");
+      criarChartAcima("LC");
+      criarChartMedia("LC");
+      criarChartRadar();
+      criarChartPilha("todos");
+
+      bindFiltros("filtroAbaixo", criarChartAbaixo);
+      bindFiltros("filtroAcima", criarChartAcima);
+      bindFiltros("filtroMedia", criarChartMedia);
+      bindFiltros("filtroPilha", criarChartPilha);
+    </script>
+  </body>
 </html>

@@ -1,123 +1,132 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Análise de Desempenho</title>
 
-  
-    <link rel="stylesheet" href="../css/educacional-dash.css">
-    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/educacional-dash.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+  </head>
 
-<body>
-<div class="dashboard-container">
+  <body>
+    <div class="dashboard-container">
+      <!-- BARRA LATERAL -->
+      <aside class="barra-lateral">
+        <div class="perfil-lateral">
+          <div class="foto-perfil"></div>
+          <p class="nome-perfil">Lavínia Todarelli</p>
+          <p class="cargo-perfil">Administrador</p>
+        </div>
+        <nav class="nav-lateral">
+          <button class="nav-btn active">Análise e Desempenho por Tema</button>
+          <a href="dashMonitoramento.html"
+            ><button class="nav-btn">
+              Monitoramento de Desempenho por habilidade
+            </button></a
+          >
+          <a href="lista-desempenho.html"
+            ><button class="nav-btn">Lista de Desempenho por questão</button></a
+          >
+          <a href="simulados.html"
+            ><button class="nav-btn">Simulados</button></a
+          >
+          <a href="gerenciamento-professores.html"
+            ><button class="nav-btn">Gerenciamento de professores</button></a
+          >
+          <a href="gerenciamento-coordenadores.html"
+            ><button class="nav-btn">Gerenciamento de Coordenadores</button></a
+          >
+        </nav>
+      </aside>
 
-
-  <!-- BARRA LATERAL -->
-  <aside class="barra-lateral">
-    <div class="perfil-lateral">
-      <div class="foto-perfil"></div>
-      <p class="nome-perfil">Ricardo Almeida</p>
-      <p class="cargo-perfil">Coordenador</p>
-    </div>
-    <nav class="nav-lateral">
-      <button class="botao-nav">Temas Cobrados</button>
-      <button class="botao-nav ativo">Painel de Monitoramento</button>
-      <button class="botao-nav">Atuação Regional de Questões</button>
-      <button class="botao-nav">Conteúdo por Habilidade</button>
-      <button class="botao-nav">Gerenciamento de Usuários</button>
-    </nav>
-  </aside>
-
-    <!-- CONTEÚDO -->
-    <main class="main-content">
-
+      <!-- CONTEÚDO -->
+      <main class="main-content">
         <header class="dashboard-header">
-            <h1>Painel de Análise de Desempenho Educacional</h1>
+          <h1>Painel de Análise de Desempenho Educacional</h1>
         </header>
 
         <!-- CARDS -->
         <section class="cards-top">
-            <div class="mini-card laranja">
-                <p>Matemática</p>
-                <strong>529</strong>
-            </div>
+          <div class="mini-card laranja">
+            <p>Matemática</p>
+            <strong>529</strong>
+          </div>
 
-            <div class="mini-card verde">
-                <p>Ciências da Natureza</p>
-                <strong>495</strong>
-            </div>
+          <div class="mini-card verde">
+            <p>Ciências da Natureza</p>
+            <strong>495</strong>
+          </div>
 
-            <div class="mini-card azul">
-                <p>Ciências Humanas</p>
-                <strong>517</strong>
-            </div>
+          <div class="mini-card azul">
+            <p>Ciências Humanas</p>
+            <strong>517</strong>
+          </div>
 
-            <div class="mini-card roxo">
-                <p>Linguagens</p>
-                <strong>528</strong>
-            </div>
+          <div class="mini-card roxo">
+            <p>Linguagens</p>
+            <strong>528</strong>
+          </div>
         </section>
 
         <!-- GRÁFICO -->
         <section class="card">
-            <div class="card-content">
-                <canvas id="linhaChart"></canvas>
-            </div>
+          <div class="card-content">
+            <canvas id="linhaChart"></canvas>
+          </div>
         </section>
+      </main>
+    </div>
 
-    </main>
-</div>
+    <script>
+      const ctx = document.getElementById("linhaChart");
 
-<script>
-const ctx = document.getElementById('linhaChart');
-
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['2019', '2021', '2022', '2023', '2024'],
-        datasets: [
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: ["2019", "2021", "2022", "2023", "2024"],
+          datasets: [
             {
-                label: 'Matemática',
-                data: [500, 502, 480, 520, 530],
-                borderColor: '#ec9731',
-                tension: 0.4
+              label: "Matemática",
+              data: [500, 502, 480, 520, 530],
+              borderColor: "#ec9731",
+              tension: 0.4,
             },
             {
-                label: 'Natureza',
-                data: [500, 498, 512, 500, 488],
-                borderColor: '#4caf50',
-                tension: 0.4
+              label: "Natureza",
+              data: [500, 498, 512, 500, 488],
+              borderColor: "#4caf50",
+              tension: 0.4,
             },
             {
-                label: 'Humanas',
-                data: [515, 510, 520, 505, 522],
-                borderColor: '#2196f3',
-                tension: 0.4
+              label: "Humanas",
+              data: [515, 510, 520, 505, 522],
+              borderColor: "#2196f3",
+              tension: 0.4,
             },
             {
-                label: 'Linguagens',
-                data: [510, 482, 508, 500, 520],
-                borderColor: '#9c27b0',
-                tension: 0.4
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        plugins: {
+              label: "Linguagens",
+              data: [510, 482, 508, 500, 520],
+              borderColor: "#9c27b0",
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
             legend: {
-                position: 'top'
-            }
-        }
-    }
-});
-</script>
-
-</body>
+              position: "top",
+            },
+          },
+        },
+      });
+    </script>
+  </body>
 </html>
