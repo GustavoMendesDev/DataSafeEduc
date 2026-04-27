@@ -1,4 +1,6 @@
 package school.sptech.dao;
+
+import school.sptech.ConexaoBanco;
 import school.sptech.dto.NotaMunicipal;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -12,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 
 public class LeitorExcelResultadoDao {
 
@@ -21,100 +26,110 @@ public class LeitorExcelResultadoDao {
     private List<Double> notasCn = new ArrayList<>();
 
 
-    public void adicionarNotaLc(Double nota){
+    ConexaoBanco conexaoBanco = new ConexaoBanco();
+    JdbcTemplate conexao = conexaoBanco.getConnection();
+
+    public void adicionarNotaLc(Double nota) {
         notasLc.add(nota);
     }
 
-    public void adicionarNotaCn(Double nota){
+    public void adicionarNotaCn(Double nota) {
         notasCn.add(nota);
     }
 
-    public void adicionarNotaCh(Double nota){
+    public void adicionarNotaCh(Double nota) {
         notasCh.add(nota);
     }
 
-    public void adicionarNotaMt(Double nota){
+    public void adicionarNotaMt(Double nota) {
         notasMt.add(nota);
     }
 
 
-    public void extrairExcelResultado (String nomeArquivo) {
+    public void extrairExcelResultado(String nomeArquivo) {
 
 
         try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
-             Workbook workbook = new XSSFWorkbook(arquivo);){
+             Workbook workbook = new XSSFWorkbook(arquivo);) {
             System.out.println("[] - (leitorExcelResultadoDao) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
 
-       Sheet sheetQuestoes = workbook.getSheetAt(0);
+            Sheet sheetQuestoes = workbook.getSheetAt(0);
 
-       Iterator<Row> rowIterator = sheetQuestoes.iterator();
+            Iterator<Row> rowIterator = sheetQuestoes.iterator();
 
-       if(rowIterator.hasNext()) {
-            rowIterator.next();
+            if (rowIterator.hasNext()) {
+                rowIterator.next();
 
-       }
-
-
-       while (rowIterator.hasNext()) {
-           Row row = rowIterator.next();
-           Iterator<Cell> cellIterator = row.cellIterator();
+            }
 
 
-           while (cellIterator.hasNext()) {
-               Cell cell = cellIterator.next();
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
 
-               switch (cell.getColumnIndex()) {
-                   case 22:
-                       Double notaCn = extrairValorNumerico(cell);
-                       if (notaCn != null) adicionarNotaCn(notaCn);
-                       break;
-                   case 23:
-                       Double notaCh = extrairValorNumerico(cell);
-                       if (notaCh != null) adicionarNotaCh(notaCh);
-                       break;
-                   case 24:
-                       Double notaLc = extrairValorNumerico(cell);
-                       if (notaLc != null) adicionarNotaLc(notaLc);
-                       break;
-                   case 25:
-                       Double notaMt = extrairValorNumerico(cell);
-                       if (notaMt != null) adicionarNotaMt(notaMt);
-                       break;
-               }
-           }
-       }
+
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+
+                    switch (cell.getColumnIndex()) {
+                        case 22:
+                            Double notaCn = extrairValorNumerico(cell);
+                            if (notaCn != null) adicionarNotaCn(notaCn);
+                            break;
+                        case 23:
+                            Double notaCh = extrairValorNumerico(cell);
+                            if (notaCh != null) adicionarNotaCh(notaCh);
+                            break;
+                        case 24:
+                            Double notaLc = extrairValorNumerico(cell);
+                            if (notaLc != null) adicionarNotaLc(notaLc);
+                            break;
+                        case 25:
+                            Double notaMt = extrairValorNumerico(cell);
+                            if (notaMt != null) adicionarNotaMt(notaMt);
+                            break;
+                    }
+                }
+            }
 
             System.out.println("Leitura da notas realizadas com sucesso!");
-   }catch (Exception e){
-       e.printStackTrace();
-   }
-  }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
-  public NotaMunicipal calcularMediaTemas() {
+    public NotaMunicipal calcularMediaTemas() {
+
+// 10 , 5 , 2 , 13 , 15 , 18
+        // 10 , 2,
 
 
+        Double mediaLc = notasLc.isEmpty() ? 0.0 :
+                notasLc.stream().mapToDouble(Double::doubleValue).sum() / notasLc.size();
 
-      Double mediaLc = notasLc.isEmpty() ? 0.0 :
-              notasLc.stream().mapToDouble(Double::doubleValue).sum() / notasLc.size();
+        Double mediaMt = notasMt.isEmpty() ? 0.0 :
+                notasMt.stream().mapToDouble(Double::doubleValue).sum() / notasMt.size();
 
-      Double mediaMt = notasMt.isEmpty() ? 0.0 :
-              notasMt.stream().mapToDouble(Double::doubleValue).sum() / notasMt.size();
+        Double mediaCn = notasCn.isEmpty() ? 0.0 :
+                notasCn.stream().mapToDouble(Double::doubleValue).sum() / notasCn.size();
 
-      Double mediaCn = notasCn.isEmpty() ? 0.0 :
-              notasCn.stream().mapToDouble(Double::doubleValue).sum() / notasCn.size();
+        Double mediaCh = notasCh.isEmpty() ? 0.0 :
+                notasCh.stream().mapToDouble(Double::doubleValue).sum() / notasCh.size();
 
-      Double mediaCh = notasCh.isEmpty() ? 0.0 :
-              notasCh.stream().mapToDouble(Double::doubleValue).sum() / notasCh.size();
-
-          NotaMunicipal notaMunicipal = new NotaMunicipal(mediaCn, mediaCh, mediaMt, mediaLc);
+        NotaMunicipal notaMunicipal = new NotaMunicipal(mediaCn, mediaCh, mediaMt, mediaLc);
 
 
-      System.out.print(mediaCn + " " +mediaCh + " " +  mediaMt + " " + mediaLc);
-      System.out.println(notasCn.size() + " " +notasCh.size() + " " +  notasMt.size() + " " + notasLc.size());
+        conexao.update("INSERT INTO notaMunicipal ( matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas) VALUES (?, ?, ?, ? ) ",
+                mediaMt, mediaLc, mediaCn, mediaCh);
 
-            return  notaMunicipal;
-  }
+        System.out.println(("[] - (LeitorExcelResultadoDao) - (extrairExcelResultado) - Inserção das notas %.2f %.2f %.2f %.2f Realizada com sucesso! ").formatted(mediaCn, mediaCh, mediaMt, mediaLc));
+
+
+        System.out.println("\n" + notasCn.size() + " " + notasCh.size() + " " + notasMt.size() + " " + notasLc.size());
+
+        return notaMunicipal;
+    }
 
 
     private Double extrairValorNumerico(Cell cell) {
@@ -135,9 +150,6 @@ public class LeitorExcelResultadoDao {
                 return null;
         }
     }
-
-
-
 
 
 }

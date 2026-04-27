@@ -5,11 +5,17 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import school.sptech.ConexaoBanco;
 import school.sptech.dto.Dificuldade;
 import school.sptech.dto.Habilidade;
 import school.sptech.dto.Questao;
 import school.sptech.enums.SiglaEnum;
+import school.sptech.TabelasBanco;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -18,11 +24,14 @@ import java.util.List;
 
 import static school.sptech.dto.Habilidade.buscarHabilidade;
 
-public class LeitorExcelQuestao {
+public class LeitorExcelQuestaoDao {
 
     private List <Habilidade> habilidades = new ArrayList<>();
-
     private List<Questao> questoes = new ArrayList<>();
+
+
+    ConexaoBanco conexaoBanco = new ConexaoBanco();
+    JdbcTemplate conexao = conexaoBanco.getConnection();
 
 
      public void adicionarHabilidade(Habilidade habilidade){
@@ -54,11 +63,23 @@ public class LeitorExcelQuestao {
 
     public List <Habilidade> lerHabilidades (String nomeArquivo) {
 
+        conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
+                1,"Linguagens e Códigos", "LC") ;
+
+        conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
+                2,"Matematica", "MT");
+        conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
+                3,"Ciências da Natureza", "CN");
+
+        conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
+                4,"Ciências Humanas", "CH");
+
         try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);){
-            System.out.println("[] - (LeitorExcelQuestao) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
-
+            System.out.println("[] - (LeitorExcelQuestao) - (lerHabilidades) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
+            Integer id = 0 ;
             Sheet sheetHabilidades = workbook.getSheetAt(0);
+            Integer idAreaConhecimento = 0 ;
 
             Iterator<Row> rowIterator = sheetHabilidades.iterator();
 
@@ -79,7 +100,10 @@ public class LeitorExcelQuestao {
                         case 1:
                             SiglaEnum sigla = SiglaEnum.encontrarSigla(cell.getStringCellValue());
 
+                            idAreaConhecimento = sigla.getCodigo();
+
                             habilidade.setSigla(sigla);
+
                             break;
                         case 2:
                             habilidade.setNumero((int) cell.getNumericCellValue());
@@ -92,7 +116,19 @@ public class LeitorExcelQuestao {
 
 
                 }
+
+
+                id++;
+                habilidade.setId(id);
                 adicionarHabilidade(habilidade);
+
+                conexao.update("INSERT INTO habilidade (id, numero, descricao, fkAreaConhecimento) VALUES (?, ?, ?, ? ) ",
+                        id, habilidade.getNumero(), habilidade.getDescricao(), idAreaConhecimento);
+
+                System.out.println("[] - (LeitorExcelQuestao) - (lerHabilidades) - Inserção da habilidade  " + habilidade.getNumero() +" " + habilidade.getSigla() + " Realizada com sucesso! ");
+
+
+
             }
         } catch (Exception e) {
             System.out.println("Erro " + e);
@@ -107,7 +143,7 @@ public class LeitorExcelQuestao {
 
         try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);){
-
+            Integer id = 0 ;
 
             Sheet sheetHabilidades = workbook.getSheetAt(0);
 
@@ -122,6 +158,10 @@ public class LeitorExcelQuestao {
                 Row row = rowIterator.next();
 
                 Boolean questaoDuplicada = false;
+                String dificuldadeQuestao = "";
+
+
+
                 Iterator<Cell> cellIterator = row.cellIterator();
 
                 Questao questao = new Questao();
@@ -143,7 +183,7 @@ public class LeitorExcelQuestao {
                             int codigoExcel = (int) cell.getNumericCellValue();
 
                             if (questao.jaExisteEsseCodigo(questoes, codigoExcel)) {
-                                System.out.println("Pulando questão duplicada: " + codigoExcel);
+//                                System.out.println("Pulando questão duplicada: " + codigoExcel);
                                 questaoDuplicada = true;
                             } else {
                                 questao.setCodigoItem(codigoExcel);
@@ -152,6 +192,7 @@ public class LeitorExcelQuestao {
 
                         case 3:
                             questao.setGabarito(cell.getStringCellValue());
+
                             break;
 
                         case 4:
@@ -166,7 +207,7 @@ public class LeitorExcelQuestao {
                             dificuldade.setParametro_a(cell.getNumericCellValue());
                             break;
                         case 8:
-
+                            dificuldadeQuestao = dificuldade.calcularDificuldade(cell.getNumericCellValue());
                             dificuldade.setParametro_b(cell.getNumericCellValue());
                             break;
                         case 9:
@@ -181,8 +222,22 @@ public class LeitorExcelQuestao {
                 }
 
 
+
                 if (!questaoDuplicada) {
+                    id++;
+                    dificuldade.setId(id);
+
                     adicionarQuestao(questao);
+//                    System.out.println(dificuldadeQuestao);
+
+                    conexao.update("INSERT INTO parametroTri (id , nivel, parametroA,  parametroB, parametroC ) VALUES (?, ?, ? ,?, ? ) ",
+                    id, dificuldadeQuestao,dificuldade.getParametro_a(), dificuldade.getParametro_b(), dificuldade.getParametro_c());
+
+
+                    conexao.update("INSERT INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES (?, ?, ? ,? )",
+                            questao.getCodigoItem(), 2024, questao.getHabildade().getId(), id
+                    );
+                    System.out.println("[] - (LeitorExcelQuestao) - (lerQuestoes) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
                 }
             }
 

@@ -5,6 +5,7 @@ import school.sptech.enums.SiglaEnum;
 import java.util.List;
 
 public class Habilidade {
+    private Integer id ;
     private Integer numero;
     private String descricao;
     private SiglaEnum sigla;
@@ -25,8 +26,6 @@ public Habilidade(){
 
 
     public static  Habilidade buscarHabilidade (List<Habilidade> habilidades, SiglaEnum sigla, Integer numero ){
-
-
 
         for(Habilidade habilidade : habilidades){
             if(habilidade.getSigla().equals(sigla) &&
@@ -65,5 +64,13 @@ public Habilidade(){
 
     public void setSigla(SiglaEnum sigla) {
         this.sigla = sigla;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -2,27 +2,23 @@ package school.sptech;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import javax.sql.DataSource;
+
 
 public class ConexaoBanco {
 
-    private final JdbcTemplate jdbcTemplate;
-    private final BasicDataSource basicDataSource;
+    private final DataSource dataSource;
 
     public ConexaoBanco() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:h2:mem:db_musica");
+        basicDataSource.setUrl("jdbc:h2:mem:datasafe;DB_CLOSE_DELAY=-1;MODE=MySQL");
         basicDataSource.setUsername("sa");
         basicDataSource.setPassword("");
 
-        this.basicDataSource = basicDataSource;
-        this.jdbcTemplate = new JdbcTemplate(basicDataSource);
+        this.dataSource = basicDataSource;
     }
 
-    public BasicDataSource getBasicDataSource() {
-        return basicDataSource;
-    }
-
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
+    public JdbcTemplate getConnection() {
+        return new JdbcTemplate(dataSource);
     }
 }

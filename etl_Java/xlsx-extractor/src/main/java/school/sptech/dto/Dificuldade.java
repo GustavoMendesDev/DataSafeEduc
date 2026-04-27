@@ -1,6 +1,7 @@
 package school.sptech.dto;
 
 public class Dificuldade {
+    private Integer id;
     private  Double parametro_a;
     private  Double parametro_b;
     private  Double parametro_c;
@@ -11,10 +12,23 @@ public class Dificuldade {
         this.parametro_a = parametro_a;
         this.parametro_b = parametro_b;
         this.parametro_c = parametro_c;
+
     }
 
     public Dificuldade(){
 
+    }
+
+
+    public String calcularDificuldade (double parametro_b){
+
+        if(parametro_b < -0.5){
+            return "Facil";
+        }
+        if(parametro_b <= 0.8){
+            return "Medio";
+        }
+        return "Dificil";
     }
 
     public Double getParametro_a() {
@@ -39,5 +53,13 @@ public class Dificuldade {
 
     public void setParametro_c(Double parametro_c) {
         this.parametro_c = parametro_c;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
