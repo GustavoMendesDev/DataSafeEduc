@@ -641,6 +641,172 @@ canvas {
     color: #666;
 }
 
+.questao-item {
+    display: flex;
+    align-items: center; /* Alinha tudo verticalmente ao centro */
+    justify-content: space-between; /* Espaça o conteúdo */
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.questao {
+    flex-grow: 1; /* Faz o texto ocupar todo o espaço da esquerda */
+}
+
+.questao-item button{
+  width: 6vw;
+  height: 4vh;
+  border-radius: 7px;
+
+}
+
+.questao-item .btn-substituir{
+    color: var(--cor-base);
+    background-color: none; 
+    border: 2px solid var(--cor-base);/* Cor para o X, se desejar */
+    margin-left: 30px;
+}
+
+.questao-item .btn-excluir {
+    color: red;
+    background-color: none; 
+    border: 2px solid red;/* Cor para o X, se desejar */
+    margin-left: 30px;
+}
+
+.questao-item .btn-substituir:hover{
+    background-color: var(--cor-base);
+    color: #fff;
+}
+
+.questao-item .btn-excluir:hover{
+  background-color: red;
+  color: #fff;
+}
+
+/* Substituir Questão */
+
+.edit-mod-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+}
+
+/* Caixa do Modal */
+.edit-mod-content {
+    background: white;
+  padding: 25px;
+  border-radius: 8px;
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-mod-title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+/* Container interno das questões */
+.edit-mod-scroll-area {
+    border: 1px solid #aaa;
+    border-radius: 18px;
+    padding: 12px;
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+/* Estilo do Card da Questão */
+.edit-mod-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    gap: 12px;
+}
+
+.edit-mod-selected {
+    background-color: #f0f7ff;
+    border-color: #3b82f6;
+}
+
+.edit-mod-number {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.edit-mod-info { flex-grow: 1; }
+
+.edit-mod-item-id {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.edit-mod-details {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.edit-mod-tag {
+    background: white;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Botões do Rodapé */
+.edit-mod-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.edit-mod-btn-update, .edit-mod-btn-close {
+    flex: 1;
+    padding: 14px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.edit-mod-btn-update {
+    color: var(--cor-base);
+    background-color: none; 
+    border: 2px solid var(--cor-base);/* Cor para o X, se desejar */
+    margin-left: 30px;
+}
+
+.edit-mod-btn-close {
+    color: red;
+    background-color: none; 
+    border: 2px solid red;/* Cor para o X, se desejar */
+    margin-left: 30px;
+}
+
+.edit-mod-btn-update:hover { background: #f5f5f5; }
+
 .indicadores-simulado-2 .indicador-2:nth-child(1) { background-color: #e3f2fd; border-color: #90caf9; } /* Azul */
 .indicadores-simulado-2 .indicador-2:nth-child(2) { background-color: #ffebee; border-color: #ef9a9a; } /* Vermelho */
 

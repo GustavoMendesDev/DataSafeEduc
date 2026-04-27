@@ -188,16 +188,18 @@
                     <p>Prova AZUL • CO_PROVA 1401 • Gabarito B</p>
                     </div>
 
-                    <button class="icon-btn">❌</button>
+                    <button onclick="substituir()" class="btn-substituir">Subsituir</button>
+                    <button class="btn-excluir">Excluir</button>
                 </div>
-
+                
                 <div class="questao-item">
-                   <div class="questao">
-                    <p>2</p>
-                    <span>item-102453 - habilidade 2</span>
-                    <p>Prova AMARELA • CO_PROVA 1319 • Gabarito D</p>
+                    <div class="questao">
+                        <p>2</p>
+                        <span>item-102453 - habilidade 2</span>
+                        <p>Prova AMARELA • CO_PROVA 1319 • Gabarito D</p>
                     </div>
-                    <button class="icon-btn">❌</button>
+                    <button onclick="substituir()" class="btn-substituir">Subsituir</button>
+                    <button class="btn-excluir">Excluir</button>
                 </div>
             </div>
 
@@ -208,6 +210,88 @@
 
         </div>
     </div>
+
+    <div class="modal" id="modalEditar">
+    <div class="modal-box-editar">
+        <h2>Editar simulado</h2>
+
+        <div class="questoes-container-scroll">
+            <div class="questao-item">
+                <div class="numero-circulo">1</div>
+                <div class="questao-info">
+                    <strong>item-112897 - habilidade 17</strong>
+                    <p>Prova AZUL • CO_PROVA 1401 • Gabarito B</p>
+                </div>
+                <button class="btn-tag-dificuldade">Difícil</button>
+            </div>
+
+            <div class="questao-item selecionado">
+                <div class="numero-circulo">3</div>
+                <div class="questao-info">
+                    <strong>item-140980 - habilidade 18</strong>
+                    <p>Prova BRANCA • CO_PROVA 1356 • Gabarito E</p>
+                </div>
+                <button class="btn-tag-dificuldade">Difícil</button>
+            </div>
+
+            </div>
+
+        <div class="modal-actions">
+            <button class="btn-atualizar">Atualizar</button>
+            <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<div class="edit-mod-overlay" id="modalSub">
+    <div class="edit-mod-content">
+        <h2 class="edit-mod-title">Editar simulado</h2>
+
+        <div class="edit-mod-scroll-area">
+            <div class="edit-mod-card">
+                <div class="edit-mod-number">1</div>
+                <div class="edit-mod-info">
+                    <span class="edit-mod-item-id">item-112897 - habilidade 3</span>
+                    <p class="edit-mod-details">Prova AZUL • CO_PROVA 1401 • Gabarito B</p>
+                </div>
+                <button class="edit-mod-tag">Difícil</button>
+            </div>
+
+            <div class="edit-mod-card">
+                <div class="edit-mod-number">2</div>
+                <div class="edit-mod-info">
+                    <span class="edit-mod-item-id">item-140980 - habilidade 2</span>
+                    <p class="edit-mod-details">Prova BRANCA • CO_PROVA 1356 • Gabarito E</p>
+                </div>
+                <button class="edit-mod-tag">Difícil</button>
+            </div>
+
+            <div class="edit-mod-card">
+                <div class="edit-mod-number">2</div>
+                <div class="edit-mod-info">
+                    <span class="edit-mod-item-id">item-140980 - habilidade 5</span>
+                    <p class="edit-mod-details">Prova BRANCA • CO_PROVA 1356 • Gabarito E</p>
+                </div>
+                <button class="edit-mod-tag">Difícil</button>
+            </div>
+
+            <div class="edit-mod-card">
+                <div class="edit-mod-number">2</div>
+                <div class="edit-mod-info">
+                    <span class="edit-mod-item-id">item-140980 - habilidade 5</span>
+                    <p class="edit-mod-details">Prova BRANCA • CO_PROVA 1356 • Gabarito E</p>
+                </div>
+                <button class="edit-mod-tag">Difícil</button>
+            </div>
+            
+            </div>
+
+        <div class="edit-mod-actions">
+            <button onclick="fecharSub()" class="edit-mod-btn-close">Cancelar</button>
+            <button class="edit-mod-btn-update">Atualizar</button>
+        </div>
+    </div>
+</div>
 
     <script>
         function abrirModal() {
@@ -226,6 +310,14 @@
             document.getElementById("modalEditar").style.display = "none";
         }
 
+        function substituir(){
+              document.getElementById("modalSub").style.display = "flex";
+        }
+
+        function fecharSub(){
+              document.getElementById("modalSub").style.display = "none";
+        }
+
         function selectArea(el) {
     // Remove a classe 'active' de todos
     document.querySelectorAll(".filtros span").forEach(e => e.classList.remove("active"));
@@ -240,6 +332,7 @@ function selectDificuldade(el) {
     // Se clicar e já tiver a classe, ele tira (desmarca).
     el.classList.toggle("active-style");
 }
+
     </script>
 
 </body>
