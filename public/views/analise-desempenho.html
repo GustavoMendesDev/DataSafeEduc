@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análise de Desempenho</title>
 
-    <link rel="stylesheet" href="../css/estilo.css">
+  
     <link rel="stylesheet" href="../css/educacional-dash.css">
+    <link rel="stylesheet" href="../css/layout.css">
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -16,21 +17,22 @@
 <body>
 <div class="dashboard-container">
 
-    <!-- SIDEBAR (COPIADA IGUAL) -->
-    <aside class="sidebar">
-        <div class="sidebar-profile">
-            <div class="profile-photo"></div>
-            <h3 class="profile-name">Ricardo Almeida</h3>
-            <p class="profile-title">Coordenador</p>
-        </div>
 
-        <nav class="sidebar-nav">
-            <button class="nav-btn">Temas Cobrados</button>
-            <button class="nav-btn active">Monitoramento</button>
-            <button class="nav-btn">Atuação Regional</button>
-            <button class="nav-btn">Conteúdo por Habilidade</button>
-        </nav>
-    </aside>
+  <!-- BARRA LATERAL -->
+  <aside class="barra-lateral">
+    <div class="perfil-lateral">
+      <div class="foto-perfil"></div>
+      <p class="nome-perfil">Ricardo Almeida</p>
+      <p class="cargo-perfil">Coordenador</p>
+    </div>
+    <nav class="nav-lateral">
+      <button class="botao-nav">Temas Cobrados</button>
+      <button class="botao-nav ativo">Painel de Monitoramento</button>
+      <button class="botao-nav">Atuação Regional de Questões</button>
+      <button class="botao-nav">Conteúdo por Habilidade</button>
+      <button class="botao-nav">Gerenciamento de Usuários</button>
+    </nav>
+  </aside>
 
     <!-- CONTEÚDO -->
     <main class="main-content">
