@@ -19,7 +19,7 @@
     <main>
         <div class="container-formulario">
 
-            <a class="ancora" href="./index.html"><img class="voltar" src="./assets/icon/arrow_back.png" alt=""></a>
+            <a class="ancora" href="./index"><img class="voltar" src="./assets/icon/arrow_back.png" alt=""></a>
 
             <!-- logo acima -->
             <img src="./assets/imgs/logoDataSafeRemastered-removebg-preview.png" id="Logo"> 
@@ -41,7 +41,7 @@
 
             <button onclick="entrar()">Entrar</button>
 
-            <p class="sub-titulo">Ainda não tem uma conta? <a href="./cadastro.html">Cadastre-se</a></p>
+            <p class="sub-titulo">Ainda não tem uma conta? <a href="./cadastro">Cadastre-se</a></p>
         </div>
 
         <div class="container">
@@ -77,7 +77,7 @@
         console.log("FORM SENHA: ", senhaVar);
 
         setTimeout(function () {
-            window.location = "educacional-dash.html";
+            window.location = "dash-monitoramento.html";
         }, 1000); // apenas para exibir o loading
 
         fetch("/usuarios/autenticar", {
@@ -104,7 +104,7 @@
                     sessionStorage.ID_USUARIO = json.id;
 
                     setTimeout(function () {
-                        window.location = "educacional-dash.html.html";
+                        window.location = "dash-monitoramento.html";
                     }, 1000);
                 });
 
