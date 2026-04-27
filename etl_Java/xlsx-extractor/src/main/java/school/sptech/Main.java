@@ -14,9 +14,9 @@ public class Main {
 
 // caminho raiz (\DataSafeEduc\etl_Java\xlsx-extractor> )
 // 1. Defina os caminhos dos arquivos
-        String caminhoHabilidades = "src\\main\\resources\\matriz_referencia_enem.xlsx";
-        String caminhoQuestoes = "src\\main\\resources\\questoesEnem.xlsx";
-        String caminhoNotasMunicipio = "src\\main\\resources\\municipioDeSaoPauloResutadosEnem.xlsx";
+        String caminhoHabilidades = "matriz_referencia_enem.xlsx";
+        String caminhoQuestoes = "questoesEnem.xlsx";
+        String caminhoNotasMunicipio = "municipioDeSaoPauloResutadosEnem.xlsx";
 
         // 2. Crie APENAS UM leitor
         LeitorExcelQuestaoDao leitor = new LeitorExcelQuestaoDao();

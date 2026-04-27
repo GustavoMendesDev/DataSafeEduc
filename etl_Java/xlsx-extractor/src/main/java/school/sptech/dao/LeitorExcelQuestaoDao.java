@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import school.sptech.ConexaoBanco;
+import school.sptech.S3Service;
 import school.sptech.dto.Dificuldade;
 import school.sptech.dto.Habilidade;
 import school.sptech.dto.Questao;
@@ -18,6 +19,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +76,7 @@ public class LeitorExcelQuestaoDao {
         conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
                 4,"Ciências Humanas", "CH");
 
-        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
+        try (  InputStream arquivo = S3Service.getArquivo(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);){
             System.out.println("[] - (LeitorExcelQuestao) - (lerHabilidades) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
             Integer id = 0 ;
@@ -141,7 +143,7 @@ public class LeitorExcelQuestaoDao {
 
     public List <Questao> lerQuestoes (String nomeArquivo) {
 
-        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
+        try (InputStream arquivo = S3Service.getArquivo(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);){
             Integer id = 0 ;
 

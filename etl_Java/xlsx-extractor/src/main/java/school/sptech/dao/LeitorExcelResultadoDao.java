@@ -1,6 +1,7 @@
 package school.sptech.dao;
 
 import school.sptech.ConexaoBanco;
+import school.sptech.S3Service;
 import school.sptech.dto.NotaMunicipal;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,6 +11,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -49,7 +51,7 @@ public class LeitorExcelResultadoDao {
     public void extrairExcelResultado(String nomeArquivo) {
 
 
-        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
+        try (InputStream arquivo = S3Service.getArquivo(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);) {
             System.out.println("[] - (leitorExcelResultadoDao) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
 
