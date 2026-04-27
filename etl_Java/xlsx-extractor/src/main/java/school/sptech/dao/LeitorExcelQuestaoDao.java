@@ -1,273 +1,231 @@
 package school.sptech.dao;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import school.sptech.ConexaoBanco;
 import school.sptech.dto.Dificuldade;
 import school.sptech.dto.Habilidade;
 import school.sptech.dto.Questao;
 import school.sptech.enums.SiglaEnum;
-import school.sptech.TabelasBanco;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import java.io.InputStream;
+import java.util.*;
 
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL;
 import static school.sptech.dto.Habilidade.buscarHabilidade;
 
 public class LeitorExcelQuestaoDao {
 
-    private List <Habilidade> habilidades = new ArrayList<>();
-    private List<Questao> questoes = new ArrayList<>();
+    private final List<Habilidade> habilidades = new ArrayList<>();
+    private final List<Questao> questoes = new ArrayList<>();
 
+    private final JdbcTemplate conexao = new ConexaoBanco().getConnection();
 
-    ConexaoBanco conexaoBanco = new ConexaoBanco();
-    JdbcTemplate conexao = conexaoBanco.getConnection();
+    public List<Habilidade> lerHabilidades(InputStream stream) {
+        habilidades.clear();
 
+        try (Workbook workbook = new XSSFWorkbook(stream)) {
+            System.out.println("[] - (LeitorExcelQuestaoDao) - (lerHabilidades) - Leitura OK");
 
-     public void adicionarHabilidade(Habilidade habilidade){
-         habilidades.add(habilidade);
-     }
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rows = sheet.iterator();
 
-     public void adicionarQuestao(Questao questao){
-         questoes.add(questao);
-     }
+            if (rows.hasNext()) rows.next(); // header
 
+            int nextId = obterProximoId("habilidade");
 
-    public void removerHabilidade(Habilidade habilidade){
-         for(int i = 0; i < habilidades.size(); i++){
-             if(habilidades.get(i).equals(habilidade)){
-                 habilidades.remove(i);
-             }
-         }
-    }
+            while (rows.hasNext()) {
+                Row row = rows.next();
 
-    public void removerQuestao(Questao questao){
-         for(int i = 0; i < questoes.size(); i++){
-             if(questoes.get(i).equals(questao)){
-                 questoes.remove(i);
-                 i--;
-             }
-         }
-    }
+                // Colunas esperadas: 1=sigla, 2=numero, 3=descricao
+                String siglaStr = getString(row, 1);
+                Integer numero = getInt(row, 2);
+                String descricao = getString(row, 3);
 
-
-    public List <Habilidade> lerHabilidades (String nomeArquivo) {
-
-        conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
-                1,"Linguagens e Códigos", "LC") ;
-
-        conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
-                2,"Matematica", "MT");
-        conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
-                3,"Ciências da Natureza", "CN");
-
-        conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
-                4,"Ciências Humanas", "CH");
-
-        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
-             Workbook workbook = new XSSFWorkbook(arquivo);){
-            System.out.println("[] - (LeitorExcelQuestao) - (lerHabilidades) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
-            Integer id = 0 ;
-            Sheet sheetHabilidades = workbook.getSheetAt(0);
-            Integer idAreaConhecimento = 0 ;
-
-            Iterator<Row> rowIterator = sheetHabilidades.iterator();
-
-            if (rowIterator.hasNext()) {
-                rowIterator.next();
-            }
-
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                Iterator<Cell> cellIterator = row.cellIterator();
-
-                Habilidade habilidade = new Habilidade();
-
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-
-                    switch (cell.getColumnIndex()) {
-                        case 1:
-                            SiglaEnum sigla = SiglaEnum.encontrarSigla(cell.getStringCellValue());
-
-                            idAreaConhecimento = sigla.getCodigo();
-
-                            habilidade.setSigla(sigla);
-
-                            break;
-                        case 2:
-                            habilidade.setNumero((int) cell.getNumericCellValue());
-                            break;
-                        case 3:
-                            habilidade.setDescricao(cell.getStringCellValue());
-                            break;
-
-                    }
-
-
+                if (siglaStr == null || numero == null || descricao == null || descricao.isBlank()) {
+                    // pula linhas inválidas
+                    continue;
                 }
 
+                SiglaEnum sigla = SiglaEnum.encontrarSigla(siglaStr.trim());
+                if (sigla == null) continue;
 
-                id++;
-                habilidade.setId(id);
-                adicionarHabilidade(habilidade);
+                Habilidade hab = new Habilidade();
+                hab.setId(nextId);
+                hab.setSigla(sigla);
+                hab.setNumero(numero);
+                hab.setDescricao(descricao);
 
-                conexao.update("INSERT INTO habilidade (id, numero, descricao, fkAreaConhecimento) VALUES (?, ?, ?, ? ) ",
-                        id, habilidade.getNumero(), habilidade.getDescricao(), idAreaConhecimento);
+                habilidades.add(hab);
 
-                System.out.println("[] - (LeitorExcelQuestao) - (lerHabilidades) - Inserção da habilidade  " + habilidade.getNumero() +" " + habilidade.getSigla() + " Realizada com sucesso! ");
+                // fkAreaConhecimento = sigla.getCodigo() (assumindo isso)
+                conexao.update(
+                        "INSERT INTO habilidade (id, numero, descricao, fkAreaConhecimento) VALUES (?, ?, ?, ?)",
+                        hab.getId(), hab.getNumero(), hab.getDescricao(), sigla.getCodigo()
+                );
 
-
-
+                System.out.println("[] - Inseriu habilidade: " + hab.getSigla() + " " + hab.getNumero());
+                nextId++;
             }
+
         } catch (Exception e) {
-            System.out.println("Erro " + e);
+            System.out.println("Erro (lerHabilidades): " + e.getMessage());
+            e.printStackTrace();
         }
 
         return habilidades;
     }
 
+    public List<Questao> lerQuestoes(InputStream stream) {
+        questoes.clear();
 
+        try (Workbook workbook = new XSSFWorkbook(stream)) {
+            System.out.println("[] - (LeitorExcelQuestaoDao) - (lerQuestoes) - Leitura OK");
 
-    public List <Questao> lerQuestoes (String nomeArquivo) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rows = sheet.iterator();
 
-        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
-             Workbook workbook = new XSSFWorkbook(arquivo);){
-            Integer id = 0 ;
+            if (rows.hasNext()) rows.next(); // header
 
-            Sheet sheetHabilidades = workbook.getSheetAt(0);
+            int nextTriId = obterProximoId("parametroTri");
 
-            Iterator<Row> rowIterator = sheetHabilidades.iterator();
+            while (rows.hasNext()) {
+                Row row = rows.next();
 
-            if (rowIterator.hasNext()) {
-                rowIterator.next();
-            }
-            System.out.println("[] - (LeitorExcelQuestao) - (lerQuestoes) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
+                // Colunas: 1=sigla, 2=codigoItem, 3=gabarito, 4=numeroHabilidade, 7=a, 8=b, 9=c
+                String siglaStr = getString(row, 1);
+                Integer codigoItem = getInt(row, 2);
 
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
+                // se faltou dado essencial, pula
+                if (siglaStr == null || codigoItem == null) continue;
 
-                Boolean questaoDuplicada = false;
-                String dificuldadeQuestao = "";
+                SiglaEnum sigla = SiglaEnum.encontrarSigla(siglaStr.trim());
+                if (sigla == null) continue;
 
-
-
-                Iterator<Cell> cellIterator = row.cellIterator();
+                // duplicidade: se já existe no "questoes" ou no banco, pule
+                if (jaExisteCodigoNaLista(codigoItem) || jaExisteCodigoNoBanco(codigoItem)) {
+                    continue;
+                }
 
                 Questao questao = new Questao();
+                questao.setArea(sigla);
+                questao.setCodigoItem(codigoItem);
+
+                String gabarito = getString(row, 3);
+                if (gabarito != null) questao.setGabarito(gabarito);
+
+                Integer numeroHab = getInt(row, 4);
+                if (numeroHab == null) continue;
+
+                Habilidade habilidade = buscarHabilidade(habilidades, sigla, numeroHab);
+                if (habilidade == null) {
+                    // habilidade não encontrada — evita NPE e pula
+                    continue;
+                }
+                questao.setHabilidade(habilidade);
+
+                Double a = getDouble(row, 7);
+                Double b = getDouble(row, 8);
+                Double c = getDouble(row, 9);
+
+                if (a == null || b == null || c == null) {
+                    // sem TRI completo, pula
+                    continue;
+                }
 
                 Dificuldade dificuldade = new Dificuldade();
+                dificuldade.setId(nextTriId);
+                dificuldade.setParametro_a(a);
+                dificuldade.setParametro_b(b);
+                dificuldade.setParametro_c(c);
 
-                SiglaEnum sigla;
+                // IMPORTANTE: calcular depois de ter os parâmetros
+                String nivel = dificuldade.calcularDificuldade(b);
+                questao.setDificuldade(dificuldade);
 
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
+                // persiste
+                conexao.update(
+                        "INSERT INTO parametroTri (id, nivel, parametroA, parametroB, parametroC) VALUES (?, ?, ?, ?, ?)",
+                        nextTriId, nivel, a, b, c
+                );
 
-                    switch (cell.getColumnIndex()) {
-                        case 1:
-                            sigla = SiglaEnum.encontrarSigla(cell.getStringCellValue());
-                            questao.setArea(sigla);
-                            break;
+                conexao.update(
+                        "INSERT INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES (?, ?, ?, ?)",
+                        questao.getCodigoItem(), 2024, habilidade.getId(), nextTriId
+                );
 
-                        case 2:
-                            int codigoExcel = (int) cell.getNumericCellValue();
+                questoes.add(questao);
+                System.out.println("[] - Inseriu questão: " + questao.getCodigoItem());
 
-                            if (questao.jaExisteEsseCodigo(questoes, codigoExcel)) {
-//                                System.out.println("Pulando questão duplicada: " + codigoExcel);
-                                questaoDuplicada = true;
-                            } else {
-                                questao.setCodigoItem(codigoExcel);
-                            }
-                            break;
-
-                        case 3:
-                            questao.setGabarito(cell.getStringCellValue());
-
-                            break;
-
-                        case 4:
-                            Integer numero = (int) cell.getNumericCellValue();
-
-                            Habilidade habilidade = buscarHabilidade(habilidades, questao.getArea(), numero);
-                            questao.setHabilidade(habilidade);
-
-                            break;
-                        case 7:
-
-                            dificuldade.setParametro_a(cell.getNumericCellValue());
-                            break;
-                        case 8:
-                            dificuldadeQuestao = dificuldade.calcularDificuldade(cell.getNumericCellValue());
-                            dificuldade.setParametro_b(cell.getNumericCellValue());
-                            break;
-                        case 9:
-
-                            dificuldade.setParametro_c(cell.getNumericCellValue());
-                            questao.setDificuldade(dificuldade);
-                            break;
-                    }
-
-
-
-                }
-
-
-
-                if (!questaoDuplicada) {
-                    id++;
-                    dificuldade.setId(id);
-
-                    adicionarQuestao(questao);
-//                    System.out.println(dificuldadeQuestao);
-
-                    conexao.update("INSERT INTO parametroTri (id , nivel, parametroA,  parametroB, parametroC ) VALUES (?, ?, ? ,?, ? ) ",
-                    id, dificuldadeQuestao,dificuldade.getParametro_a(), dificuldade.getParametro_b(), dificuldade.getParametro_c());
-
-
-                    conexao.update("INSERT INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES (?, ?, ? ,? )",
-                            questao.getCodigoItem(), 2024, questao.getHabildade().getId(), id
-                    );
-                    System.out.println("[] - (LeitorExcelQuestao) - (lerQuestoes) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
-                }
+                nextTriId++;
             }
 
         } catch (Exception e) {
-            System.out.println("Erro " + e);
+            System.out.println("Erro (lerQuestoes): " + e.getMessage());
+            e.printStackTrace();
         }
-        System.out.println(questoes.size() + " questoes encontradas.");
+
+        System.out.println(questoes.size() + " questões inseridas.");
         return questoes;
     }
 
+    // ---------------- helpers ----------------
 
+    private String getString(Row row, int col) {
+        Cell cell = row.getCell(col, RETURN_BLANK_AS_NULL);
+        if (cell == null) return null;
 
-    public void mostrarHabilidades (){
-        for (Habilidade habilidade : habilidades){
-            System.out.println(
-             "Sigla : "+ habilidade.getSigla() +
-            "| Habilidade : "+ habilidade.getNumero() +
-            "| Descricao: "+ habilidade.getDescricao() );
+        DataFormatter fmt = new DataFormatter();
+        String v = fmt.formatCellValue(cell);
+        return (v == null || v.isBlank()) ? null : v.trim();
+    }
+
+    private Integer getInt(Row row, int col) {
+        Cell cell = row.getCell(col, RETURN_BLANK_AS_NULL);
+        if (cell == null) return null;
+
+        try {
+            if (cell.getCellType() == CellType.NUMERIC) {
+                return (int) cell.getNumericCellValue();
+            }
+            String s = new DataFormatter().formatCellValue(cell).trim();
+            if (s.isBlank()) return null;
+            return Integer.parseInt(s);
+        } catch (Exception e) {
+            return null;
         }
     }
 
-    public void mostrarQuestoes(){
-        for (Questao questao : questoes){
-            System.out.println(questao.toString());
+    private Double getDouble(Row row, int col) {
+        Cell cell = row.getCell(col, RETURN_BLANK_AS_NULL);
+        if (cell == null) return null;
+
+        try {
+            if (cell.getCellType() == CellType.NUMERIC) return cell.getNumericCellValue();
+            String s = new DataFormatter().formatCellValue(cell).trim();
+            if (s.isBlank()) return null;
+            return Double.parseDouble(s.replace(",", "."));
+        } catch (Exception e) {
+            return null;
         }
     }
 
+    private boolean jaExisteCodigoNaLista(int codigo) {
+        return questoes.stream().anyMatch(q -> q.getCodigoItem() == codigo);
+    }
 
+    private boolean jaExisteCodigoNoBanco(int codigo) {
+        Integer count = conexao.queryForObject(
+                "SELECT COUNT(*) FROM questao WHERE codigoItem = ?",
+                Integer.class,
+                codigo
+        );
+        return count != null && count > 0;
+    }
 
-
-
-
+    private int obterProximoId(String tabela) {
+        Integer max = conexao.queryForObject("SELECT COALESCE(MAX(id), 0) FROM " + tabela, Integer.class);
+        return (max == null ? 1 : max + 1);
+    }
 }

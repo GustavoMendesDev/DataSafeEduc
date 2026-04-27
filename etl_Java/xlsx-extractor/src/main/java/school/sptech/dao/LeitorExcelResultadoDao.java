@@ -1,138 +1,83 @@
 package school.sptech.dao;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.jdbc.core.JdbcTemplate;
 import school.sptech.ConexaoBanco;
 import school.sptech.dto.NotaMunicipal;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-
 public class LeitorExcelResultadoDao {
 
-    private List<Double> notasLc = new ArrayList<>();
-    private List<Double> notasCh = new ArrayList<>();
-    private List<Double> notasMt = new ArrayList<>();
-    private List<Double> notasCn = new ArrayList<>();
+    private final List<Double> notasLc = new ArrayList<>();
+    private final List<Double> notasCh = new ArrayList<>();
+    private final List<Double> notasMt = new ArrayList<>();
+    private final List<Double> notasCn = new ArrayList<>();
 
+    private final JdbcTemplate conexao = new ConexaoBanco().getConnection();
 
-    ConexaoBanco conexaoBanco = new ConexaoBanco();
-    JdbcTemplate conexao = conexaoBanco.getConnection();
+    public void extrairExcelResultado(InputStream stream) {
+        notasLc.clear();
+        notasCh.clear();
+        notasMt.clear();
+        notasCn.clear();
 
-    public void adicionarNotaLc(Double nota) {
-        notasLc.add(nota);
-    }
+        try (Workbook workbook = new XSSFWorkbook(stream)) {
+            System.out.println("[] - (LeitorExcelResultadoDao) - Leitura OK");
 
-    public void adicionarNotaCn(Double nota) {
-        notasCn.add(nota);
-    }
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rows = sheet.iterator();
 
-    public void adicionarNotaCh(Double nota) {
-        notasCh.add(nota);
-    }
+            if (rows.hasNext()) rows.next(); // header
 
-    public void adicionarNotaMt(Double nota) {
-        notasMt.add(nota);
-    }
+            while (rows.hasNext()) {
+                Row row = rows.next();
 
-
-    public void extrairExcelResultado(String nomeArquivo) {
-
-
-        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
-             Workbook workbook = new XSSFWorkbook(arquivo);) {
-            System.out.println("[] - (leitorExcelResultadoDao) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
-
-            Sheet sheetQuestoes = workbook.getSheetAt(0);
-
-            Iterator<Row> rowIterator = sheetQuestoes.iterator();
-
-            if (rowIterator.hasNext()) {
-                rowIterator.next();
-
+                // colunas 22..25
+                addIfNotNull(notasCn, extrairValorNumerico(row.getCell(22)));
+                addIfNotNull(notasCh, extrairValorNumerico(row.getCell(23)));
+                addIfNotNull(notasLc, extrairValorNumerico(row.getCell(24)));
+                addIfNotNull(notasMt, extrairValorNumerico(row.getCell(25)));
             }
 
-
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                Iterator<Cell> cellIterator = row.cellIterator();
-
-
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-
-                    switch (cell.getColumnIndex()) {
-                        case 22:
-                            Double notaCn = extrairValorNumerico(cell);
-                            if (notaCn != null) adicionarNotaCn(notaCn);
-                            break;
-                        case 23:
-                            Double notaCh = extrairValorNumerico(cell);
-                            if (notaCh != null) adicionarNotaCh(notaCh);
-                            break;
-                        case 24:
-                            Double notaLc = extrairValorNumerico(cell);
-                            if (notaLc != null) adicionarNotaLc(notaLc);
-                            break;
-                        case 25:
-                            Double notaMt = extrairValorNumerico(cell);
-                            if (notaMt != null) adicionarNotaMt(notaMt);
-                            break;
-                    }
-                }
-            }
-
-            System.out.println("Leitura da notas realizadas com sucesso!");
+            System.out.println("Leitura das notas realizada com sucesso!");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private void addIfNotNull(List<Double> lista, Double v) {
+        if (v != null) lista.add(v);
+    }
 
     public NotaMunicipal calcularMediaTemas() {
-
-// 10 , 5 , 2 , 13 , 15 , 18
-        // 10 , 2,
-
-
-        Double mediaLc = notasLc.isEmpty() ? 0.0 :
-                notasLc.stream().mapToDouble(Double::doubleValue).sum() / notasLc.size();
-
-        Double mediaMt = notasMt.isEmpty() ? 0.0 :
-                notasMt.stream().mapToDouble(Double::doubleValue).sum() / notasMt.size();
-
-        Double mediaCn = notasCn.isEmpty() ? 0.0 :
-                notasCn.stream().mapToDouble(Double::doubleValue).sum() / notasCn.size();
-
-        Double mediaCh = notasCh.isEmpty() ? 0.0 :
-                notasCh.stream().mapToDouble(Double::doubleValue).sum() / notasCh.size();
+        Double mediaLc = media(notasLc);
+        Double mediaMt = media(notasMt);
+        Double mediaCn = media(notasCn);
+        Double mediaCh = media(notasCh);
 
         NotaMunicipal notaMunicipal = new NotaMunicipal(mediaCn, mediaCh, mediaMt, mediaLc);
 
+        conexao.update(
+                "INSERT INTO notaMunicipal (matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas) VALUES (?, ?, ?, ?)",
+                mediaMt, mediaLc, mediaCn, mediaCh
+        );
 
-        conexao.update("INSERT INTO notaMunicipal ( matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas) VALUES (?, ?, ?, ? ) ",
-                mediaMt, mediaLc, mediaCn, mediaCh);
-
-        System.out.println(("[] - (LeitorExcelResultadoDao) - (extrairExcelResultado) - Inserção das notas %.2f %.2f %.2f %.2f Realizada com sucesso! ").formatted(mediaCn, mediaCh, mediaMt, mediaLc));
-
-
-        System.out.println("\n" + notasCn.size() + " " + notasCh.size() + " " + notasMt.size() + " " + notasLc.size());
-
+        System.out.printf("[] - Inseriu notas: CN=%.2f CH=%.2f MT=%.2f LC=%.2f%n", mediaCn, mediaCh, mediaMt, mediaLc);
         return notaMunicipal;
     }
 
+    private Double media(List<Double> lista) {
+        return lista.isEmpty() ? 0.0 : lista.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+    }
 
     private Double extrairValorNumerico(Cell cell) {
+        if (cell == null) return null;
+
         switch (cell.getCellType()) {
             case NUMERIC:
                 return cell.getNumericCellValue();
@@ -140,20 +85,13 @@ public class LeitorExcelResultadoDao {
                 String valor = cell.getStringCellValue().trim();
                 if (valor.isEmpty()) return null;
                 try {
-                    return Double.parseDouble(valor);
+                    return Double.parseDouble(valor.replace(",", "."));
                 } catch (NumberFormatException e) {
                     return null;
                 }
             case BLANK:
-                return null;
             default:
                 return null;
         }
     }
-
-
 }
-
-
-
-

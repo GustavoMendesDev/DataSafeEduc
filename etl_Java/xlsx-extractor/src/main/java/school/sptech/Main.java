@@ -3,40 +3,42 @@ package school.sptech;
 import school.sptech.dao.LeitorExcelQuestaoDao;
 import school.sptech.dao.LeitorExcelResultadoDao;
 
+import java.io.InputStream;
+
 import static school.sptech.TabelasBanco.tabelasBanco;
 
-
 public class Main {
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
 
         tabelasBanco();
 
+        String bucket = "datasafe-bucket";
+        S3Downloader s3 = new S3Downloader(bucket);
 
-// caminho raiz (\DataSafeEduc\etl_Java\xlsx-extractor> )
-// 1. Defina os caminhos dos arquivos
-        String caminhoHabilidades = "src\\main\\resources\\matriz_referencia_enem.xlsx";
-        String caminhoQuestoes = "src\\main\\resources\\questoesEnem.xlsx";
-        String caminhoNotasMunicipio = "src\\main\\resources\\municipioDeSaoPauloResutadosEnem.xlsx";
-
-        // 2. Crie APENAS UM leitor
         LeitorExcelQuestaoDao leitor = new LeitorExcelQuestaoDao();
 
-        // 3. Use o mesmo leitor para carregar as habilidades primeiro
         System.out.println("--- Carregando Habilidades ---");
-        leitor.lerHabilidades(caminhoHabilidades);
-//        leitor.mostrarHabilidades();
+        try (InputStream in = s3.baixarArquivo("matriz_referencia_enem.xlsx")) {
+            leitor.lerHabilidades(in);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        // 4. Use o MESMO leitor para ler as questões
         System.out.println("\n--- Carregando Questões ---");
-        leitor.lerQuestoes(caminhoQuestoes);
-//        leitor.mostrarQuestoes();
+        try (InputStream in = s3.baixarArquivo("questoesEnem.xlsx")) {
+            leitor.lerQuestoes(in);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         LeitorExcelResultadoDao leitorNotas = new LeitorExcelResultadoDao();
 
         System.out.println("\n--- Carregando Notas ---");
-        leitorNotas.extrairExcelResultado(caminhoNotasMunicipio);
-        leitorNotas.calcularMediaTemas();
-
-
+        try (InputStream in = s3.baixarArquivo("municipioDeSaoPauloResutadosEnem.xlsx")) {
+            leitorNotas.extrairExcelResultado(in);
+            leitorNotas.calcularMediaTemas();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
