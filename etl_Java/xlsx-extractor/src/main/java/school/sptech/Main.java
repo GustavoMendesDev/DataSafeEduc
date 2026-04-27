@@ -3,11 +3,29 @@ package school.sptech;
 import school.sptech.dao.LeitorExcelQuestaoDao;
 import school.sptech.dao.LeitorExcelResultadoDao;
 
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+
 import static school.sptech.TabelasBanco.tabelasBanco;
 
 
 public class Main {
     public static void main(String[] args)  {
+
+        DefaultCredentialsProvider defaultCredentialsProvider = DefaultCredentialsProvider
+                .builder().build();
+
+
+        // Use it with any service client.
+        S3Client s3Client = S3Client.builder()
+                .region(Region.US_EAST_1)
+                .credentialsProvider(defaultCredentialsProvider)
+                .build();
+
+        // Now you can use the client with the default credentials chain.
+        s3Client.listBuckets();
+
 
         tabelasBanco();
 
