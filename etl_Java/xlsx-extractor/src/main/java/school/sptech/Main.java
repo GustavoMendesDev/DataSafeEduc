@@ -12,7 +12,7 @@ public class Main {
 
         tabelasBanco();
 
-        String bucket = "datasafe-bucket";
+        String bucket = "data-safe-s3";
         S3Downloader s3 = new S3Downloader(bucket);
 
         LeitorExcelQuestaoDao leitor = new LeitorExcelQuestaoDao();
