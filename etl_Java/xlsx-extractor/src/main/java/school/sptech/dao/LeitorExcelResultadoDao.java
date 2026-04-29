@@ -12,12 +12,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import static school.sptech.dao.LeitorExcelQuestaoDao.formatter;
 
 
 public class LeitorExcelResultadoDao {
@@ -125,7 +128,7 @@ public class LeitorExcelResultadoDao {
         conexao.update("INSERT INTO notaMunicipal ( matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas) VALUES (?, ?, ?, ? ) ",
                 mediaMt, mediaLc, mediaCn, mediaCh);
 
-        System.out.println(("[] - (LeitorExcelResultadoDao) - (extrairExcelResultado) - Inserção das notas %.2f %.2f %.2f %.2f Realizada com sucesso! ").formatted(mediaCn, mediaCh, mediaMt, mediaLc));
+        System.out.println(("["+ LocalDateTime.now().format(formatter) + "] - (LeitorExcelResultadoDao) - (extrairExcelResultado) - Inserção das notas %.2f %.2f %.2f %.2f Realizada com sucesso! ").formatted(mediaCn, mediaCh, mediaMt, mediaLc));
 
 
         System.out.println("\n" + notasCn.size() + " " + notasCh.size() + " " + notasMt.size() + " " + notasLc.size());
