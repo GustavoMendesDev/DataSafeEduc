@@ -20,6 +20,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -154,7 +156,7 @@ public class LeitorExcelQuestaoDao {
             if (rowIterator.hasNext()) {
                 rowIterator.next();
             }
-            System.out.println("[] - (LeitorExcelQuestao) - (lerQuestoes) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
+            System.out.println("["+ LocalDateTime.now().format(formatter) +"] - (LeitorExcelQuestao) - (lerQuestoes) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
@@ -239,7 +241,7 @@ public class LeitorExcelQuestaoDao {
                     conexao.update("INSERT INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES (?, ?, ? ,? )",
                             questao.getCodigoItem(), 2024, questao.getHabildade().getId(), id
                     );
-                    System.out.println("[] - (LeitorExcelQuestao) - (lerQuestoes) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
+                    System.out.println("["+ LocalDateTime.now().format(formatter) + "] - (LeitorExcelQuestao) - (lerQuestoes) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
                 }
             }
 
@@ -266,6 +268,8 @@ public class LeitorExcelQuestaoDao {
             System.out.println(questao.toString());
         }
     }
+
+    static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
 
 
