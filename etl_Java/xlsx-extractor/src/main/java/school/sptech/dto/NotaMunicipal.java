@@ -1,6 +1,5 @@
 package school.sptech.dto;
 
-import javax.swing.text.StyledEditorKit;
 
 public class NotaMunicipal {
 
