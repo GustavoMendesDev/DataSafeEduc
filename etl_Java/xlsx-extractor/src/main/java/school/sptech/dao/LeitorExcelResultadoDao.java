@@ -3,6 +3,7 @@ package school.sptech.dao;
 import school.sptech.ConexaoBanco;
 import school.sptech.S3Service;
 import school.sptech.dto.NotaMunicipal;
+import school.sptech.dto.Nota;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static school.sptech.dao.LeitorExcelQuestaoDao.formatter;
