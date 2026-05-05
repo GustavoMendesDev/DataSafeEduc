@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <div class="dashboard-container">
+    <div class="container-painel">
       <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
@@ -25,18 +25,18 @@
           <p class="cargo-perfil">Administrador</p>
         </div>
         <nav class="nav-lateral">
-          <button class="nav-btn active">Análise e Desempenho por Tema</button>
+          <a href="analise-desempenho">
+            <button class="nav-btn">Análise e Desempenho por Tema</button></a
+          >
           <a href="dash-monitoramento"
-            ><button class="nav-btn">
+            ><button class="nav-btn active">
               Monitoramento de Desempenho por habilidade
             </button></a
           >
           <a href="lista-desempenho"
             ><button class="nav-btn">Lista de Desempenho por questão</button></a
           >
-          <a href="simulados"
-            ><button class="nav-btn">Simulados</button></a
-          >
+          <a href="simulados"><button class="nav-btn">Simulados</button></a>
           <a href="gerenciamento-professores"
             ><button class="nav-btn">Gerenciamento de professores</button></a
           >
@@ -53,29 +53,31 @@
         </header>
 
         <!-- CARDS -->
+         
+          
+         <div class="tituloSection">
+           <p class="kpi-secao-titulo">Nota média do município de São Paulo</p>
+         </div>
         <section class="cards-top">
           <div class="mini-card laranja">
+           
             <p>Matemática</p>
             <strong>529</strong>
           </div>
-
           <div class="mini-card verde">
             <p>Ciências da Natureza</p>
             <strong>495</strong>
           </div>
-
           <div class="mini-card azul">
             <p>Ciências Humanas</p>
             <strong>517</strong>
           </div>
-
           <div class="mini-card roxo">
             <p>Linguagens</p>
             <strong>528</strong>
           </div>
         </section>
 
-        <!-- GRÁFICO -->
         <section class="card">
           <div class="card-content">
             <canvas id="linhaChart"></canvas>
