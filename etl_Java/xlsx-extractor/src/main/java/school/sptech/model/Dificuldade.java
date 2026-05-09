@@ -1,7 +1,8 @@
-package school.sptech.dto;
+package school.sptech.model;
 
 public class Dificuldade {
     private Integer id;
+    private String nivel;
     private  Double parametro_a;
     private  Double parametro_b;
     private  Double parametro_c;
@@ -20,15 +21,15 @@ public class Dificuldade {
     }
 
 
-    public String calcularDificuldade (double parametro_b){
-
-        if(parametro_b < -0.5){
-            return "Facil";
+    public String calcularDificuldade(double parametro_b) {
+        if (parametro_b < -0.5) {
+            this.nivel = "Facil";
+        } else if (parametro_b <= 0.8) {
+            this.nivel = "Medio";
+        } else {
+            this.nivel = "Dificil";
         }
-        if(parametro_b <= 0.8){
-            return "Medio";
-        }
-        return "Dificil";
+        return this.nivel; // ← salva e retorna
     }
 
     public Double getParametro_a() {

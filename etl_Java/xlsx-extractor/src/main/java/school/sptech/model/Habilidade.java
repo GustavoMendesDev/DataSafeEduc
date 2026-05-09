@@ -1,4 +1,4 @@
-package school.sptech.dto;
+package school.sptech.model;
 
 import school.sptech.enums.SiglaEnum;
 
