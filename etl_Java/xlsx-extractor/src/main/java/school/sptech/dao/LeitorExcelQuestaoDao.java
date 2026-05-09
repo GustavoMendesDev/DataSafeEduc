@@ -8,7 +8,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import school.sptech.ConexaoBanco;
-import school.sptech.S3Service;
 import school.sptech.dto.Dificuldade;
 import school.sptech.dto.Habilidade;
 import school.sptech.dto.Questao;
@@ -19,18 +18,17 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import static school.sptech.Log.*;
 
 import static school.sptech.dto.Habilidade.buscarHabilidade;
 
 public class LeitorExcelQuestaoDao {
 
-    private List <Habilidade> habilidades = new ArrayList<>();
+    private List<Habilidade> habilidades = new ArrayList<>();
     private List<Questao> questoes = new ArrayList<>();
 
 
@@ -38,52 +36,52 @@ public class LeitorExcelQuestaoDao {
     JdbcTemplate conexao = conexaoBanco.getConnection();
 
 
-     public void adicionarHabilidade(Habilidade habilidade){
-         habilidades.add(habilidade);
-     }
-
-     public void adicionarQuestao(Questao questao){
-         questoes.add(questao);
-     }
-
-
-    public void removerHabilidade(Habilidade habilidade){
-         for(int i = 0; i < habilidades.size(); i++){
-             if(habilidades.get(i).equals(habilidade)){
-                 habilidades.remove(i);
-             }
-         }
+    public void adicionarHabilidade(Habilidade habilidade) {
+        habilidades.add(habilidade);
     }
 
-    public void removerQuestao(Questao questao){
-         for(int i = 0; i < questoes.size(); i++){
-             if(questoes.get(i).equals(questao)){
-                 questoes.remove(i);
-                 i--;
-             }
-         }
+    public void adicionarQuestao(Questao questao) {
+        questoes.add(questao);
     }
 
 
-    public List <Habilidade> lerHabilidades (String nomeArquivo) {
+    public void removerHabilidade(Habilidade habilidade) {
+        for (int i = 0; i < habilidades.size(); i++) {
+            if (habilidades.get(i).equals(habilidade)) {
+                habilidades.remove(i);
+            }
+        }
+    }
+
+    public void removerQuestao(Questao questao) {
+        for (int i = 0; i < questoes.size(); i++) {
+            if (questoes.get(i).equals(questao)) {
+                questoes.remove(i);
+                i--;
+            }
+        }
+    }
+
+
+    public List<Habilidade> lerHabilidades(String nomeArquivo) {
 
         conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
-                1,"Linguagens e Códigos", "LC") ;
+                1, "Linguagens e Códigos", "LC");
 
         conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
-                2,"Matematica", "MT");
+                2, "Matematica", "MT");
         conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
-                3,"Ciências da Natureza", "CN");
+                3, "Ciências da Natureza", "CN");
 
         conexao.update("INSERT INTO areaConhecimento (id, nome , sigla) VALUES (?, ?, ?) ",
-                4,"Ciências Humanas", "CH");
+                4, "Ciências Humanas", "CH");
 
-        try (  InputStream arquivo = S3Service.getArquivo(nomeArquivo);
-             Workbook workbook = new XSSFWorkbook(arquivo);){
-            System.out.println("[] - (LeitorExcelQuestao) - (lerHabilidades) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
-            Integer id = 0 ;
+        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
+             Workbook workbook = new XSSFWorkbook(arquivo);) {
+            info("[] - (LeitorExcelQuestao) - (lerHabilidades) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
+            Integer id = 0;
             Sheet sheetHabilidades = workbook.getSheetAt(0);
-            Integer idAreaConhecimento = 0 ;
+            Integer idAreaConhecimento = 0;
 
             Iterator<Row> rowIterator = sheetHabilidades.iterator();
 
@@ -129,25 +127,23 @@ public class LeitorExcelQuestaoDao {
                 conexao.update("INSERT INTO habilidade (id, numero, descricao, fkAreaConhecimento) VALUES (?, ?, ?, ? ) ",
                         id, habilidade.getNumero(), habilidade.getDescricao(), idAreaConhecimento);
 
-                System.out.println("[] - (LeitorExcelQuestao) - (lerHabilidades) - Inserção da habilidade  " + habilidade.getNumero() +" " + habilidade.getSigla() + " Realizada com sucesso! ");
-
+                info("[] - (LeitorExcelQuestao) - (lerHabilidades) - Inserção da habilidade  " + habilidade.getNumero() + " " + habilidade.getSigla() + " Realizada com sucesso! ");
 
 
             }
         } catch (Exception e) {
-            System.out.println("Erro " + e);
+            info("Erro " + e);
         }
 
         return habilidades;
     }
 
 
+    public List<Questao> lerQuestoes(String nomeArquivo) {
 
-    public List <Questao> lerQuestoes (String nomeArquivo) {
-
-        try (InputStream arquivo = S3Service.getArquivo(nomeArquivo);
-             Workbook workbook = new XSSFWorkbook(arquivo);){
-            Integer id = 0 ;
+        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
+             Workbook workbook = new XSSFWorkbook(arquivo);) {
+            Integer id = 0;
 
             Sheet sheetHabilidades = workbook.getSheetAt(0);
 
@@ -156,14 +152,13 @@ public class LeitorExcelQuestaoDao {
             if (rowIterator.hasNext()) {
                 rowIterator.next();
             }
-            System.out.println("["+ LocalDateTime.now().format(formatter) +"] - (LeitorExcelQuestao) - (lerQuestoes) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
+            info("[] - (LeitorExcelQuestao) - (lerQuestoes) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
 
                 Boolean questaoDuplicada = false;
                 String dificuldadeQuestao = "";
-
 
 
                 Iterator<Cell> cellIterator = row.cellIterator();
@@ -222,9 +217,7 @@ public class LeitorExcelQuestaoDao {
                     }
 
 
-
                 }
-
 
 
                 if (!questaoDuplicada) {
@@ -235,45 +228,38 @@ public class LeitorExcelQuestaoDao {
 //                    System.out.println(dificuldadeQuestao);
 
                     conexao.update("INSERT INTO parametroTri (id , nivel, parametroA,  parametroB, parametroC ) VALUES (?, ?, ? ,?, ? ) ",
-                    id, dificuldadeQuestao,dificuldade.getParametro_a(), dificuldade.getParametro_b(), dificuldade.getParametro_c());
+                            id, dificuldadeQuestao, dificuldade.getParametro_a(), dificuldade.getParametro_b(), dificuldade.getParametro_c());
 
 
                     conexao.update("INSERT INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES (?, ?, ? ,? )",
                             questao.getCodigoItem(), 2024, questao.getHabildade().getId(), id
                     );
-                    System.out.println("["+ LocalDateTime.now().format(formatter) + "] - (LeitorExcelQuestao) - (lerQuestoes) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
+                    info("[] - (LeitorExcelQuestao) - (lerQuestoes) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
                 }
             }
 
         } catch (Exception e) {
-            System.out.println("Erro " + e);
+            info("Erro " + e);
         }
-        System.out.println(questoes.size() + " questoes encontradas.");
+        info(questoes.size() + " questoes encontradas.");
         return questoes;
     }
 
 
-
-    public void mostrarHabilidades (){
-        for (Habilidade habilidade : habilidades){
-            System.out.println(
-             "Sigla : "+ habilidade.getSigla() +
-            "| Habilidade : "+ habilidade.getNumero() +
-            "| Descricao: "+ habilidade.getDescricao() );
+    public void mostrarHabilidades() {
+        for (Habilidade habilidade : habilidades) {
+            info(
+                    "Sigla : " + habilidade.getSigla() +
+                            "| Habilidade : " + habilidade.getNumero() +
+                            "| Descricao: " + habilidade.getDescricao());
         }
     }
 
-    public void mostrarQuestoes(){
-        for (Questao questao : questoes){
+    public void mostrarQuestoes() {
+        for (Questao questao : questoes) {
             System.out.println(questao.toString());
         }
     }
-
-    static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
-
-
-
 
 
 }

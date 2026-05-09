@@ -2,6 +2,7 @@ package school.sptech;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import school.sptech.enums.SiglaEnum;
+import static school.sptech.Log.*;
 
 
 public class TabelasBanco {
@@ -76,12 +77,14 @@ public class TabelasBanco {
         """);
 
         connection.execute("""
-            CREATE TABLE IF NOT EXISTS logAcesso (
-              id          INT         NOT NULL AUTO_INCREMENT,
-              ip          VARCHAR(45) NULL,
-              dataCriacao DATETIME    NULL,
-              PRIMARY KEY (id)
-            )
+          CREATE TABLE IF NOT EXISTS logAcesso (
+                       id            INT           NOT NULL AUTO_INCREMENT,
+                       mensagem      VARCHAR(255)  NULL,
+                       nivel         VARCHAR(20)   NULL,
+                       ip            VARCHAR(45)   NULL,
+                       dataCriacao   DATETIME      NULL,
+                       PRIMARY KEY (id)
+                     )
         """);
 
         connection.execute("""
@@ -146,10 +149,10 @@ public class TabelasBanco {
                 REFERENCES simulado (id)
             )
         """);
-        System.out.println("[] - Tabelas criadas com sucesso!");
+        info("[] - Tabelas criadas com sucesso!");
 
 
-        System.out.println("Banco de dados lido com sucesso!");
+        info("Banco de dados lido com sucesso!");
     }
 
     public void inserirNotasMunicipio() {

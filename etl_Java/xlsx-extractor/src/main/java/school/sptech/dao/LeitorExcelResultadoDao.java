@@ -1,9 +1,7 @@
 package school.sptech.dao;
 
 import school.sptech.ConexaoBanco;
-import school.sptech.S3Service;
 import school.sptech.dto.NotaMunicipal;
-import school.sptech.dto.Nota;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -12,15 +10,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import static school.sptech.Log.*;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import static school.sptech.dao.LeitorExcelQuestaoDao.formatter;
 
 
 public class LeitorExcelResultadoDao {
@@ -54,9 +50,9 @@ public class LeitorExcelResultadoDao {
     public void extrairExcelResultado(String nomeArquivo) {
 
 
-        try (InputStream arquivo = S3Service.getArquivo(nomeArquivo);
+        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);) {
-            System.out.println("[] - (leitorExcelResultadoDao) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
+            info("[] - (leitorExcelResultadoDao) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
 
             Sheet sheetQuestoes = workbook.getSheetAt(0);
 
@@ -97,7 +93,7 @@ public class LeitorExcelResultadoDao {
                 }
             }
 
-            System.out.println("Leitura da notas realizadas com sucesso!");
+            info("Leitura da notas realizadas com sucesso!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,7 +124,7 @@ public class LeitorExcelResultadoDao {
         conexao.update("INSERT INTO notaMunicipal ( matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas) VALUES (?, ?, ?, ? ) ",
                 mediaMt, mediaLc, mediaCn, mediaCh);
 
-        System.out.println(("["+ LocalDateTime.now().format(formatter) + "] - (LeitorExcelResultadoDao) - (extrairExcelResultado) - Inserção das notas %.2f %.2f %.2f %.2f Realizada com sucesso! ").formatted(mediaCn, mediaCh, mediaMt, mediaLc));
+        info(("[] - (LeitorExcelResultadoDao) - (extrairExcelResultado) - Inserção das notas %.2f %.2f %.2f %.2f Realizada com sucesso! ").formatted(mediaCn, mediaCh, mediaMt, mediaLc));
 
 
         System.out.println("\n" + notasCn.size() + " " + notasCh.size() + " " + notasMt.size() + " " + notasLc.size());
