@@ -1,25 +1,25 @@
-package school.sptech.dao;
-
-import school.sptech.ConexaoBanco;
-import school.sptech.dto.NotaMunicipal;
+package school.sptech.Reader;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.jdbc.core.JdbcTemplate;
+import school.sptech.ConexaoBanco;
+import school.sptech.model.NotaMunicipal;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import static school.sptech.Log.*;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import static school.sptech.Log.info;
+
+public class LeitorNotas {
 
 
-public class LeitorExcelResultadoDao {
+
 
     private List<Double> notasLc = new ArrayList<>();
     private List<Double> notasCh = new ArrayList<>();
@@ -45,6 +45,43 @@ public class LeitorExcelResultadoDao {
     public void adicionarNotaMt(Double nota) {
         notasMt.add(nota);
     }
+
+
+
+
+    public NotaMunicipal calcularMediaTemas() {
+
+// 10 , 5 , 2 , 13 , 15 , 18
+        // 10 , 2,
+
+
+        Double mediaLc = notasLc.isEmpty() ? 0.0 :
+                notasLc.stream().mapToDouble(Double::doubleValue).sum() / notasLc.size();
+
+        Double mediaMt = notasMt.isEmpty() ? 0.0 :
+                notasMt.stream().mapToDouble(Double::doubleValue).sum() / notasMt.size();
+
+        Double mediaCn = notasCn.isEmpty() ? 0.0 :
+                notasCn.stream().mapToDouble(Double::doubleValue).sum() / notasCn.size();
+
+        Double mediaCh = notasCh.isEmpty() ? 0.0 :
+                notasCh.stream().mapToDouble(Double::doubleValue).sum() / notasCh.size();
+
+        NotaMunicipal notaMunicipal = new NotaMunicipal(mediaCn, mediaCh, mediaMt, mediaLc);
+
+
+        conexao.update("INSERT INTO notaMunicipal ( matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas) VALUES (?, ?, ?, ? ) ",
+                mediaMt, mediaLc, mediaCn, mediaCh);
+
+        info(("[] - (LeitorExcelResultadoDao) - (extrairExcelResultado) - Inserção das notas %.2f %.2f %.2f %.2f Realizada com sucesso! ").formatted(mediaCn, mediaCh, mediaMt, mediaLc));
+
+
+        System.out.println("\n" + notasCn.size() + " " + notasCh.size() + " " + notasMt.size() + " " + notasLc.size());
+
+        return notaMunicipal;
+    }
+
+
 
 
     public void extrairExcelResultado(String nomeArquivo) {
@@ -100,39 +137,6 @@ public class LeitorExcelResultadoDao {
     }
 
 
-    public NotaMunicipal calcularMediaTemas() {
-
-// 10 , 5 , 2 , 13 , 15 , 18
-        // 10 , 2,
-
-
-        Double mediaLc = notasLc.isEmpty() ? 0.0 :
-                notasLc.stream().mapToDouble(Double::doubleValue).sum() / notasLc.size();
-
-        Double mediaMt = notasMt.isEmpty() ? 0.0 :
-                notasMt.stream().mapToDouble(Double::doubleValue).sum() / notasMt.size();
-
-        Double mediaCn = notasCn.isEmpty() ? 0.0 :
-                notasCn.stream().mapToDouble(Double::doubleValue).sum() / notasCn.size();
-
-        Double mediaCh = notasCh.isEmpty() ? 0.0 :
-                notasCh.stream().mapToDouble(Double::doubleValue).sum() / notasCh.size();
-
-        NotaMunicipal notaMunicipal = new NotaMunicipal(mediaCn, mediaCh, mediaMt, mediaLc);
-
-
-        conexao.update("INSERT INTO notaMunicipal ( matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas) VALUES (?, ?, ?, ? ) ",
-                mediaMt, mediaLc, mediaCn, mediaCh);
-
-        info(("[] - (LeitorExcelResultadoDao) - (extrairExcelResultado) - Inserção das notas %.2f %.2f %.2f %.2f Realizada com sucesso! ").formatted(mediaCn, mediaCh, mediaMt, mediaLc));
-
-
-        System.out.println("\n" + notasCn.size() + " " + notasCh.size() + " " + notasMt.size() + " " + notasLc.size());
-
-        return notaMunicipal;
-    }
-
-
     private Double extrairValorNumerico(Cell cell) {
         switch (cell.getCellType()) {
             case NUMERIC:
@@ -152,9 +156,4 @@ public class LeitorExcelResultadoDao {
         }
     }
 
-
 }
-
-
-
-

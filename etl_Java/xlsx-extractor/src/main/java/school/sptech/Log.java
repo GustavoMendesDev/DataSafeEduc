@@ -5,7 +5,10 @@ import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import school.sptech.ConexaoBanco;
+
+import school.sptech.util.Data;
+
 
 public class Log {
 
@@ -13,13 +16,7 @@ public class Log {
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    // Atributo constante para conexao com o banco de dados.
-    private static final ConexaoBanco CONEXAO_BANCO =
-            new ConexaoBanco();
 
-    // atributo para simplifação do código referente também à conexão do bd
-    private static final JdbcTemplate CONEXAO =
-            CONEXAO_BANCO.getConnection();
 
     // Métodos para informar o tipo de log que será salvo no banco
     // INFO ex: "banco conectado"
@@ -46,12 +43,8 @@ public class Log {
             String mensagem
     ) {
 
-        String dataHora =
-                LocalDateTime.now()
-                        .format(FORMATTER);
-
         System.out.println(
-                "[" + dataHora + "] "
+                "[" + Data.mostrarDataAtual() + "] "
                         + "[" + nivel + "] - "
                         + mensagem
         );
@@ -63,7 +56,7 @@ public class Log {
                     InetAddress.getLocalHost()
                             .getHostAddress();
 
-            CONEXAO.update(
+            ConexaoBanco.CONEXAO.update(
                     """
                             INSERT INTO logAcesso
                             (mensagem, nivel, ip, dataCriacao)
@@ -78,7 +71,7 @@ public class Log {
         } catch (Exception e) {
 
             System.out.println(
-                    "[" + dataHora + "] "
+                    "[" + Data.mostrarDataAtual() + "] "
                             + "[ERRO] - Falha ao salvar log no banco"
             );
         }

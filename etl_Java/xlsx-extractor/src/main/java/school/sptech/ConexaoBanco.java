@@ -9,6 +9,10 @@ public class ConexaoBanco {
 
     private final DataSource dataSource;
 
+    private static final ConexaoBanco CONEXAO_BANCO = new ConexaoBanco();
+
+    public static final JdbcTemplate CONEXAO = CONEXAO_BANCO.getConnection();
+
     public ConexaoBanco() {
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -22,4 +26,9 @@ public class ConexaoBanco {
     public JdbcTemplate getConnection() {
         return new JdbcTemplate(dataSource);
     }
+
+
+
+
+
 }

@@ -1,9 +1,8 @@
-package school.sptech.dto;
+package school.sptech.model;
 
 
 import school.sptech.enums.SiglaEnum;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Questao {
