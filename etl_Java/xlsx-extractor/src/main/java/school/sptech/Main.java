@@ -18,33 +18,35 @@ public class Main {
 
         tabelasBanco();
 
-        String caminhoHabilidades   = "src\\main\\resources\\matriz_referencia_enem.xlsx";
-        String caminhoQuestoes      = "src\\main\\resources\\questoesEnem.xlsx";
-        String caminhoNotasMunicipio = "src\\main\\resources\\municipioDeSaoPauloResutadosEnem.xlsx";
+//        String caminhoHabilidades    = "src\\main\\resources\\matriz_referencia_enem.xlsx";
+//        String caminhoQuestoes       = "src\\main\\resources\\questoesEnem.xlsx";
+//        String caminhoNotasMunicipio = "src\\main\\resources\\municipioDeSaoPauloResutadosEnem.xlsx";
 
-        // ── Habilidades ──────────────────────────────────────────
+
+        String caminhoHabilidades    = "matriz_referencia_enem.xlsx";
+        String caminhoQuestoes       = "questoesEnem.xlsx";
+        String caminhoNotasMunicipio = "municipioDeSaoPauloResutadosEnem.xlsx";
+
+
+
+        // ── 1. Habilidades ────────────────────────────────────────
         info("--- Carregando Habilidades ---");
-        LeitorQuestoes leitor = new LeitorQuestoes(caminhoHabilidades);
+        LeitorQuestoes leitor = new LeitorQuestoes(caminhoHabilidades); // lê habilidades no construtor
 
         HabilidadeDao habilidadeDao = new HabilidadeDao();
         habilidadeDao.inserirAreaConhecimento();
         habilidadeDao.inserirTodos(leitor.getHabilidades());
 
-        // ── Questões ─────────────────────────────────────────────
+        // ── 2. Questões ───────────────────────────────────────────
         info("--- Carregando Questoes ---");
-
-
-
-       leitor.lerArquivo(caminhoQuestoes);
+        leitor.lerArquivo(caminhoQuestoes); // lê questões usando habilidades já carregadas
 
         List<Questao> questoes = leitor.getQuestoes();
-
-
 
         QuestaoDao questaoDao = new QuestaoDao();
         questaoDao.inserirTodos(questoes);
 
-        // ── Notas Municipais ──────────────────────────────────────
+        // ── 3. Notas Municipais ───────────────────────────────────
         info("--- Carregando Notas ---");
         LeitorNotas leitorNotas = new LeitorNotas();
         leitorNotas.lerArquivo(caminhoNotasMunicipio);
