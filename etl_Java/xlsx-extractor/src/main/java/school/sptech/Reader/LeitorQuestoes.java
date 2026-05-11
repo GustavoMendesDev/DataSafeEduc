@@ -2,31 +2,28 @@ package school.sptech.Reader;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import school.sptech.enums.SiglaEnum;
 import school.sptech.model.Dificuldade;
 import school.sptech.model.Habilidade;
 import school.sptech.model.Questao;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import static school.sptech.Log.info;
 import static school.sptech.model.Habilidade.buscarHabilidade;
-import school.sptech.Reader.LeitorHabilidades;
 
 public class LeitorQuestoes extends BaseLeitor {
 
     private List<Questao> questoes = new ArrayList<>();
     private List<Habilidade> habilidades;
-
+    private Integer id = 0;
 
     public LeitorQuestoes(String nomeArquivoHabilidades) {
         LeitorHabilidades leitorHabilidades = new LeitorHabilidades();
+        leitorHabilidades.lerArquivo(nomeArquivoHabilidades);
         this.habilidades = leitorHabilidades.getHabilidades();
 
     }
@@ -37,7 +34,7 @@ public class LeitorQuestoes extends BaseLeitor {
 
     @Override
     public void processarLinha(Row row) {
-        Integer id = 0;
+
 
         Boolean questaoDuplicada = false;
         String dificuldadeQuestao = "";
@@ -105,7 +102,7 @@ public class LeitorQuestoes extends BaseLeitor {
 
             adicionarQuestao(questao);
 
-            info("[] - (LeitorExcelQuestao) - (lerQuestoes) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
+            info("[] - (LeitorQuestoes) - (Reader) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
         }
         info(questoes.size() + " questoes encontradas.");
 
@@ -119,8 +116,13 @@ public class LeitorQuestoes extends BaseLeitor {
         return habilidades;
     }
 
+    public Integer getId() {
+        return id;
+    }
 
-
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
 
 

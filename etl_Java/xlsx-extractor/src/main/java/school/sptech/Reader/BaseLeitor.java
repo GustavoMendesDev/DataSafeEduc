@@ -5,8 +5,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import school.sptech.ConexaoBanco;
 
 import java.io.FileInputStream;
 import java.util.Iterator;
@@ -14,9 +12,6 @@ import java.util.Iterator;
 import static school.sptech.Log.info;
 
 public class BaseLeitor {
-
-    protected final JdbcTemplate conexao = ConexaoBanco.CONEXAO;
-
 
     protected void processarLinha(Row row){}
 
