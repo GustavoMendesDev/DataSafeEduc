@@ -32,7 +32,7 @@ public class Main {
 
         // ── Questões ─────────────────────────────────────────────
         info("--- Carregando Questoes ---");
-        List<Questao> questoes = leitor.lerQuestoes(caminhoQuestoes);
+        List<Questao> questoes = leitor.lerArquivo(caminhoQuestoes);
 
         QuestaoDao questaoDao = new QuestaoDao();
         questaoDao.inserirTodos(questoes);
@@ -40,7 +40,7 @@ public class Main {
         // ── Notas Municipais ──────────────────────────────────────
         info("--- Carregando Notas ---");
         LeitorNotas leitorNotas = new LeitorNotas();
-        leitorNotas.extrairExcelResultado(caminhoNotasMunicipio);
+        leitorNotas.lerArquivo(caminhoNotasMunicipio);
 
         NotaMunicipal nota = leitorNotas.calcularMediaTemas();
 

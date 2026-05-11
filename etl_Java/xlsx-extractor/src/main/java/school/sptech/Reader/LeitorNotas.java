@@ -84,7 +84,7 @@ public class LeitorNotas {
 
 
 
-    public void extrairExcelResultado(String nomeArquivo) {
+    public void lerArquivo(String nomeArquivo) {
 
 
         try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
