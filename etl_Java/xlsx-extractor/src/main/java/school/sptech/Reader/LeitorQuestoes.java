@@ -35,7 +35,7 @@ public class LeitorQuestoes {
         questoes.add(questao);
     }
 
-    public List<Questao> lerQuestoes(String nomeArquivo) {
+    public List<Questao> lerArquivo(String nomeArquivo) {
 
         try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo);) {
@@ -78,7 +78,6 @@ public class LeitorQuestoes {
                             int codigoExcel = (int) cell.getNumericCellValue();
 
                             if (questao.jaExisteEsseCodigo(questoes, codigoExcel)) {
-//                                System.out.println("Pulando questão duplicada: " + codigoExcel);
                                 questaoDuplicada = true;
                             } else {
                                 questao.setCodigoItem(codigoExcel);
@@ -121,15 +120,7 @@ public class LeitorQuestoes {
                     dificuldade.setId(id);
 
                     adicionarQuestao(questao);
-//                    System.out.println(dificuldadeQuestao);
 
-//                    ConexaoBanco.CONEXAO.update("INSERT INTO parametroTri (id , nivel, parametroA,  parametroB, parametroC ) VALUES (?, ?, ? ,?, ? ) ",
-//                            id, dificuldadeQuestao, dificuldade.getParametro_a(), dificuldade.getParametro_b(), dificuldade.getParametro_c());
-//
-//
-//                    ConexaoBanco.CONEXAO.update("INSERT INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES (?, ?, ? ,? )",
-//                            questao.getCodigoItem(), 2024, questao.getHabildade().getId(), id
-//                    );
                     info("[] - (LeitorExcelQuestao) - (lerQuestoes) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
                 }
             }
