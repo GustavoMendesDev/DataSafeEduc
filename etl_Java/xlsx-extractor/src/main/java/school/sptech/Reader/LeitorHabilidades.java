@@ -55,6 +55,10 @@ public class LeitorHabilidades  extends  BaseLeitor{
         info("[] - (LeitorHabilidades) - Habilidade " + habilidade.getNumero()
                 + " [" + habilidade.getSigla() + "] carregada.");
     }
+
+    public List<Habilidade> getHabilidades() {
+        return habilidades;
     }
+}
 
 

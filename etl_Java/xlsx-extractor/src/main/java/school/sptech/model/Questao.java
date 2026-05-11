@@ -40,7 +40,6 @@ public class Questao {
                 return true;
             }
 
-
         }
         return false;
     }
