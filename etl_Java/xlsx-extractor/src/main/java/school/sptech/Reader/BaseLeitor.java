@@ -34,6 +34,7 @@ public class BaseLeitor {
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
+                processarLinha(row);
             }
 
         } catch (Exception e) {
