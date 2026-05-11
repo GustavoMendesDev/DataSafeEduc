@@ -1,6 +1,5 @@
 package school.sptech.Reader;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -21,7 +20,7 @@ public class BaseLeitor {
 
     protected void processarLinha(Row row){}
 
-    protected void lerArquivo(String nomeArquivo) {
+    public void lerArquivo(String nomeArquivo) {
         try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
              Workbook workbook = new XSSFWorkbook(arquivo)) {
 

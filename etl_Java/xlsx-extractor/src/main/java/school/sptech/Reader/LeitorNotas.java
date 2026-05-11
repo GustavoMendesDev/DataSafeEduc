@@ -16,7 +16,7 @@ import java.util.List;
 
 import static school.sptech.Log.info;
 
-public class LeitorNotas {
+public class LeitorNotas extends BaseLeitor {
 
 
 
@@ -83,26 +83,8 @@ public class LeitorNotas {
 
 
 
-
-    public void lerArquivo(String nomeArquivo) {
-
-
-        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
-             Workbook workbook = new XSSFWorkbook(arquivo);) {
-            info("[] - (leitorExcelResultadoDao) - Leitura do arquivo " + nomeArquivo + " Realizada com sucesso! ");
-
-            Sheet sheetQuestoes = workbook.getSheetAt(0);
-
-            Iterator<Row> rowIterator = sheetQuestoes.iterator();
-
-            if (rowIterator.hasNext()) {
-                rowIterator.next();
-
-            }
-
-
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
+    @Override
+    public void processarLinha(Row row) {
                 Iterator<Cell> cellIterator = row.cellIterator();
 
 
@@ -128,13 +110,12 @@ public class LeitorNotas {
                             break;
                     }
                 }
-            }
+        info("Leitura da notas realizadas com sucesso!");
 
-            info("Leitura da notas realizadas com sucesso!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
+
+
+
 
 
     private Double extrairValorNumerico(Cell cell) {

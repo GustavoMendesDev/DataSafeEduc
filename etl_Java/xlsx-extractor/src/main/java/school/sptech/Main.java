@@ -32,7 +32,14 @@ public class Main {
 
         // ── Questões ─────────────────────────────────────────────
         info("--- Carregando Questoes ---");
-        List<Questao> questoes = leitor.lerArquivo(caminhoQuestoes);
+
+
+
+       leitor.lerArquivo(caminhoQuestoes);
+
+        List<Questao> questoes = leitor.getQuestoes();
+
+
 
         QuestaoDao questaoDao = new QuestaoDao();
         questaoDao.inserirTodos(questoes);
