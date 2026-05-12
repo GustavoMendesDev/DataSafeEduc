@@ -25,7 +25,7 @@ public class Main {
 
         String caminhoHabilidades    = "matriz_referencia_enem.xlsx";
         String caminhoQuestoes       = "questoesEnem.xlsx";
-        String caminhoNotasMunicipio = "municipioDeSaoPauloResutadosEnem.xlsx";
+        String caminhoNotasMunicipio = "municipioDeSaoPauloResultadosEnem.xlsx";
 
 
 

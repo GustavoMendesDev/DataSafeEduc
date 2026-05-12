@@ -6,6 +6,8 @@ import software.amazon.awssdk.regions.Region;
 
 import java.io.InputStream;
 
+import static school.sptech.Log.info;
+
 public class S3Service {
 
     private static final S3Client s3 = S3Client.builder()
@@ -18,6 +20,10 @@ public class S3Service {
                 .key(nomeArquivo)
                 .build();
 
+        info("(S3Service) - Buscando: " + nomeArquivo);
         return s3.getObject(request);
+
+
+
     }
 }
