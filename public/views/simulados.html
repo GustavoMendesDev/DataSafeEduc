@@ -20,7 +20,6 @@
          <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
-          <div class="foto-perfil"></div>
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
@@ -79,15 +78,9 @@
                                 </tr>
                             </thead>
 
-                            <tbody>
+                            <tbody id="tbodySimulados">
                                 <tr>
-                                    <td>01</td>
-                                    <td>Códigos e Linguagens</td>
-                                    <td>H1, H2, H5</td>
-                                    <td>Difícil</td>
-                                    <td>15</td>
-                                    <td><button class="icon-btn" onclick="abrirEditar()">⚙️</button></td>
-                                    <td><button class="icon-btn">🗑️</button></td>
+                                    <td colspan="7">Carregando simulados...</td>
                                 </tr>
                             </tbody>
 
@@ -109,15 +102,15 @@
 
             <h2>Novo Simulado</h2>
 
-            <input placeholder="Nome do simulado">
+            <input id="inputNomeSimulado" placeholder="Nome do simulado">
 
             <!-- ÁREA -->
             <label>Área:</label>
             <div class="filtros">
-                <span onclick="selectArea(this)">Matemática</span>
-                <span onclick="selectArea(this)">Linguagens</span>
-                <span onclick="selectArea(this)">Ciências Humanas</span>
-                <span onclick="selectArea(this)">Ciências da Natureza</span>
+                <span data-sigla="MT" onclick="selectArea(this)">Matemática</span>
+                <span data-sigla="LC" onclick="selectArea(this)">Linguagens</span>
+                <span data-sigla="CH" onclick="selectArea(this)">Ciências Humanas</span>
+                <span data-sigla="CN" onclick="selectArea(this)">Ciências da Natureza</span>
             </div>
 
             
@@ -125,23 +118,23 @@
             <!-- DIFICULDADE -->
             <label>Dificuldade:</label>
             <div class="filtros">
-                <span onclick="selectDificuldade(this)">Fácil</span>
-                <span onclick="selectDificuldade(this)">Médio</span>
-                <span onclick="selectDificuldade(this)">Difícil</span>
+                <span data-dificuldade="Fácil" onclick="selectDificuldade(this)">Fácil</span>
+                <span data-dificuldade="Médio" onclick="selectDificuldade(this)">Médio</span>
+                <span data-dificuldade="Difícil" onclick="selectDificuldade(this)">Difícil</span>
             </div>
 
             <!-- HABILIDADES -->
             <label>Habilidades:</label>
             <div class="habilidades-box">
-                <label><input type="checkbox"> H1</label>
-                <label><input type="checkbox"> H2</label>
-                <label><input type="checkbox"> H3</label>
-                <label><input type="checkbox"> H4</label>
+                <label><input type="checkbox" value="1"> H1</label>
+                <label><input type="checkbox" value="2"> H2</label>
+                <label><input type="checkbox" value="3"> H3</label>
+                <label><input type="checkbox" value="4"> H4</label>
             </div>
 
             <!-- QUANTIDADE -->
             <label>Quantidade de questões:</label>
-            <select>
+            <select id="selectQuantidadeQuestoes">
                 <option>5</option>
                 <option>10</option>
                 <option>15</option>
@@ -149,7 +142,7 @@
 
             <div class="modal-actions">
                 <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
-                <button class="btn-add">Gerar Simulado</button>
+                <button onclick="gerarSimulado()" class="btn-add">Gerar Simulado</button>
             </div>
 
         </div>
@@ -313,6 +306,67 @@
 </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", carregarSimulados);
+
+        function carregarSimulados() {
+            fetch("/simulados")
+                .then((resposta) => resposta.ok ? resposta.json() : [])
+                .then((simulados) => {
+                    if (!simulados || simulados.length == 0) {
+                        tbodySimulados.innerHTML = `<tr><td colspan="7">Nenhum simulado criado.</td></tr>`;
+                        return;
+                    }
+
+                    tbodySimulados.innerHTML = simulados.map((simulado) => `
+                        <tr>
+                            <td>${String(simulado.id).padStart(2, "0")}</td>
+                            <td>${simulado.tema || simulado.nomeSimulado}</td>
+                            <td>${simulado.habilidades || "-"}</td>
+                            <td>${simulado.dificuldade || "-"}</td>
+                            <td>${simulado.quantidadeQuestoes || 0}</td>
+                            <td><button class="icon-btn" onclick="abrirEditar(${simulado.id})">⚙️</button></td>
+                            <td><button class="icon-btn" onclick="excluirSimulado(${simulado.id})">🗑️</button></td>
+                        </tr>
+                    `).join("");
+                })
+                .catch((erro) => {
+                    console.log("Erro ao buscar simulados", erro);
+                    tbodySimulados.innerHTML = `<tr><td colspan="7">Erro ao carregar simulados.</td></tr>`;
+                });
+        }
+
+        function gerarSimulado() {
+            const areaSelecionada = document.querySelector(".filtros span.active");
+            const dificuldadeSelecionada = document.querySelector(".filtros span.active-style");
+            const habilidades = [...document.querySelectorAll(".habilidades-box input:checked")].map((input) => input.value);
+
+            fetch("/simulados/criar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    nomeSimulado: inputNomeSimulado.value,
+                    quantidadeQuestoes: Number(selectQuantidadeQuestoes.value),
+                    fkUsuario: Number(sessionStorage.ID_USUARIO || 1),
+                    sigla: areaSelecionada ? areaSelecionada.dataset.sigla : undefined,
+                    dificuldade: dificuldadeSelecionada ? dificuldadeSelecionada.dataset.dificuldade : undefined,
+                    habilidades
+                })
+            }).then((resposta) => {
+                if (resposta.ok) {
+                    fecharModal();
+                    carregarSimulados();
+                }
+            }).catch((erro) => console.log("Erro ao criar simulado", erro));
+        }
+
+        function excluirSimulado(id) {
+            fetch(`/simulados/${id}`, { method: "DELETE" })
+                .then((resposta) => {
+                    if (resposta.ok) carregarSimulados();
+                })
+                .catch((erro) => console.log("Erro ao excluir simulado", erro));
+        }
+
         function abrirModal() {
             document.getElementById("modalCriar").style.display = "flex";
         }
@@ -321,8 +375,41 @@
             document.getElementById("modalCriar").style.display = "none";
         }
 
-        function abrirEditar() {
+        function abrirEditar(id) {
             document.getElementById("modalEditar").style.display = "flex";
+            if (!id) return;
+
+            fetch(`/simulados/${id}`)
+                .then((resposta) => resposta.ok ? resposta.json() : null)
+                .then((simulado) => {
+                    if (!simulado) return;
+
+                    document.querySelector(".indicadores-simulado").innerHTML = `
+                        <div class="indicador"><p>${simulado.indicadores.questoes}</p><p>Questões</p></div>
+                        <div class="indicador"><p>${simulado.indicadores.parametroAMedio}</p><p>param .A Médio</p></div>
+                        <div class="indicador"><p>${simulado.indicadores.parametroBMedio}</p><p>param .B Médio</p></div>
+                        <div class="indicador"><p>${simulado.indicadores.qtdHabilidades}</p><p>Qtd. Habilidades</p></div>
+                    `;
+
+                    document.querySelector(".indicadores-simulado-2").innerHTML = `
+                        <div class="indicador-2"><p>${simulado.area}</p></div>
+                        <div class="indicador-2"><p>${simulado.dificuldade}</p></div>
+                        <div class="indicador-2"><p>${simulado.habilidades.join(", ")}</p></div>
+                    `;
+
+                    document.querySelector(".questoes-box").innerHTML = simulado.questoes.map((questao, indice) => `
+                        <div class="questao-item">
+                            <div class="questao">
+                                <p>${indice + 1}</p>
+                                <span>item-${questao.codigoItem} - habilidade ${questao.habilidade}</span>
+                                <p>Ano ${questao.anoExame} • ${questao.dificuldade}</p>
+                            </div>
+                            <button onclick="substituir()" class="btn-substituir">Subsituir</button>
+                            <button class="btn-excluir">Excluir</button>
+                        </div>
+                    `).join("");
+                })
+                .catch((erro) => console.log("Erro ao detalhar simulado", erro));
         }
 
         function fecharEditar() {

@@ -20,7 +20,6 @@
       <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
-          <div class="foto-perfil"></div>
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
@@ -174,7 +173,7 @@
                       <th>Qtd.</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="tbodyHabilidadesFrequentes">
                     <tr>
                       <td>CN</td>
                       <td>H1</td>
@@ -509,46 +508,79 @@
       let chartAbaixo, chartAcima, chartMedia, chartRadar, chartPilha;
 
       function criarChartAbaixo(area) {
-        const d = dadosAbaixo[area];
-        if (chartAbaixo) chartAbaixo.destroy();
-        chartAbaixo = new Chart(
-          document.getElementById("chartAbaixo"),
-          barrasHorizontaisConfig(d.labels, d.values, "#ef4444"),
-        );
+        fetch(`/dashboard/habilidades-abaixo-media/${area}`)
+          .then((resposta) => resposta.ok ? resposta.json() : dadosAbaixo[area])
+          .then((d) => {
+            d = d || dadosAbaixo[area];
+            if (chartAbaixo) chartAbaixo.destroy();
+            chartAbaixo = new Chart(
+              document.getElementById("chartAbaixo"),
+              barrasHorizontaisConfig(d.labels, d.values, "#ef4444"),
+            );
+          })
+          .catch(() => {
+            const d = dadosAbaixo[area];
+            if (chartAbaixo) chartAbaixo.destroy();
+            chartAbaixo = new Chart(document.getElementById("chartAbaixo"), barrasHorizontaisConfig(d.labels, d.values, "#ef4444"));
+          });
       }
 
       function criarChartAcima(area) {
-        const d = dadosAcima[area];
-        if (chartAcima) chartAcima.destroy();
-        chartAcima = new Chart(
-          document.getElementById("chartAcima"),
-          barrasHorizontaisConfig(d.labels, d.values, "#22c55e"),
-        );
+        fetch(`/dashboard/habilidades-acima-media/${area}`)
+          .then((resposta) => resposta.ok ? resposta.json() : dadosAcima[area])
+          .then((d) => {
+            d = d || dadosAcima[area];
+            if (chartAcima) chartAcima.destroy();
+            chartAcima = new Chart(
+              document.getElementById("chartAcima"),
+              barrasHorizontaisConfig(d.labels, d.values, "#22c55e"),
+            );
+          })
+          .catch(() => {
+            const d = dadosAcima[area];
+            if (chartAcima) chartAcima.destroy();
+            chartAcima = new Chart(document.getElementById("chartAcima"), barrasHorizontaisConfig(d.labels, d.values, "#22c55e"));
+          });
       }
 
       function criarChartMedia(area) {
-        const d = dadosMedia[area];
-        if (chartMedia) chartMedia.destroy();
-        chartMedia = new Chart(
-          document.getElementById("chartMedia"),
-          barrasVerticaisConfig(d.labels, d.values),
-        );
+        fetch(`/dashboard/notas-habilidades/${area}`)
+          .then((resposta) => resposta.ok ? resposta.json() : dadosMedia[area])
+          .then((d) => {
+            d = d || dadosMedia[area];
+            if (chartMedia) chartMedia.destroy();
+            chartMedia = new Chart(
+              document.getElementById("chartMedia"),
+              barrasVerticaisConfig(d.labels, d.values),
+            );
+          })
+          .catch(() => {
+            const d = dadosMedia[area];
+            if (chartMedia) chartMedia.destroy();
+            chartMedia = new Chart(document.getElementById("chartMedia"), barrasVerticaisConfig(d.labels, d.values));
+          });
       }
 
       function criarChartRadar() {
-        chartRadar = new Chart(document.getElementById("chartRadar"), {
-          type: "radar",
-          data: {
-            labels: [
+        fetch("/dashboard/questoes-por-area")
+          .then((resposta) => resposta.ok ? resposta.json() : null)
+          .then((dados) => {
+            const labels = dados && dados.labels ? dados.labels : [
               "Matemática",
               "Linguagens",
               "Ciências Humanas",
               "Ciências da Natureza",
-            ],
+            ];
+            const values = dados && dados.values ? dados.values : [35, 10, 35, 20];
+
+            chartRadar = new Chart(document.getElementById("chartRadar"), {
+          type: "radar",
+          data: {
+            labels,
             datasets: [
               {
                 label: "Questões",
-                data: [35, 10, 35, 20],
+                data: values,
                 backgroundColor: "rgba(49,69,149,.2)",
                 borderColor: "#314595",
                 pointBackgroundColor: "#314595",
@@ -570,19 +602,26 @@
             },
           },
         });
+          })
+          .catch((erro) => console.log("Erro ao buscar radar", erro));
       }
 
       function criarChartPilha(area) {
-        const dados = dadosPilha[area] || dadosPilha.todos;
-        if (chartPilha) chartPilha.destroy();
-        chartPilha = new Chart(document.getElementById("chartPilha"), {
+        fetch(`/dashboard/questoes-por-nivel/${area}`)
+          .then((resposta) => resposta.ok ? resposta.json() : null)
+          .then((retorno) => {
+            const labels = retorno && retorno.labels && retorno.labels.length > 0 ? retorno.labels : anos;
+            const dados = retorno && retorno.datasets && retorno.datasets.length > 0 ? retorno.datasets : (dadosPilha[area] || dadosPilha.todos);
+
+            if (chartPilha) chartPilha.destroy();
+            chartPilha = new Chart(document.getElementById("chartPilha"), {
           type: "bar",
           data: {
-            labels: anos,
+            labels,
             datasets: dados.map((d) => ({
               label: d.label,
-              data: d.values,
-              backgroundColor: d.color,
+              data: d.values || d.data,
+              backgroundColor: d.color || "#314595",
               borderRadius: 2,
             })),
           },
@@ -609,6 +648,26 @@
             },
           },
         });
+          })
+          .catch((erro) => console.log("Erro ao buscar recorrência por nível", erro));
+      }
+
+      function carregarTabelaHabilidadesFrequentes() {
+        fetch("/dashboard/habilidades-frequentes")
+          .then((resposta) => resposta.ok ? resposta.json() : [])
+          .then((dados) => {
+            if (!dados || dados.length == 0) return;
+
+            tbodyHabilidadesFrequentes.innerHTML = dados.map((item) => `
+              <tr>
+                <td>${item.area}</td>
+                <td>${String(item.habilidade).startsWith("H") ? item.habilidade : `H${item.habilidade}`}</td>
+                <td>${item.dificuldade}</td>
+                <td>${item.quantidade}</td>
+              </tr>
+            `).join("");
+          })
+          .catch((erro) => console.log("Erro ao buscar habilidades frequentes", erro));
       }
 
       // ── FILTROS ───────────────────────────────────────────────────────────────────
@@ -636,6 +695,7 @@
       criarChartMedia("LC");
       criarChartRadar();
       criarChartPilha("todos");
+      carregarTabelaHabilidadesFrequentes();
 
       bindFiltros("filtroAbaixo", criarChartAbaixo);
       bindFiltros("filtroAcima", criarChartAcima);

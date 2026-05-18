@@ -12,4 +12,20 @@ router.post("/autenticar", function (req, res) {
     usuarioController.autenticar(req, res);
 });
 
+router.get("/listar/:nivel", function (req, res) {
+    usuarioController.listarPorNivel(req, res);
+});
+
+router.post("/cadastrar-completo", function (req, res) {
+    usuarioController.cadastrarCompleto(req, res);
+});
+
+router.put("/:id", function (req, res) {
+    usuarioController.atualizar(req, res);
+});
+
+router.delete("/:id", function (req, res) {
+    usuarioController.excluir(req, res);
+});
+
 module.exports = router;

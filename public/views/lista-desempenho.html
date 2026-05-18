@@ -21,7 +21,6 @@
       <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
-          <div class="foto-perfil"></div>
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
@@ -77,7 +76,7 @@
               </tr>
             </thead>
 
-            <tbody>
+            <tbody id="tbodyQuestoes">
               <tr>
                 <td>023893</td>
                 <td>LC</td>
@@ -123,5 +122,24 @@
         </div>
       </main>
     </div>
+    <script>
+      fetch("/dashboard/questoes")
+        .then((resposta) => resposta.ok ? resposta.json() : [])
+        .then((questoes) => {
+          if (!questoes || questoes.length == 0) return;
+
+          tbodyQuestoes.innerHTML = questoes.map((questao) => `
+            <tr>
+              <td>${questao.codigoItem}</td>
+              <td>${questao.area}</td>
+              <td>${String(questao.habilidade).startsWith("H") ? questao.habilidade : `H${questao.habilidade}`}</td>
+              <td>${questao.dificuldade}</td>
+              <td>${questao.municipio}</td>
+              <td>${Math.round(questao.notaMedia)}</td>
+            </tr>
+          `).join("");
+        })
+        .catch((erro) => console.log("Erro ao buscar questões", erro));
+    </script>
   </body>
 </html>

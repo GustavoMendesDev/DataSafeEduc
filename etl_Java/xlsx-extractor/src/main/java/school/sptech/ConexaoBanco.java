@@ -11,9 +11,10 @@ public class ConexaoBanco {
 
     public ConexaoBanco() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:h2:mem:datasafe;DB_CLOSE_DELAY=-1;MODE=MySQL");
-        basicDataSource.setUsername("datasafe");
-        basicDataSource.setPassword("ds@121314");
+        basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        basicDataSource.setUrl("jdbc:mysql://localhost:3306/datasafeeduc?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true");
+        basicDataSource.setUsername("datasafeeduc");
+        basicDataSource.setPassword("Gm@121314");
 
         this.dataSource = basicDataSource;
     }

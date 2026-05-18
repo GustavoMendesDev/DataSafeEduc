@@ -21,7 +21,6 @@
       <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
-          <div class="foto-perfil"></div>
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
@@ -82,7 +81,7 @@
                   </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="tbodyCoordenadores">
                   <tr>
                     <td>01</td>
                     <td>gestor@gmail.com</td>
@@ -172,6 +171,36 @@
     </div>
 
     <script>
+      document.addEventListener("DOMContentLoaded", carregarCoordenadores);
+
+      function carregarCoordenadores() {
+        fetch("/usuarios/listar/Coordenador")
+          .then((resposta) => resposta.ok ? resposta.json() : [])
+          .then((usuarios) => {
+            if (!usuarios || usuarios.length == 0) return;
+
+            tbodyCoordenadores.innerHTML = usuarios.map((usuario) => `
+              <tr>
+                <td>${String(usuario.id).padStart(2, "0")}</td>
+                <td>${usuario.nome}</td>
+                <td>********</td>
+                <td>${usuario.municipio}</td>
+                <td><button class="icon-btn" onclick="abrirEditar()">✏️</button></td>
+                <td><button class="icon-btn" onclick="excluirUsuario(${usuario.id})">🗑️</button></td>
+              </tr>
+            `).join("");
+          })
+          .catch((erro) => console.log("Erro ao buscar coordenadores", erro));
+      }
+
+      function excluirUsuario(id) {
+        fetch(`/usuarios/${id}`, { method: "DELETE" })
+          .then((resposta) => {
+            if (resposta.ok) carregarCoordenadores();
+          })
+          .catch((erro) => console.log("Erro ao excluir usuário", erro));
+      }
+
       function abrirModal() {
         document.getElementById("modalCadastro").style.display = "flex";
       }

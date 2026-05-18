@@ -20,7 +20,6 @@
       <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
-          <div class="foto-perfil"></div>
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
@@ -80,7 +79,7 @@
                   </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="tbodyProfessores">
                   <tr>
                     <td>01</td>
                     <td>prof@gmail.com</td>
@@ -141,6 +140,36 @@
     </div>
 
     <script>
+      document.addEventListener("DOMContentLoaded", carregarProfessores);
+
+      function carregarProfessores() {
+        fetch("/usuarios/listar/Professor")
+          .then((resposta) => resposta.ok ? resposta.json() : [])
+          .then((usuarios) => {
+            if (!usuarios || usuarios.length == 0) return;
+
+            tbodyProfessores.innerHTML = usuarios.map((usuario) => `
+              <tr>
+                <td>${String(usuario.id).padStart(2, "0")}</td>
+                <td>${usuario.nome}</td>
+                <td>********</td>
+                <td>${usuario.cargo}</td>
+                <td><button class="icon-btn" onclick="abrirEditar()">✏️</button></td>
+                <td><button class="icon-btn" onclick="excluirUsuario(${usuario.id})">🗑️</button></td>
+              </tr>
+            `).join("");
+          })
+          .catch((erro) => console.log("Erro ao buscar professores", erro));
+      }
+
+      function excluirUsuario(id) {
+        fetch(`/usuarios/${id}`, { method: "DELETE" })
+          .then((resposta) => {
+            if (resposta.ok) carregarProfessores();
+          })
+          .catch((erro) => console.log("Erro ao excluir usuário", erro));
+      }
+
       function abrirModal() {
         document.getElementById("modal").style.display = "flex";
       }
