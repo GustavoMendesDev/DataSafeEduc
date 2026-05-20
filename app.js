@@ -1,3 +1,5 @@
+const { GoogleGenAI } = require("@google/genai");
+
 var ambiente_processo = 'producao';
 // var ambiente_processo = 'desenvolvimento';
 
@@ -19,6 +21,7 @@ var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var dashboardRouter = require("./src/routes/dashboard");
 var simuladoRouter = require("./src/routes/simulados");
+var duckIaRouter = require("./src/routes/duckIa");
 // var avisosRouter = require("./src/routes/avisos");
 // var medidasRouter = require("./src/routes/medidas");
 // var aquariosRouter = require("./src/routes/aquarios");
@@ -30,6 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
 
+app.use("/duck-ia", duckIaRouter);
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/dashboard", dashboardRouter);

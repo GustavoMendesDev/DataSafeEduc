@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Duck IA</title>
+
+    <!-- CSS do projeto (mesma ordem das outras páginas) -->
+    <link rel="stylesheet" href="../css/gerenciamento-de-professores-educacional.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <!-- CSS específico da página de IA - adicionado ao final para sobrescrever quando necessário -->
+    <link rel="stylesheet" href="../css/duck-ia.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Sora:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="dashboard-container">
+
+      <!-- BARRA LATERAL (padrão idêntico às outras páginas) -->
+      <aside class="barra-lateral">
+        <div class="perfil-lateral">
+          <div class="foto-perfil"></div>
+          <p class="nome-perfil">Lavínia Todarelli</p>
+          <p class="cargo-perfil">Administrador</p>
+        </div>
+        <nav class="nav-lateral">
+          <a href="analise-desempenho"><button class="nav-btn">Análise e Desempenho por Tema</button></a>
+          <a href="dash-monitoramento"><button class="nav-btn">Monitoramento de Desempenho por habilidade</button></a>
+          <a href="lista-desempenho"><button class="nav-btn">Lista de Desempenho por questão</button></a>
+          <a href="simulados"><button class="nav-btn">Simulados</button></a>
+          <a href="gerenciamento-professores"><button class="nav-btn">Gerenciamento de professores</button></a>
+          <a href="gerenciamento-coordenadores"><button class="nav-btn">Gerenciamento de Coordenadores</button></a>
+          <!-- Duck IA marcado como ativo nesta página -->
+          <a href="duck-ia"><button class="nav-btn active"> <img src="../assets/imgs/duckIA-removebg-preview.png" alt="DuckIA_image" class=" duck-ia-icone"></button></a>
+        </nav>
+      </aside>
+
+      <!-- CONTEÚDO PRINCIPAL -->
+      <main class="main-content">
+        <header class="dashboard-header">
+          <h1>Duck IA</h1>
+        </header>
+
+        <!-- CORPO DA PÁGINA - Chat IA -->
+        <div class="dashboard-content ia-body">
+
+          <!-- ÁREA PRINCIPAL DO CHAT -->
+          <div class="ia-chat-wrapper">
+
+            <!-- SAUDAÇÃO (topo da conversa, exibida quando não há histórico) -->
+            <div class="ia-saudacao" id="iaSaudacao">
+              <h2 class="ia-saudacao-titulo">
+                Olá👋
+              </h2>
+              <p class="ia-saudacao-subtitulo">Como posso te ajudar hoje?</p>
+
+              <!-- ATALHOS RÁPIDOS (grid 2x2 como no modelo) -->
+              <div class="ia-atalhos-grid">
+                <button class="ia-atalho-card" onclick="inserirPrompt('Como funciona o sistema de níveis de dificuldade das questões?')">
+                  <span class="ia-atalho-icone">🎚️</span>
+                  <div>
+                    <strong>Níveis de Dificuldade</strong>
+                    <p>Como os parâmetros de dificuldade funcionam</p>
+                  </div>
+                </button>
+                <button class="ia-atalho-card" onclick="inserirPrompt('Como cadastrar um novo usuário no sistema?')">
+                  <span class="ia-atalho-icone">👤</span>
+                  <div>
+                    <strong>Cadastro de Usuários</strong>
+                    <p>Passo a passo para adicionar professores e gestores</p>
+                  </div>
+                </button>
+                <button class="ia-atalho-card" onclick="inserirPrompt('O que são as habilidades e como elas são classificadas no sistema?')">
+                  <span class="ia-atalho-icone">🗂️</span>
+                  <div>
+                    <strong>Classificação de Habilidades</strong>
+                    <p>Entenda como as habilidades são organizadas</p>
+                  </div>
+                </button>
+                <button class="ia-atalho-card" onclick="inserirPrompt('Como os simulados são configurados e aplicados no sistema?')">
+                  <span class="ia-atalho-icone">📋</span>
+                  <div>
+                    <strong>Configuração de Simulados</strong>
+                    <p>Como criar e gerenciar simulados</p>
+                  </div>
+                </button>
+              </div>
+
+              <!-- SUGESTÕES (linha abaixo do grid, como no modelo) -->
+              <p class="ia-sugestoes-label">Você também pode me perguntar:</p>
+              <div class="ia-sugestoes-lista">
+                <button class="ia-sugestao-chip" onclick="inserirPrompt('Qual a diferença entre os cargos de professor, coordenador e gestor?')">
+                  Qual a diferença entre os cargos de professor, coordenador e gestor?
+                </button>
+                <button class="ia-sugestao-chip" onclick="inserirPrompt('Como funciona o monitoramento de desempenho por habilidade?')">
+                  Como funciona o monitoramento de desempenho por habilidade?
+                </button>
+                <button class="ia-sugestao-chip" onclick="inserirPrompt('O que significa cada coluna da lista de desempenho por questão?')">
+                  O que significa cada coluna da lista de desempenho por questão?
+                </button>
+                <button class="ia-sugestao-chip" onclick="inserirPrompt('Como redefinir a senha de um usuário no sistema?')">
+                  Como redefinir a senha de um usuário?
+                </button>
+              </div>
+            </div>
+
+            <!-- HISTÓRICO DO CHAT (oculto até o usuário enviar algo) -->
+            <div class="ia-historico" id="iaHistorico"></div>
+
+            <!-- ÁREA DE RESPOSTA DA IA (indicador de digitação) -->
+            <div class="ia-digitando" id="iaDigitando" style="display:none;">
+              <img src="../assets/imgs/duckIA-removebg-preview.png" alt="Duck" class="ia-avatar-mini" />
+              <div class="ia-bolha-digitando">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BARRA DE ENTRADA (fixada na base do conteúdo, como no modelo) -->
+          <div class="ia-input-area">
+   
+            <!-- Campo de texto + botão enviar -->
+            <div class="ia-input-row">
+              <textarea
+                id="iaInput"
+                class="ia-textarea"
+                placeholder="Pergunte qualquer coisa sobre o nosso sistema!"
+                rows="1"
+                onkeydown="handleEnter(event)"
+                oninput="autoResize(this)"
+              ></textarea>
+              <button class="ia-btn-enviar" id="iaBtnEnviar" onclick="enviarMensagem()" title="Enviar">
+                <!-- Seta de envio -->
+                <svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2.94 17.07L18.5 10 2.94 2.93v5.45l10.78 1.62L2.94 11.62v5.45z"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Rodapé da barra -->
+            <div class="ia-input-footer">
+              <span class="ia-modelo-tag">Duck IA</span>
+            </div>
+          </div>
+
+        </div>
+        <!-- fim .ia-body -->
+
+      </main>
+    </div><!-- fim .dashboard-container -->
+
+    <script>
+      /* ─────────────────────────────────────────────
+         Script da página Duck IA
+         Controla: envio de mensagens, histórico,
+         animação de digitação e atalhos de teclado.
+      ───────────────────────────────────────────── */
+
+      const historico = [];
+
+      /** Insere texto no campo de input ao clicar em atalho */
+      function inserirPrompt(texto) {
+        const input = document.getElementById('iaInput');
+        input.value = texto;
+        input.focus();
+        autoResize(input);
+      }
+
+      /** Auto-redimensiona o textarea conforme o conteúdo cresce */
+      function autoResize(el) {
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+      }
+
+      /** Envia com Enter (Shift+Enter quebra linha) */
+      function handleEnter(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          enviarMensagem();
+        }
+      }
+
+      /** Envia a mensagem do usuário e simula resposta da IA */
+      function enviarMensagem() {
+        const input = document.getElementById('iaInput');
+        const texto = input.value.trim();
+        if (!texto) return;
+
+        // Oculta a saudação após o primeiro envio
+        document.getElementById('iaSaudacao').style.display = 'none';
+
+        // Adiciona bolha do usuário
+        adicionarBolha('usuario', texto);
+        historico.push({ papel: 'usuario', texto });
+
+        input.value = '';
+        autoResize(input);
+        input.focus();
+
+        // Mostra animação de digitação
+        const digitando = document.getElementById('iaDigitando');
+        digitando.style.display = 'flex';
+        scrollBaixo();
+
+        
+       // Chama a Duck IA de verdade
+fetch('/duck-ia/perguntar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        pergunta: texto,
+        historico: historico  // envia o histórico para manter contexto
+    })
+})
+.then(res => res.json())
+.then(data => {
+    digitando.style.display = 'none';
+    const resposta = data.resultado || data.error || 'Não consegui processar sua pergunta.';
+    adicionarBolha('ia', resposta);
+    historico.push({ papel: 'ia', texto: resposta });
+    scrollBaixo();
+})
+.catch(() => {
+    digitando.style.display = 'none';
+    adicionarBolha('ia', 'Erro ao conectar com a Duck IA. Tente novamente.');
+    scrollBaixo();
+});
+      }
+
+      /** Cria e insere uma bolha de chat no histórico */
+      function adicionarBolha(papel, texto) {
+        const hist = document.getElementById('iaHistorico');
+        const div = document.createElement('div');
+        div.className = `ia-bolha-row ia-bolha-row--${papel}`;
+
+        if (papel === 'ia') {
+          div.innerHTML = `
+            <img src="../assets/imgs/duckIA-removebg-preview.png" alt="Duck" class="ia-avatar-mini" />
+            <div class="ia-bolha ia-bolha--ia">${texto}</div>
+          `;
+        } else {
+          div.innerHTML = `<div class="ia-bolha ia-bolha--usuario">${escapeHtml(texto)}</div>`;
+        }
+
+        hist.appendChild(div);
+      }
+
+      /** Rolagem automática para o fim do chat */
+      function scrollBaixo() {
+        const hist = document.getElementById('iaHistorico');
+        hist.scrollTop = hist.scrollHeight;
+        const wrapper = document.querySelector('.ia-chat-wrapper');
+        wrapper.scrollTop = wrapper.scrollHeight;
+      }
+
+      /** Escapa HTML para evitar XSS no texto do usuário */
+      function escapeHtml(txt) {
+        return txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      }
+
+
+      /** Alterna visibilidade do painel da IA (para uso futuro) */
+      function toggleIA() {
+        // Pode ser expandido para abrir um painel lateral ou modal
+        document.getElementById('iaInput').focus();
+      }
+
+      /** Redireciona para logout */
+      function sair() {
+        if (confirm('Deseja realmente sair?')) {
+          window.location.href = 'login';
+        }
+      }
+    </script>
+  </body>
+</html>

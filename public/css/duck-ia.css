@@ -1,0 +1,497 @@
+/* ================================================================
+   duck-ia.css
+   CSS específico da página Duck IA (DataSafeEduc)
+   Adicionado: header com botões de ação, layout do chat,
+   bolhas de mensagem, barra de input, animação de digitação,
+   grid de atalhos, chips de sugestão e responsividade.
+   ================================================================ */
+
+
+/* ── 1. HEADER ADAPTADO PARA A PÁGINA DE IA ── */
+/* Sobrescreve o header padrão para acomodar os botões de ação */
+.ia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 28px;          /* Levemente mais compacto que o padrão */
+  text-align: left;            /* O h1 agora fica à esquerda */
+}
+
+.ia-header h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+/* Agrupa os botões do header à direita */
+.ia-header-acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+/* ── 2. BOTÃO DUCK IA (imagem do projeto) ── */
+.btn-duck-ia {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-duck-ia:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Imagem do Duck ajustada para caber no botão */
+.duck-ia-icone {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+
+
+/* ── 3. BOTÃO SAIR (ícone SVG + texto, fonte do projeto) ── */
+.btn-sair {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-sair:hover {
+  background: rgba(239, 68, 68, 0.35);   /* Destaque vermelho suave no hover */
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* Ícone SVG de saída */
+.icone-sair {
+  width: 17px;
+  height: 17px;
+  stroke: #fff;
+  flex-shrink: 0;
+}
+
+
+/* ── 4. ÁREA PRINCIPAL (sobrescreve grid padrão do dashboard-content) ── */
+/* O ia-body usa flex coluna: chat cresce, input fica fixo embaixo */
+.ia-body {
+  display: flex !important;          /* Sobrescreve o grid do dashboard-content */
+  flex-direction: column !important;
+  padding: 0 !important;             /* Sem padding extra — o chat gerencia internamente */
+  gap: 0 !important;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 54px);        /* Descontando o header */
+}
+
+
+/* ── 5. WRAPPER DO CHAT (área rolável) ── */
+.ia-chat-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 20% 16px;           /* Margens laterais generosas como no modelo */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar discreta */
+.ia-chat-wrapper::-webkit-scrollbar { width: 5px; }
+.ia-chat-wrapper::-webkit-scrollbar-track { background: transparent; }
+.ia-chat-wrapper::-webkit-scrollbar-thumb { background: var(--border-color, #e0e0e0); border-radius: 3px; }
+
+
+/* ── 6. SAUDAÇÃO INICIAL ── */
+.ia-saudacao {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ia-saudacao-titulo {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--texto, #1e293b);
+}
+
+.ia-saudacao-subtitulo {
+  font-size: 1rem;
+  color: var(--suave, #64748b);
+  margin-bottom: 10px;
+}
+
+
+/* ── 7. GRID DE ATALHOS (2 colunas, como no modelo) ── */
+.ia-atalhos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+/* Card de atalho */
+.ia-atalho-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.ia-atalho-card:hover {
+  border-color: var(--cor-secundaria, #223488);
+  box-shadow: 0 3px 10px rgba(34, 52, 136, 0.1);
+}
+
+.ia-atalho-icone {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.ia-atalho-card strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto, #1e293b);
+  margin-bottom: 2px;
+}
+
+.ia-atalho-card p {
+  font-size: 0.78rem;
+  color: var(--suave, #64748b);
+  margin: 0;
+}
+
+
+/* ── 8. CHIPS DE SUGESTÃO (linha abaixo do grid) ── */
+.ia-sugestoes-label {
+  font-size: 0.82rem;
+  color: var(--suave, #64748b);
+  margin-top: 12px;
+}
+
+.ia-sugestoes-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ia-sugestao-chip {
+  padding: 6px 13px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 20px;
+  background: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: var(--texto, #1e293b);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.ia-sugestao-chip:hover {
+  background: var(--light-gray, #f8f9fa);
+  border-color: var(--cor-secundaria, #223488);
+  color: var(--cor-secundaria, #223488);
+}
+
+
+/* ── 9. HISTÓRICO DE MENSAGENS ── */
+.ia-historico {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+/* Linha de bolha: flex row para usuário / ia */
+.ia-bolha-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.ia-bolha-row--usuario {
+  justify-content: flex-end;
+}
+
+.ia-bolha-row--ia {
+  justify-content: flex-start;
+}
+
+/* Bolha genérica */
+.ia-bolha {
+  max-width: 72%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+/* Bolha do usuário: azul do projeto */
+.ia-bolha--usuario {
+  background: var(--cor-secundaria, #223488);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* Bolha da IA: branco com borda */
+.ia-bolha--ia {
+  background: #fff;
+  color: var(--texto, #1e293b);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+/* Avatar mini do Duck ao lado da bolha */
+.ia-avatar-mini {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--cinza, #f4f6f9);
+  padding: 2px;
+}
+
+
+/* ── 10. ANIMAÇÃO DE DIGITAÇÃO (três pontos pulsando) ── */
+.ia-digitando {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.ia-bolha-digitando {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #fff;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+  padding: 10px 16px;
+}
+
+/* Cada ponto */
+.ia-bolha-digitando span {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--suave, #64748b);
+  animation: pulsarPonto 1.2s infinite ease-in-out;
+}
+
+.ia-bolha-digitando span:nth-child(2) { animation-delay: 0.2s; }
+.ia-bolha-digitando span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes pulsarPonto {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.85); }
+  40%           { opacity: 1;   transform: scale(1.1); }
+}
+
+
+/* ── 11. BARRA DE INPUT (base do conteúdo) ── */
+.ia-input-area {
+  border-top: 1px solid var(--border-color, #e0e0e0);
+  background: #fff;
+  padding: 12px 20%;               /* Alinhado com o chat-wrapper */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Toolbar acima do input (ícones de skill) */
+.ia-input-toolbar {
+  display: flex;
+  gap: 8px;
+}
+
+.ia-toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--suave, #64748b);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ia-toolbar-btn:hover { background: var(--light-gray, #f8f9fa); }
+
+.ia-toolbar-btn svg {
+  width: 15px;
+  height: 15px;
+  stroke: currentColor;
+}
+
+/* Linha com textarea + botão enviar */
+.ia-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  background: var(--light-gray, #f8f9fa);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: border-color 0.2s;
+}
+
+.ia-input-row:focus-within {
+  border-color: var(--cor-secundaria, #223488);
+  box-shadow: 0 0 0 3px rgba(34, 52, 136, 0.08);
+}
+
+/* Textarea do chat */
+.ia-textarea {
+  flex: 1;
+  resize: none;
+  border: none;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--texto, #1e293b);
+  line-height: 1.5;
+  outline: none;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.ia-textarea::placeholder {
+  color: var(--suave, #64748b);
+}
+
+/* Botão enviar */
+.ia-btn-enviar {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: none;
+  background: var(--cor-secundaria, #223488);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.ia-btn-enviar:hover  { background: var(--dark-navy, #1a2a5e); }
+.ia-btn-enviar:active { transform: scale(0.94); }
+
+.ia-btn-enviar svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Rodapé da barra */
+.ia-input-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ia-modelo-tag {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: var(--suave, #64748b);
+  background: var(--cinza, #f4f6f9);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+
+
+/* ── 12. RESPONSIVIDADE ── */
+
+/* Tablet: reduz margens laterais do chat */
+@media (max-width: 1100px) {
+  .ia-chat-wrapper,
+  .ia-input-area {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+}
+
+/* Mobile: sidebar vira topo, chat ocupa tela inteira */
+@media (max-width: 768px) {
+  .ia-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 16px;
+  }
+
+  .ia-header-acoes {
+    gap: 8px;
+  }
+
+  .btn-duck-ia span,
+  .btn-sair span {
+    display: none;   /* Oculta texto, mantém só ícone em telas pequenas */
+  }
+
+  .ia-chat-wrapper,
+  .ia-input-area {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .ia-atalhos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ia-saudacao-titulo {
+    font-size: 1.3rem;
+  }
+
+  .ia-bolha {
+    max-width: 88%;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Mantém a sidebar colapsada (herda do CSS base) */
+  .ia-body {
+    height: calc(100vh - 100px);
+  }
+}

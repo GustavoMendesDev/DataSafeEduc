@@ -16,7 +16,8 @@ router.get("/:pagina", function (req, res, next) {
         "lista-desempenho",
         "simulados",
         "gerenciamento-professores",
-        "gerenciamento-coordenadores"
+        "gerenciamento-coordenadores",
+        "duck-ia" 
     ];
 
     var pagina = req.params.pagina.replace(".html", "");
