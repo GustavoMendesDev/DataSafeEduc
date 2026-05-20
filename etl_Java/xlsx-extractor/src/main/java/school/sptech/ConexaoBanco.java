@@ -15,9 +15,9 @@ public class ConexaoBanco {
 
     public ConexaoBanco() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:h2:mem:datasafe;DB_CLOSE_DELAY=-1;MODE=MySQL");
-        basicDataSource.setUsername("datasafe");
-        basicDataSource.setPassword("ds@121314");
+        basicDataSource.setUrl(System.getenv("DB_HOST"));
+        basicDataSource.setUsername(System.getenv("DB_USER"));
+        basicDataSource.setPassword(System.getenv("DB_PASSWORD"));
 
         this.dataSource = basicDataSource;
     }

@@ -11,12 +11,12 @@ import static school.sptech.Log.info;
 public class S3Service {
 
     private static final S3Client s3 = S3Client.builder()
-            .region(Region.of("us-east-1"))
+            .region(Region.of(System.getenv("AWS_REGION")))
             .build();
 
     public static InputStream getArquivo(String nomeArquivo) {
         GetObjectRequest request = GetObjectRequest.builder()
-                .bucket("data-safe-s3")
+                .bucket(System.getenv("S3_BUCKET_NAME"))
                 .key(nomeArquivo)
                 .build();
 
