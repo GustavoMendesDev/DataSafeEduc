@@ -34,33 +34,16 @@
 
 
 /* ── 2. BOTÃO DUCK IA (imagem do projeto) ── */
-.btn-duck-ia {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 8px;
-  color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-
-.btn-duck-ia:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.6);
-}
 
 /* Imagem do Duck ajustada para caber no botão */
 .duck-ia-icone {
-  width: 26px;
-  height: 26px;
+  display: block;
+  justify-content: center;
+  align-items: center ;
+  height: 30%;
+  width: 75%;
   object-fit: contain;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+ 
 }
 
 
@@ -95,22 +78,52 @@
 }
 
 
-/* ── 4. ÁREA PRINCIPAL (sobrescreve grid padrão do dashboard-content) ── */
+/* ── 4. CORREÇÃO DA CADEIA DE ALTURA (ancestrais do ia-body) ── */
+/*
+  O CSS base define:
+    html, body           → overflow-y: auto  (body cresce infinitamente)
+    .dashboard-container → min-height: 100vh (sem altura fixa)
+    .main-content        → min-height: 100vh (idem)
+
+  Para o scroll ficar DENTRO do ia-chat-wrapper, toda a cadeia
+  acima precisa ter altura fixa e overflow: hidden.
+  :has() restringe essas regras apenas à página da Duck IA.
+*/
+html:has(.ia-body),
+body:has(.ia-body) {
+  height: 100%;
+  overflow: hidden;
+}
+
+body:has(.ia-body) .dashboard-container {
+  height: 100vh;
+  min-height: unset;
+  overflow: hidden;
+}
+
+body:has(.ia-body) .main-content {
+  height: 100vh;
+  min-height: unset;
+  overflow: hidden;
+}
+
+/* ── ÁREA PRINCIPAL (sobrescreve grid padrão do dashboard-content) ── */
 /* O ia-body usa flex coluna: chat cresce, input fica fixo embaixo */
 .ia-body {
-  display: flex !important;          /* Sobrescreve o grid do dashboard-content */
+  display: flex !important;
   flex-direction: column !important;
-  padding: 0 !important;             /* Sem padding extra — o chat gerencia internamente */
+  padding: 0 !important;
   gap: 0 !important;
   flex: 1;
+  min-height: 0;
   overflow: hidden;
-  height: calc(100vh - 54px);        /* Descontando o header */
 }
 
 
 /* ── 5. WRAPPER DO CHAT (área rolável) ── */
 .ia-chat-wrapper {
   flex: 1;
+  min-height: 0;                    /* Essencial: permite que o wrapper encolha e role em vez de empurrar */
   overflow-y: auto;
   padding: 32px 20% 16px;           /* Margens laterais generosas como no modelo */
   display: flex;
@@ -232,7 +245,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  overflow-y: auto;
+  /* overflow removido — o scroll é gerenciado pelo ia-chat-wrapper pai */
 }
 
 /* Linha de bolha: flex row para usuário / ia */
@@ -333,7 +346,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  flex-shrink: 0;
+  flex-shrink: 0;                  /* Nunca encolhe — sempre visível na base */
 }
 
 /* Toolbar acima do input (ícones de skill) */
@@ -490,8 +503,14 @@
 }
 
 @media (max-width: 600px) {
-  /* Mantém a sidebar colapsada (herda do CSS base) */
-  .ia-body {
-    height: calc(100vh - 100px);
+  /* Em telas muito pequenas, a sidebar vira linha no topo (herda do CSS base).
+     O dvh garante que a barra de endereços móvel não corte o layout. */
+  html:has(.ia-body),
+  body:has(.ia-body) {
+    height: 100dvh;
+  }
+  body:has(.ia-body) .dashboard-container,
+  body:has(.ia-body) .main-content {
+    height: 100dvh;
   }
 }
