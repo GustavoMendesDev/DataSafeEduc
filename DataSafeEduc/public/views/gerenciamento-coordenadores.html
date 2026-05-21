@@ -222,6 +222,19 @@
       }
 
       //back- end
+      var nomeCursinho = cursinho.value;
+      var email = email.value;
+      var senha = senha.value;
+      var confirmarSenha = confirmarSenha.value;
+
+      if(nomeCursinho == " " || email == " " || senha == " " || confirmarSenha == " "){
+              mensagem_erro.innerHTML =
+        "(Mensagem de erro para todos os campos em branco)";
+
+      // finalizarAguardar();
+      return false;
+      }
+
     </script>
   </body>
 </html>
