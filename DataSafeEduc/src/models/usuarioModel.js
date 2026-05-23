@@ -38,6 +38,10 @@ function cadastrar(nome,senha) {
     return database.executar(instrucaoSql);
 }
 
+function cadastrarCoordenadores(nomeCursinho, email, senha, confirmarSenha){
+    var instrucaoSql = `Select * from usuarios`;
+}
+
 function listarPorNivel(nivel) {
     var instrucaoSql = `
         SELECT
