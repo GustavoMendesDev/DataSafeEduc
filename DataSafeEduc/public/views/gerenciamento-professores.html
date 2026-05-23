@@ -17,7 +17,6 @@
 
   <body>
     <div class="dashboard-container">
-      <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
           <p class="nome-perfil">Lavínia Todarelli</p>
@@ -80,19 +79,7 @@
                 </thead>
 
                 <tbody id="tbodyProfessores">
-                  <tr>
-                    <td>01</td>
-                    <td>prof@gmail.com</td>
-                    <td>********</td>
-                    <td>Professor</td>
-                    <td>
-                      <button class="icon-btn" onclick="abrirEditar()">
-                        ✏️
-                      </button>
-                    </td>
-                    <td><button class="icon-btn">🗑️</button></td>
-                  </tr>
-                </tbody>
+                  </tbody>
               </table>
             </div>
           </div>
@@ -100,41 +87,40 @@
       </main>
     </div>
 
-    <!-- MODAL -->
-    <div class="modal" id="modal">
+    <div class="modal" id="modalCadastro">
       <div class="modal-box">
         <h2>Cadastro de Usuário</h2>
 
-        <input placeholder="Email" />
-        <input placeholder="Senha" />
-        <input placeholder="Confirmar senha" />
+        <input placeholder="Email" id="email"/>
+        <input type="password" placeholder="Senha" id="senha"/>
+        <input type="password" placeholder="Confirmar senha" id="confirmarSenha"/>
 
-        <select>
-          <option>Professor</option>
-          <option>Coordenador</option>
+        <select id="cargoSelect">
+          <option value="Professor">Professor</option>
         </select>
 
         <div class="modal-actions">
           <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
-          <button class="btn-add">Cadastrar</button>
+          <button class="btn-add" onclick="cadastrarProfessor()">Cadastrar</button>
         </div>
       </div>
     </div>
 
-    <!-- MODAL EDITAR -->
     <div class="modal" id="modalEditar">
       <div class="modal-box">
         <h2>Editar cadastro Professor</h2>
 
-        <input value="gestor@gmail.com" />
+        <input placeholder="Email" id="editarEmail" />
+        <input type="password" placeholder="Nova senha" id="editarSenha" />
+        <input type="hidden" id="editarId" />
 
-        <select>
+        <select disabled>
           <option>Professor</option>
         </select>
 
         <div class="modal-actions">
           <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
-          <button class="btn-add">Atualizar</button>
+          <button class="btn-add" onclick="atualizarProfessor()">Atualizar</button>
         </div>
       </div>
     </div>
@@ -142,43 +128,140 @@
     <script>
       document.addEventListener("DOMContentLoaded", carregarProfessores);
 
-      function carregarProfessores() {
-        fetch("/usuarios/listar/Professor")
-          .then((resposta) => resposta.ok ? resposta.json() : [])
-          .then((usuarios) => {
-            if (!usuarios || usuarios.length == 0) return;
+      function limparCadastro() {
+        email.value = "";
+        senha.value = "";
+        confirmarSenha.value = "";
+      }
 
-            tbodyProfessores.innerHTML = usuarios.map((usuario) => `
+      function carregarProfessores() {
+        fetch("/professores") // Rota adaptada para buscar os professores
+          .then((resposta) => resposta.ok ? resposta.json() : [])
+          .then((professores) => {
+            if (!professores || professores.length == 0) {
+              tbodyProfessores.innerHTML = `
+                <tr>
+                  <td colspan="6">Nenhum professor encontrado</td>
+                </tr>
+              `;
+              return;
+            }
+
+            tbodyProfessores.innerHTML = professores.map((professor) => `
               <tr>
-                <td>${String(usuario.id).padStart(2, "0")}</td>
-                <td>${usuario.nome}</td>
-                <td>********</td>
-                <td>${usuario.cargo}</td>
-                <td><button class="icon-btn" onclick="abrirEditar()">✏️</button></td>
-                <td><button class="icon-btn" onclick="excluirUsuario(${usuario.id})">🗑️</button></td>
+                <td>${String(professor.id).padStart(2, "0")}</td>
+                <td>${professor.email || professor.nome}</td>
+                <td>${professor.senha ? "********" : ""}</td>
+                <td>${professor.cargo || "Professor"}</td>
+                <td>
+                  <button class="icon-btn" onclick="abrirEditar(${professor.id}, '${escaparTexto(professor.email || professor.nome)}')">
+                    ✏️
+                  </button>
+                </td>
+                <td>
+                  <button class="icon-btn" onclick="excluirProfessor(${professor.id})">🗑️</button>
+                </td>
               </tr>
             `).join("");
           })
           .catch((erro) => console.log("Erro ao buscar professores", erro));
       }
 
-      function excluirUsuario(id) {
-        fetch(`/usuarios/${id}`, { method: "DELETE" })
-          .then((resposta) => {
-            if (resposta.ok) carregarProfessores();
+      function cadastrarProfessor() {
+        var emailProfessor = email.value;
+        var senhaProfessor = senha.value;
+        var confirmarSenhaProfessor = confirmarSenha.value;
+
+        if (emailProfessor == "" || senhaProfessor == "" || confirmarSenhaProfessor == "") {
+          alert("Preencha todos os campos.");
+          return false;
+        }
+
+        if (senhaProfessor !== confirmarSenhaProfessor) {
+          alert("As senhas não coincidem.");
+          return false;
+        }
+
+        fetch("/professores/cadastrar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: emailProfessor,
+            senha: senhaProfessor,
+            confirmarSenha: confirmarSenhaProfessor
           })
-          .catch((erro) => console.log("Erro ao excluir usuário", erro));
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+
+            fecharModal();
+            limparCadastro();
+            carregarProfessores();
+          })
+          .catch((erro) => alert("Erro ao cadastrar professor: " + erro));
+      }
+
+      function atualizarProfessor() {
+        var id = editarId.value;
+        var emailProfessor = editarEmail.value;
+        var senhaProfessor = editarSenha.value;
+
+        if (emailProfessor == "") {
+          alert("Preencha o email.");
+          return false;
+        }
+
+        fetch(`/professores/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: emailProfessor,
+            senha: senhaProfessor
+          })
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+
+            fecharEditar();
+            carregarProfessores();
+          })
+          .catch((erro) => alert("Erro ao atualizar professor: " + erro));
+      }
+
+      function excluirProfessor(id) {
+        if (confirm("Tem certeza que deseja excluir este professor?")) {
+          fetch(`/professores/${id}`, { method: "DELETE" })
+            .then((resposta) => {
+              if (resposta.ok) {
+                carregarProfessores();
+              } else {
+                return resposta.text().then((mensagem) => Promise.reject(mensagem));
+              }
+            })
+            .catch((erro) => alert("Erro ao excluir professor: " + erro));
+        }
+      }
+
+      function escaparTexto(texto) {
+        return String(texto || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
       }
 
       function abrirModal() {
-        document.getElementById("modal").style.display = "flex";
+        document.getElementById("modalCadastro").style.display = "flex";
       }
 
       function fecharModal() {
-        document.getElementById("modal").style.display = "none";
+        document.getElementById("modalCadastro").style.display = "none";
       }
 
-      function abrirEditar() {
+      function abrirEditar(id, emailProfessor) {
+        editarId.value = id;
+        editarEmail.value = emailProfessor || "";
+        editarSenha.value = "";
         document.getElementById("modalEditar").style.display = "flex";
       }
 
