@@ -145,7 +145,7 @@
 
         <div class="modal-actions">
           <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
-          <button class="btn-add">Cadastrar</button>
+          <button class="btn-add" onclick="cadastrarCoordenador()">Cadastrar</button>
         </div>
       </div>
     </div>
@@ -155,8 +155,10 @@
       <div class="modal-box">
         <h2>Editar cadastro gestor</h2>
 
-        <input placeholder="Nome cursinho" />
-        <input value="gestor@gmail.com" />
+        <input placeholder="Nome cursinho" id="editarCursinho" />
+        <input placeholder="Email" id="editarEmail" />
+        <input type="password" placeholder="Nova senha" id="editarSenha" />
+        <input type="hidden" id="editarId" />
 
         <select>
           <option>Gestor</option>
@@ -165,46 +167,134 @@
 
         <div class="modal-actions">
           <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
-          <button class="btn-add">Atualizar</button>
+          <button class="btn-add" onclick="atualizarCoordenador()">Atualizar</button>
         </div>
       </div>
     </div>
 
     <script>
-<<<<<<< HEAD
       document.addEventListener("DOMContentLoaded", carregarCoordenadores);
 
-      function carregarCoordenadores() {
-        fetch("/usuarios/listar/Coordenador")
-          .then((resposta) => resposta.ok ? resposta.json() : [])
-          .then((usuarios) => {
-            if (!usuarios || usuarios.length == 0) return;
+      function limparCadastro() {
+        cursinho.value = "";
+        email.value = "";
+        senha.value = "";
+        confirmarSenha.value = "";
+      }
 
-            tbodyCoordenadores.innerHTML = usuarios.map((usuario) => `
+      function carregarCoordenadores() {
+        fetch("/coordenadores")
+          .then((resposta) => resposta.ok ? resposta.json() : [])
+          .then((coordenadores) => {
+            if (!coordenadores || coordenadores.length == 0) {
+              tbodyCoordenadores.innerHTML = `
+                <tr>
+                  <td colspan="6">Nenhum coordenador encontrado</td>
+                </tr>
+              `;
+              return;
+            }
+
+            tbodyCoordenadores.innerHTML = coordenadores.map((coordenador) => `
               <tr>
-                <td>${String(usuario.id).padStart(2, "0")}</td>
-                <td>${usuario.nome}</td>
-                <td>********</td>
-                <td>${usuario.municipio}</td>
-                <td><button class="icon-btn" onclick="abrirEditar()">✏️</button></td>
-                <td><button class="icon-btn" onclick="excluirUsuario(${usuario.id})">🗑️</button></td>
+                <td>${String(coordenador.id).padStart(2, "0")}</td>
+                <td>${coordenador.email || coordenador.nome}</td>
+                <td>${coordenador.senha || ""}</td>
+                <td>${coordenador.nomeCursinho || coordenador.municipio || ""}</td>
+                <td>
+                  <button class="icon-btn" onclick="abrirEditar(${coordenador.id}, '${escaparTexto(coordenador.email || coordenador.nome)}', '${escaparTexto(coordenador.nomeCursinho || coordenador.municipio || "")}')">
+                    ✏️
+                  </button>
+                </td>
+                <td>
+                  <button class="icon-btn" onclick="excluirCoordenador(${coordenador.id})">🗑️</button>
+                </td>
               </tr>
             `).join("");
           })
           .catch((erro) => console.log("Erro ao buscar coordenadores", erro));
       }
 
-      function excluirUsuario(id) {
-        fetch(`/usuarios/${id}`, { method: "DELETE" })
-          .then((resposta) => {
-            if (resposta.ok) carregarCoordenadores();
+      function cadastrarCoordenador() {
+        var nomeCursinho = cursinho.value;
+        var emailCoordenador = email.value;
+        var senhaCoordenador = senha.value;
+        var confirmarSenhaCoordenador = confirmarSenha.value;
+
+        if (nomeCursinho == "" || emailCoordenador == "" || senhaCoordenador == "" || confirmarSenhaCoordenador == "") {
+          alert("Preencha todos os campos.");
+          return false;
+        }
+
+        fetch("/coordenadores/cadastrar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nomeCursinho: nomeCursinho,
+            email: emailCoordenador,
+            senha: senhaCoordenador,
+            confirmarSenha: confirmarSenhaCoordenador
           })
-          .catch((erro) => console.log("Erro ao excluir usuário", erro));
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+
+            fecharModal();
+            limparCadastro();
+            carregarCoordenadores();
+          })
+          .catch((erro) => alert("Erro ao cadastrar coordenador: " + erro));
       }
 
-=======
-      // front-end
->>>>>>> a4c8817 (Fix: Corringindo links pós troca de design de diretórios)
+      function atualizarCoordenador() {
+        var id = editarId.value;
+        var nomeCursinho = editarCursinho.value;
+        var emailCoordenador = editarEmail.value;
+        var senhaCoordenador = editarSenha.value;
+
+        if (emailCoordenador == "") {
+          alert("Preencha o email.");
+          return false;
+        }
+
+        fetch(`/coordenadores/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nomeCursinho: nomeCursinho,
+            email: emailCoordenador,
+            senha: senhaCoordenador
+          })
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+
+            fecharEditar();
+            carregarCoordenadores();
+          })
+          .catch((erro) => alert("Erro ao atualizar coordenador: " + erro));
+      }
+
+      function excluirCoordenador(id) {
+        fetch(`/coordenadores/${id}`, { method: "DELETE" })
+          .then((resposta) => {
+            if (resposta.ok) {
+              carregarCoordenadores();
+            } else {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+          })
+          .catch((erro) => alert("Erro ao excluir coordenador: " + erro));
+      }
+
+      function escaparTexto(texto) {
+        return String(texto || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+      }
+
       function abrirModal() {
         document.getElementById("modalCadastro").style.display = "flex";
       }
@@ -213,26 +303,16 @@
         document.getElementById("modalCadastro").style.display = "none";
       }
 
-      function abrirEditar() {
+      function abrirEditar(id, emailCoordenador, nomeCursinho) {
+        editarId.value = id;
+        editarEmail.value = emailCoordenador || "";
+        editarCursinho.value = nomeCursinho || "";
+        editarSenha.value = "";
         document.getElementById("modalEditar").style.display = "flex";
       }
 
       function fecharEditar() {
         document.getElementById("modalEditar").style.display = "none";
-      }
-
-      //back- end
-      var nomeCursinho = cursinho.value;
-      var email = email.value;
-      var senha = senha.value;
-      var confirmarSenha = confirmarSenha.value;
-
-      if(nomeCursinho == " " || email == " " || senha == " " || confirmarSenha == " "){
-              mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
-
-      // finalizarAguardar();
-      return false;
       }
 
     </script>

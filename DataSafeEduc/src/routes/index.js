@@ -1,11 +1,9 @@
 var express = require("express");
 var path = require("path");
 var router = express.Router();
-var path = require("path");
 
 router.get("/", function (req, res) {
-const usuario = require('./usuario');
-const dashboard = require('./dashboard');
+    res.sendFile(path.join(__dirname, "../../public/views/index.html"));
 });
 
 router.get("/:pagina", function (req, res, next) {
@@ -19,7 +17,7 @@ router.get("/:pagina", function (req, res, next) {
         "simulados",
         "gerenciamento-professores",
         "gerenciamento-coordenadores",
-        "duck-ia" 
+        "duck-ia"
     ];
 
     var pagina = req.params.pagina.replace(".html", "");

@@ -100,6 +100,10 @@ function cadastrarCoordenador(res, res){
     }
 }
 
+function editarCoordenadores(){
+    
+}
+
 
 function listarPorNivel(req, res) {
     var nivel = req.params.nivel;
