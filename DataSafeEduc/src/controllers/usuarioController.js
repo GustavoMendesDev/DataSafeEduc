@@ -1,16 +1,17 @@
 var usuarioModel = require("../models/usuarioModel");
 
 function autenticar(req, res) {
-    var nome = req.body.nomeServer;
+    var email = req.body.emailServer;
     var senha = req.body.senhaServer;
 
-    if (nome == undefined) {
-        res.status(400).send("Seu nome está undefined");
+    if (email == undefined) {
+        res.status(400).send("Seu email está undefined");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está indefinida!");
     } else {
 
-        usuarioModel.autenticar(nome, senha)
+        usuarioModel
+            .autenticar(email, senha)
             .then(
                 function (resultadoAutenticar) {
                     console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
@@ -18,7 +19,13 @@ function autenticar(req, res) {
 
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
-                        res.json(resultadoAutenticar[0]);
+
+                        res.json({
+                            idUsuario: resultadoAutenticar[0].idUsuario,
+                            nome: resultadoAutenticar[0].nome,
+                            email: resultadoAutenticar[0].email
+
+                        });
                     } else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Senha inválido(s)");
                     } else {
@@ -39,16 +46,20 @@ function autenticar(req, res) {
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nome = req.body.nomeServer;
+    var email = req.body.emailServer;
     var senha = req.body.senhaServer;
 
     // Faça as validações dos valores
     if (nome == undefined) {
         res.status(400).send("Seu nome está undefined!");
+    }else if (email == undefined) {
+        res.status(400).send("Seu email está undefined!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
     } else {
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, senha)
+        usuarioModel
+        .cadastrar(nome, email, senha)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -123,12 +134,15 @@ function listarPorNivel(req, res) {
 
 function cadastrarCompleto(req, res) {
     var nome = req.body.nomeServer || req.body.nome;
+    var email = req.body.emailServer || req.body.email;
     var senha = req.body.senhaServer || req.body.senha;
     var fkNivelAcesso = req.body.fkNivelAcesso;
     var fkMunicipio = req.body.fkMunicipio;
 
     if (nome == undefined) {
         res.status(400).send("Seu nome está undefined!");
+    } else if (email == undefined) {
+        res.status(400).send("Seu email está undefined!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
     } else if (fkNivelAcesso == undefined) {
@@ -136,7 +150,7 @@ function cadastrarCompleto(req, res) {
     } else if (fkMunicipio == undefined) {
         res.status(400).send("Seu município está undefined!");
     } else {
-        usuarioModel.cadastrarCompleto(nome, senha, fkNivelAcesso, fkMunicipio)
+        usuarioModel.cadastrarCompleto(nome, senha, fkNivelAcesso, fkMunicipio, email)
             .then(function (resultado) {
                 res.status(201).json(resultado);
             }).catch(function (erro) {

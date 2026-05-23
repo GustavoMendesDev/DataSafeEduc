@@ -1,7 +1,7 @@
 var database = require("../database/config")
 
-function autenticar(nome, senha) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", nome, senha)
+function autenticar(email, senha) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
     var instrucaoSql = `
         SELECT
             usuario.id,
@@ -12,28 +12,31 @@ function autenticar(nome, senha) {
             usuario.fkMunicipio
         FROM usuario
         JOIN nivelAcesso ON usuario.fkNivelAcesso = nivelAcesso.id
-        WHERE usuario.nome = '${nome}' AND usuario.senha = '${senha}';
+        WHERE usuario.email = '${email}' AND usuario.senha = '${senha}';
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucaoSql
-function cadastrar(nome,senha) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, senha);
+function cadastrar(nome,email,senha) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email,senha);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucaoSql = `
-        INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkMunicipio)
+        INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkMunicipio, email)
         VALUES (
             '${nome}',
             '${senha}',
             NOW(),
             (SELECT id FROM nivelAcesso ORDER BY id LIMIT 1),
-            (SELECT id FROM municipio ORDER BY id LIMIT 1)
+            (SELECT id FROM municipio ORDER BY id LIMIT 1),
+            '${email}'
+             
         );
     `;
+    // se você tiver olhando essa parte do codigo, é uma má pratica vulgo so quero que funcione
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -62,18 +65,22 @@ function listarPorNivel(nivel) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrarCompleto(nome, senha, fkNivelAcesso, fkMunicipio) {
+function cadastrarCompleto(nome, senha, fkNivelAcesso, fkMunicipio, email) {
     var instrucaoSql = `
-        INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkMunicipio)
-        VALUES ('${nome}', '${senha}', NOW(), ${fkNivelAcesso}, ${fkMunicipio});
+        INSERT INTO usuario (nome,  senha, dataCriacao, fkNivelAcesso, fkMunicipio,  'email')
+        VALUES ('${nome}', '${senha}', NOW(), ${fkNivelAcesso}, ${fkMunicipio}, ${ElementInternals});
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function atualizar(idUsuario, nome, senha, fkNivelAcesso, fkMunicipio) {
+function atualizar(idUsuario, nome, email, senha, fkNivelAcesso, fkMunicipio) {
     var campos = [`nome = '${nome}'`];
+
+    if (email != undefined && email != "") {
+        campos.push(`email = '${email}'`);
+    }
 
     if (senha != undefined && senha != "") {
         campos.push(`senha = '${senha}'`);
