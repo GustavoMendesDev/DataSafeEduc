@@ -64,9 +64,10 @@
               <!-- Barras abaixo / acima -->
               <div class="grade-dificuldades">
                 <div class="bloco-grafico">
-                  <p class="titulo-bloco-grafico">
-                    Habilidades com mais questões abaixo da média regional
-                  </p>
+                <!-- Abaixo -->
+<p class="titulo-bloco-grafico">
+    Habilidades com menor chance de acerto (Parâmetro B — TRI)
+</p>
                   <div class="linha-filtro" id="filtroAbaixo">
                     <button class="botao-filtro ativo" data-area="LC">
                       LC
@@ -336,43 +337,7 @@
     <script>
       // ── DADOS ──────────────────────────────────────────────────────────────────
 
-      const dadosAbaixo = {
-        LC: {
-          labels: ["H23", "H14", "H28", "H7", "H29", "H18", "H30"],
-          values: [4, 7, 8, 4, 6, 7, 8],
-        },
-        MT: {
-          labels: ["H5", "H12", "H3", "H28", "H7", "H1", "H22"],
-          values: [6, 5, 8, 4, 7, 3, 6],
-        },
-        CN: {
-          labels: ["H10", "H15", "H8", "H2", "H11", "H6", "H19"],
-          values: [5, 7, 4, 6, 8, 3, 7],
-        },
-        CH: {
-          labels: ["H4", "H9", "H21", "H13", "H16", "H20", "H25"],
-          values: [6, 4, 7, 5, 8, 3, 6],
-        },
-      };
 
-      const dadosAcima = {
-        LC: {
-          labels: ["H1", "H17", "H13", "H11", "H16", "H20", "H7", "H5"],
-          values: [15, 14, 13, 10, 11, 13, 18, 15],
-        },
-        MT: {
-          labels: ["H2", "H9", "H4", "H15", "H18", "H6", "H8", "H11"],
-          values: [14, 12, 11, 9, 10, 12, 17, 14],
-        },
-        CN: {
-          labels: ["H3", "H7", "H12", "H5", "H9", "H1", "H14", "H16"],
-          values: [13, 15, 10, 11, 12, 14, 16, 13],
-        },
-        CH: {
-          labels: ["H8", "H11", "H2", "H14", "H7", "H3", "H10", "H15"],
-          values: [12, 13, 9, 10, 11, 15, 17, 12],
-        },
-      };
 
       const dadosMedia = {
         LC: {
@@ -509,42 +474,143 @@
 
       let chartAbaixo, chartAcima, chartMedia, chartRadar, chartPilha;
 
-      function criarChartAbaixo(area) {
-        fetch(`/dashboard/habilidades-abaixo-media/${area}`)
-          .then((resposta) => resposta.ok ? resposta.json() : dadosAbaixo[area])
-          .then((d) => {
-            d = d || dadosAbaixo[area];
+  // ── CONSTANTES DOS DADOS REAIS (fallback se API falhar) ──────────────────────
+const LINHA_DOMINIO_PERCENT = 60;
+
+function barrasHorizontaisConfig(labels, values, cores, rotulos, linhaDominio) {
+    return {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                data: values,
+                backgroundColor: cores,
+                borderRadius: 4,
+                borderSkipped: false,
+                barThickness: 18,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                annotation: {
+                    annotations: {
+                        linhaDominio: {
+                            type: 'line',
+                            xMin: linhaDominio || LINHA_DOMINIO_PERCENT,
+                            xMax: linhaDominio || LINHA_DOMINIO_PERCENT,
+                            borderColor: '#22c55e',
+                            borderWidth: 2.5,
+                            borderDash: [6, 4],
+                            label: {
+                                display: true,
+                                content: '60% — linha de domínio',
+                                position: 'start',
+                                color: '#16a34a',
+                                font: { size: 11, weight: '700' },
+                                backgroundColor: 'rgba(255,255,255,0.9)',
+                                padding: { x: 6, y: 3 },
+                                yAdjust: -14,
+                            }
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: (ctx) => ctx[0].label,
+                        label: function(ctx) {
+                            const i = ctx.dataIndex;
+                            const chance = ctx.raw;
+                            const rotulo = rotulos ? rotulos[i] : '';
+                            const dominio = chance >= 60 ? '✓ Dominada' : '✗ Não dominada';
+                            return [
+                                `Chance de acerto: ${chance}%`,
+                                `Classificação: ${rotulo}`,
+                                dominio
+                            ];
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    min: 0,
+                    max: 100,
+                    grid: { color: '#f0f0f0' },
+                    ticks: {
+                        font: { size: 11 },
+                        color: '#1e293b',
+                        callback: v => `${v}%`
+                    },
+                    title: {
+                        display: true,
+                        text: '% Chance de acerto (baseado no Parâmetro B da TRI)',
+                        font: { size: 11, weight: '600' },
+                        color: '#64748b'
+                    }
+                },
+                y: {
+                    ticks: { font: { size: 11 }, color: '#1e293b' },
+                    grid: { display: false }
+                }
+            }
+        }
+    };
+}
+
+// ── CRIAÇÃO DOS CHARTS ────────────────────────────────────────────────────────
+function criarChartAbaixo(area) {
+    fetch(`/dashboard/habilidades-abaixo-media/${area}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(d => {
             if (chartAbaixo) chartAbaixo.destroy();
+            const labels  = d ? d.labels  : dadosAbaixo[area].labels;
+            const values  = d ? d.values  : dadosAbaixo[area].values;
+            const cores   = d ? d.cores   : dadosAbaixo[area].cores;
+            const rotulos = d ? d.rotulos : [];
+            const linha   = d ? d.linhaDominio : LINHA_DOMINIO_PERCENT;
             chartAbaixo = new Chart(
-              document.getElementById("chartAbaixo"),
-              barrasHorizontaisConfig(d.labels, d.values, "#ef4444"),
+                document.getElementById('chartAbaixo'),
+                barrasHorizontaisConfig(labels, values, cores, rotulos, linha)
             );
-          })
-          .catch(() => {
+        })
+        .catch(() => {
             const d = dadosAbaixo[area];
             if (chartAbaixo) chartAbaixo.destroy();
-            chartAbaixo = new Chart(document.getElementById("chartAbaixo"), barrasHorizontaisConfig(d.labels, d.values, "#ef4444"));
-          });
-      }
-
-      function criarChartAcima(area) {
-        fetch(`/dashboard/habilidades-acima-media/${area}`)
-          .then((resposta) => resposta.ok ? resposta.json() : dadosAcima[area])
-          .then((d) => {
-            d = d || dadosAcima[area];
-            if (chartAcima) chartAcima.destroy();
-            chartAcima = new Chart(
-              document.getElementById("chartAcima"),
-              barrasHorizontaisConfig(d.labels, d.values, "#22c55e"),
+            chartAbaixo = new Chart(
+                document.getElementById('chartAbaixo'),
+                barrasHorizontaisConfig(d.labels, d.values, d.cores, [], LINHA_DOMINIO_PERCENT)
             );
-          })
-          .catch(() => {
+        });
+}
+
+function criarChartAcima(area) {
+    fetch(`/dashboard/habilidades-acima-media/${area}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(d => {
+            if (chartAcima) chartAcima.destroy();
+            const labels  = d ? d.labels  : dadosAcima[area].labels;
+            const values  = d ? d.values  : dadosAcima[area].values;
+            const cores   = d ? d.cores   : dadosAcima[area].cores;
+            const rotulos = d ? d.rotulos : [];
+            const linha   = d ? d.linhaDominio : LINHA_DOMINIO_PERCENT;
+            chartAcima = new Chart(
+                document.getElementById('chartAcima'),
+                barrasHorizontaisConfig(labels, values, cores, rotulos, linha)
+            );
+        })
+        .catch(() => {
             const d = dadosAcima[area];
             if (chartAcima) chartAcima.destroy();
-            chartAcima = new Chart(document.getElementById("chartAcima"), barrasHorizontaisConfig(d.labels, d.values, "#22c55e"));
-          });
-      }
-
+            chartAcima = new Chart(
+                document.getElementById('chartAcima'),
+                barrasHorizontaisConfig(d.labels, d.values, d.cores, [], LINHA_DOMINIO_PERCENT)
+            );
+        });
+}
       function criarChartMedia(area) {
         fetch(`/dashboard/notas-habilidades/${area}`)
           .then((resposta) => resposta.ok ? resposta.json() : dadosMedia[area])
@@ -597,8 +663,8 @@
             scales: {
               r: {
                 min: 0,
-                max: 40,
-                ticks: { stepSize: 10, font: { size: 10 } },
+                max: 180,
+                ticks: { stepSize: 36, font: { size: 10 } },
                 pointLabels: { font: { size: 12 }, color: "#1e293b" },
               },
             },

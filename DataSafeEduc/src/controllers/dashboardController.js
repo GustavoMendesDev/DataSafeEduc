@@ -53,45 +53,64 @@ function buscarEvolucaoNotas(req, res) {
         });
 }
 
-function buscarHabilidadesAbaixoMedia(req, res) {
-    var sigla = req.params.sigla;
+const LINHA_DOMINIO_PERCENT = 60;
 
-    if (!validarArea(sigla)) {
-        res.status(400).send("Área inválida!");
-        return;
-    }
+const AREAS_VALIDAS = new Set(['LC', 'CH', 'CN', 'MT']);
 
-    dashboardModel.buscarHabilidadesAbaixoMedia(sigla)
-        .then(function (resultado) {
-            res.status(200).json({
-                labels: resultado.map(function (item) { return formatarHabilidade(item.habilidade); }),
-                values: resultado.map(function (item) { return Number(item.quantidade); }),
-                detalhes: resultado
-            });
-        }).catch(function (erro) {
-            console.log(erro);
-            res.status(500).json(erro.sqlMessage);
-        });
+function validarArea(sigla) {
+    return AREAS_VALIDAS.has(sigla);
+}
+function serializarResultado(resultado) {
+    return {
+        labels:       resultado.map(item => `${item.habilidade}`),
+        values:       resultado.map(item => Number(item.chanceAcerto)),
+        cores:        resultado.map(item => classificarChance(Number(item.chanceAcerto)).cor),
+        rotulos:      resultado.map(item => classificarChance(Number(item.chanceAcerto)).rotulo),
+        linhaDominio: LINHA_DOMINIO_PERCENT,
+        detalhes:     resultado,
+        vazio:        resultado.length === 0,   // ← flag explícita para o frontend
+    };
+}
+// ── 4 tiers baseados exclusivamente no parâmetro B da TRI ─────────────────────
+function classificarChance(chance) {
+    if (chance >= 50) return { rotulo: 'Alta',        cor: '#22c55e' };
+    if (chance >= 40) return { rotulo: 'Média',       cor: '#f97316' };
+    if (chance >= 30) return { rotulo: 'Baixa',       cor: '#ef4444' };
+    return                   { rotulo: 'Muito Baixa', cor: '#7f1d1d' };
 }
 
-function buscarHabilidadesAcimaMedia(req, res) {
-    var sigla = req.params.sigla;
+// ── Helper: serializa resultado do model para o formato do chart ──────────────
+function serializarResultado(resultado) {
+    return {
+        labels:       resultado.map(item => `${item.habilidade}`),
+        values:       resultado.map(item => Number(item.chanceAcerto)),
+        cores:        resultado.map(item => classificarChance(Number(item.chanceAcerto)).cor),
+        rotulos:      resultado.map(item => classificarChance(Number(item.chanceAcerto)).rotulo),
+        linhaDominio: LINHA_DOMINIO_PERCENT,
+        detalhes:     resultado,
+    };
+}
 
-    if (!validarArea(sigla)) {
-        res.status(400).send("Área inválida!");
-        return;
-    }
+function buscarHabilidadesAbaixoMedia(req, res) {
+    const { sigla } = req.params;
+    if (!validarArea(sigla)) return res.status(400).json({ erro: 'Área inválida.' });
+
+    dashboardModel.buscarHabilidadesAbaixoMedia(sigla)
+        .then(resultado => res.status(200).json(serializarResultado(resultado)))
+        .catch(erro => {
+            console.error('[buscarHabilidadesAbaixoMedia]', erro);
+            res.status(500).json({ erro: erro.sqlMessage ?? 'Erro interno.' });
+        });
+}
+function buscarHabilidadesAcimaMedia(req, res) {
+    const { sigla } = req.params;
+    if (!validarArea(sigla)) return res.status(400).json({ erro: 'Área inválida.' });
 
     dashboardModel.buscarHabilidadesAcimaMedia(sigla)
-        .then(function (resultado) {
-            res.status(200).json({
-                labels: resultado.map(function (item) { return formatarHabilidade(item.habilidade); }),
-                values: resultado.map(function (item) { return Number(item.quantidade); }),
-                detalhes: resultado
-            });
-        }).catch(function (erro) {
-            console.log(erro);
-            res.status(500).json(erro.sqlMessage);
+        .then(resultado => res.status(200).json(serializarResultado(resultado)))
+        .catch(erro => {
+            console.error('[buscarHabilidadesAcimaMedia]', erro);
+            res.status(500).json({ erro: erro.sqlMessage ?? 'Erro interno.' });
         });
 }
 

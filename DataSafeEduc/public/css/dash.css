@@ -113,7 +113,7 @@
 /* ── ALTURAS DOS GRÁFICOS ── */
 .envoltorio-grafico     { height: 290px; }
 .envoltorio-grafico-med { height: 230px; }
-.envoltorio-radar       { height: 225px; }
+.envoltorio-radar       { height: 525px; }
 .envoltorio-pilha       { height: 290px; width: 900px; }
 
 /* ── LEGENDA DE NÍVEIS ── */

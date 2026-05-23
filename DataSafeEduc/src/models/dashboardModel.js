@@ -37,47 +37,74 @@ function buscarEvolucaoNotas() {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
-
 function buscarHabilidadesAbaixoMedia(sigla) {
-    var instrucaoSql = `
+    const instrucaoSql = `
         SELECT
-            areaConhecimento.sigla AS area,
-            habilidade.numero AS habilidade,
-            COUNT(questao.codigoItem) AS quantidade,
-            ROUND(AVG(parametroTri.parametroB), 2) AS parametroBMedio
-        FROM questao
-        JOIN habilidade ON questao.fkHabilidade = habilidade.id
-        JOIN areaConhecimento ON habilidade.fkAreaConhecimento = areaConhecimento.id
-        JOIN parametroTri ON questao.fkParametroTri = parametroTri.id
-        WHERE areaConhecimento.sigla = '${sigla}'
-        GROUP BY areaConhecimento.sigla, habilidade.numero
-        ORDER BY parametroBMedio DESC, quantidade DESC
+            ac.sigla                                        AS area,
+            h.numero                                        AS habilidade,
+            COUNT(q.codigoItem)                             AS quantidade,
+            ROUND(AVG(pt.parametroB), 3)                   AS mediaBParam,
+            ROUND(100 / (1 + EXP(AVG(pt.parametroB))), 1) AS chanceAcerto
+        FROM questao q
+        JOIN habilidade       h  ON q.fkHabilidade      = h.id
+        JOIN areaConhecimento ac ON h.fkAreaConhecimento = ac.id
+        JOIN parametroTri     pt ON q.fkParametroTri    = pt.id
+        WHERE ac.sigla       = '${sigla}'
+          AND pt.parametroB  IS NOT NULL
+        GROUP BY ac.sigla, h.numero
+        HAVING chanceAcerto < 30
+        ORDER BY chanceAcerto ASC
         LIMIT 8;
     `;
-
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    console.log('SQL buscarHabilidadesAbaixoMedia:\n', instrucaoSql);
     return database.executar(instrucaoSql);
 }
-
 function buscarHabilidadesAcimaMedia(sigla) {
-    var instrucaoSql = `
+    const instrucaoSql = `
         SELECT
-            areaConhecimento.sigla AS area,
-            habilidade.numero AS habilidade,
-            COUNT(questao.codigoItem) AS quantidade,
-            ROUND(AVG(parametroTri.parametroB), 2) AS parametroBMedio
-        FROM questao
-        JOIN habilidade ON questao.fkHabilidade = habilidade.id
-        JOIN areaConhecimento ON habilidade.fkAreaConhecimento = areaConhecimento.id
-        JOIN parametroTri ON questao.fkParametroTri = parametroTri.id
-        WHERE areaConhecimento.sigla = '${sigla}'
-        GROUP BY areaConhecimento.sigla, habilidade.numero
-        ORDER BY parametroBMedio ASC, quantidade DESC
+            ac.sigla                                        AS area,
+            h.numero                                        AS habilidade,
+            COUNT(q.codigoItem)                             AS quantidade,
+            ROUND(AVG(pt.parametroB), 3)                   AS mediaBParam,
+            ROUND(100 / (1 + EXP(AVG(pt.parametroB))), 1) AS chanceAcerto
+        FROM questao q
+        JOIN habilidade       h  ON q.fkHabilidade      = h.id
+        JOIN areaConhecimento ac ON h.fkAreaConhecimento = ac.id
+        JOIN parametroTri     pt ON q.fkParametroTri    = pt.id
+        WHERE ac.sigla      = '${sigla}'
+          AND pt.parametroB IS NOT NULL
+        GROUP BY ac.sigla, h.numero
+        HAVING mediaBParam < 1.0
+        ORDER BY mediaBParam ASC
         LIMIT 8;
     `;
 
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    const instrucaoFallback = `
+        SELECT
+            ac.sigla                                        AS area,
+            h.numero                                        AS habilidade,
+            COUNT(q.codigoItem)                             AS quantidade,
+            ROUND(AVG(pt.parametroB), 3)                   AS mediaBParam,
+            ROUND(100 / (1 + EXP(AVG(pt.parametroB))), 1) AS chanceAcerto
+        FROM questao q
+        JOIN habilidade       h  ON q.fkHabilidade      = h.id
+        JOIN areaConhecimento ac ON h.fkAreaConhecimento = ac.id
+        JOIN parametroTri     pt ON q.fkParametroTri    = pt.id
+        WHERE ac.sigla      = '${sigla}'
+          AND pt.parametroB IS NOT NULL
+        GROUP BY ac.sigla, h.numero
+        ORDER BY chanceAcerto DESC
+        LIMIT 8;
+    `;
+
+    return database.executar(instrucaoSql)
+        .then(resultado => {
+            if (resultado.length < 7) {
+                console.log(`[buscarHabilidadesAcimaMedia] Menos de 7 resultados para ${sigla}, usando fallback.`);
+                return database.executar(instrucaoFallback);
+            }
+            return resultado;
+        });
 }
 
 function buscarNotasHabilidades(sigla) {
