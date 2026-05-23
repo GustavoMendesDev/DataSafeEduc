@@ -12,6 +12,12 @@ router.post("/autenticar", function (req, res) {
     usuarioController.autenticar(req, res);
 });
 
+router.post("/cadastrarCoodenador", function(req,res){
+    usuarioController.cadastrarCoordenador(req,res)
+})
+
+
+
 router.get("/listar/:nivel", function (req, res) {
     usuarioController.listarPorNivel(req, res);
 });
