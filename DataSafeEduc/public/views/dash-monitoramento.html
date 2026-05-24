@@ -10,9 +10,10 @@
     />
     <link rel="stylesheet" href="../css/dash.css" />
     <link rel="stylesheet" href="../css/layout.css" />
-     <link rel="stylesheet" href="../css/educacional-dash.css" />
+    <link rel="stylesheet" href="../css/educacional-dash.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
+
   <body>
     <div class="container-painel">
       <!-- ----------------------------------------------------------------LAYOUT-----------------------------------------  -->
@@ -24,7 +25,9 @@
           <p class="cargo-perfil">Administrador</p>
         </div>
         <nav class="nav-lateral">
-         <a href="analise-desempenho.html"> <button class="nav-btn">Análise de Desempenho por Tema</button></a>
+          <a href="analise-desempenho.html">
+            <button class="nav-btn">Análise de Desempenho por Tema</button></a
+          >
           <a href="dash-monitoramento.html"
             ><button class="nav-btn active">
               Monitoramento de Desempenho por habilidade
@@ -64,17 +67,16 @@
               <!-- Barras abaixo / acima -->
               <div class="grade-dificuldades">
                 <div class="bloco-grafico">
-                <!-- Abaixo -->
-<p class="titulo-bloco-grafico">
-    Habilidades com menor chance de acerto (Parâmetro B — TRI)
-</p>
+                  <!-- Abaixo -->
+                  <p class="titulo-bloco-grafico">
+                    Habilidades com menor chance de acerto (Parâmetro B — TRI)
+                  </p>
                   <div class="linha-filtro" id="filtroAbaixo">
-                    <button class="botao-filtro ativo" data-area="LC">
-                      LC
-                    </button>
-                    <button class="botao-filtro" data-area="MT">MT</button>
-                    <button class="botao-filtro" data-area="CN">CN</button>
-                    <button class="botao-filtro" data-area="CH">CH</button>
+            <!-- filtroAbaixo e filtroAcima -->
+<button class="botao-filtro ativo" data-area="LC" title="Linguagens, Códigos e suas Tecnologias">LC</button>
+<button class="botao-filtro" data-area="MT" title="Matemática e suas Tecnologias">MT</button>
+<button class="botao-filtro" data-area="CN" title="Ciências da Natureza e suas Tecnologias">CN</button>
+<button class="botao-filtro" data-area="CH" title="Ciências Humanas e suas Tecnologias">CH</button>
                   </div>
                   <div class="envoltorio-grafico">
                     <canvas id="chartAbaixo"></canvas>
@@ -83,15 +85,14 @@
 
                 <div class="bloco-grafico">
                   <p class="titulo-bloco-grafico">
-                    Habilidades com mais questões acima da média regional
+                    Habilidades com maior chance de acerto (Parâmetro B — TRI)
                   </p>
                   <div class="linha-filtro" id="filtroAcima">
-                    <button class="botao-filtro ativo" data-area="LC">
-                      LC
-                    </button>
-                    <button class="botao-filtro" data-area="MT">MT</button>
-                    <button class="botao-filtro" data-area="CN">CN</button>
-                    <button class="botao-filtro" data-area="CH">CH</button>
+     <!-- filtroAbaixo e filtroAcima -->
+<button class="botao-filtro ativo" data-area="LC" title="Linguagens, Códigos e suas Tecnologias">LC</button>
+<button class="botao-filtro" data-area="MT" title="Matemática e suas Tecnologias">MT</button>
+<button class="botao-filtro" data-area="CN" title="Ciências da Natureza e suas Tecnologias">CN</button>
+<button class="botao-filtro" data-area="CH" title="Ciências Humanas e suas Tecnologias">CH</button>
                   </div>
                   <div class="envoltorio-grafico">
                     <canvas id="chartAcima"></canvas>
@@ -99,27 +100,47 @@
                 </div>
               </div>
 
-              <!-- Habilidades abaixo da média (barras verticais) -->
-              <div class="bloco-grafico">
-                <p class="titulo-bloco-grafico">
-                  Habilidades abaixo da média — notas médias por habilidade
-                </p>
-                <div class="linha-filtro" id="filtroMedia">
-                  <button class="botao-filtro ativo" data-area="LC">LC</button>
-                  <button class="botao-filtro" data-area="MT">MT</button>
-                  <button class="botao-filtro" data-area="CN">CN</button>
-                  <button class="botao-filtro" data-area="CH">CH</button>
-                </div>
-                <div class="envoltorio-grafico-med">
-                  <canvas id="chartMedia"></canvas>
-                </div>
-              </div>
+        <div class="bloco-grafico">
+  <p class="titulo-bloco-grafico">
+    Habilidades com maior impacto na nota (Discriminação — Parâmetro A)
+  </p>
+
+  <!-- Filtros de área -->
+  <div class="linha-filtro" id="filtroImpacto">
+    <button class="botao-filtro ativo" data-area="LC" title="Linguagens">LC</button>
+    <button class="botao-filtro"       data-area="MT" title="Matemática">MT</button>
+    <button class="botao-filtro"       data-area="CN" title="Ciências da Natureza">CN</button>
+    <button class="botao-filtro"       data-area="CH" title="Ciências Humanas">CH</button>
+  </div>
+
+  <!-- Legenda dos níveis cognitivos -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+    <span style="font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:#4BB8FA;display:inline-block"></span>Nível I
+    </span>
+    <span style="font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Nível II
+    </span>
+    <span style="font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:#a855f7;display:inline-block"></span>Nível III
+    </span>
+    <span style="font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:#f97316;display:inline-block"></span>Nível IV
+    </span>
+    <span style="font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block"></span>Nível V
+    </span>
+  </div>
+
+  <div class="envoltorio-grafico-med">
+    <canvas id="chartImpacto"></canvas>
+  </div>
+</div>
+
             </section>
 
             <!-- SEÇÃO AUXILIAR LATERAL -->
             <section class="secao-auxiliares">
-    
-
               <!-- Tabela habilidades mais frequentes -->
               <div class="cartao-secao">
                 <h2 class="titulo-secao">
@@ -251,42 +272,42 @@
                 </table>
               </div>
 
-                        <!-- Níveis cognitivos -->
+              <!-- Níveis cognitivos -->
               <div class="cartao-secao">
                 <h2 class="titulo-secao">Níveis Cognitivos</h2>
                 <div class="legenda-niveis">
                   <div class="item-nivel">
                     <div class="circulo-nivel n1"></div>
                     <span
-                      ><span class="rotulo-nivel">Nível 1</span> — Dominar
+                      ><span class="rotulo-nivel">Nível I</span> — Dominar
                       Linguagens</span
                     >
                   </div>
                   <div class="item-nivel">
                     <div class="circulo-nivel n2"></div>
                     <span
-                      ><span class="rotulo-nivel">Nível 2</span> — Compreender
+                      ><span class="rotulo-nivel">Nível II</span> — Compreender
                       Fenômenos</span
                     >
                   </div>
                   <div class="item-nivel">
                     <div class="circulo-nivel n3"></div>
                     <span
-                      ><span class="rotulo-nivel">Nível 3</span> — Enfrentar
+                      ><span class="rotulo-nivel">Nível III</span> — Enfrentar
                       Situações-Problema</span
                     >
                   </div>
                   <div class="item-nivel">
                     <div class="circulo-nivel n4"></div>
                     <span
-                      ><span class="rotulo-nivel">Nível 4</span> — Construir
+                      ><span class="rotulo-nivel">Nível IV</span> — Construir
                       Argumentação</span
                     >
                   </div>
                   <div class="item-nivel">
                     <div class="circulo-nivel n5"></div>
                     <span
-                      ><span class="rotulo-nivel">Nível 5</span> — Elaborar
+                      ><span class="rotulo-nivel">Nível V</span> — Elaborar
                       Resposta</span
                     >
                   </div>
@@ -318,10 +339,35 @@
                   <button class="botao-filtro ativo" data-area="todos">
                     Todos
                   </button>
-                  <button class="botao-filtro" data-area="LC">LC</button>
-                  <button class="botao-filtro" data-area="MT">MT</button>
-                  <button class="botao-filtro" data-area="CN">CN</button>
-                  <button class="botao-filtro" data-area="CH">CH</button>
+                  <!-- filtroAbaixo e filtroAcima -->
+                  <button
+                    class="botao-filtro ativo"
+                    data-area="LC"
+                    title="Linguagens, Códigos e suas Tecnologias"
+                  >
+                    LC
+                  </button>
+                  <button
+                    class="botao-filtro"
+                    data-area="MT"
+                    title="Matemática e suas Tecnologias"
+                  >
+                    MT
+                  </button>
+                  <button
+                    class="botao-filtro"
+                    data-area="CN"
+                    title="Ciências da Natureza e suas Tecnologias"
+                  >
+                    CN
+                  </button>
+                  <button
+                    class="botao-filtro"
+                    data-area="CH"
+                    title="Ciências Humanas e suas Tecnologias"
+                  >
+                    CH
+                  </button>
                 </div>
                 <div class="envoltorio-pilha">
                   <canvas id="chartPilha"></canvas>
@@ -334,441 +380,332 @@
       </main>
     </div>
 
-    <script>
-      // ── DADOS ──────────────────────────────────────────────────────────────────
+  <script>
+  // ── CONSTANTES ────────────────────────────────────────────────────────────
+  const LINHA_DOMINIO_PERCENT = 60;
+  const azulBase = '#314595';
+  const anos = ['2019', '2021', '2022', '2023', '2024'];
 
+  // ── INSTÂNCIAS ────────────────────────────────────────────────────────────
+  let chartAbaixo  = null;
+  let chartAcima   = null;
+  let chartImpacto = null;
+  let chartRadar   = null;
+  let chartPilha   = null;
 
+  // ── DADOS PILHA (fallback) ────────────────────────────────────────────────
+  const dadosPilha = {
+    todos: [
+      { label: 'Nível 1', color: '#4BB8FA', values: [38,42,45,40,44] },
+      { label: 'Nível 2', color: '#3b82f6', values: [32,35,30,38,36] },
+      { label: 'Nível 3', color: '#a855f7', values: [28,30,32,28,30] },
+      { label: 'Nível 4', color: '#FFC94D', values: [22,25,24,26,25] },
+      { label: 'Nível 5', color: '#ef4444', values: [18,20,22,20,23] },
+    ],
+    LC: [
+      { label: 'Nível 1', color: '#4BB8FA', values: [10,12,11,13,12] },
+      { label: 'Nível 2', color: '#3b82f6', values: [8,9,8,10,9]    },
+      { label: 'Nível 3', color: '#a855f7', values: [7,8,9,7,8]     },
+      { label: 'Nível 4', color: '#FFC94D', values: [5,6,6,6,7]     },
+      { label: 'Nível 5', color: '#ef4444', values: [5,5,6,5,6]     },
+    ],
+    MT: [
+      { label: 'Nível 1', color: '#4BB8FA', values: [9,10,12,10,11] },
+      { label: 'Nível 2', color: '#3b82f6', values: [8,9,7,9,9]     },
+      { label: 'Nível 3', color: '#a855f7', values: [7,7,8,7,7]     },
+      { label: 'Nível 4', color: '#FFC94D', values: [6,6,6,6,6]     },
+      { label: 'Nível 5', color: '#ef4444', values: [5,5,5,5,5]     },
+    ],
+    CN: [
+      { label: 'Nível 1', color: '#4BB8FA', values: [10,11,11,9,11] },
+      { label: 'Nível 2', color: '#3b82f6', values: [8,9,8,10,9]    },
+      { label: 'Nível 3', color: '#a855f7', values: [7,8,7,7,8]     },
+      { label: 'Nível 4', color: '#FFC94D', values: [6,7,6,7,6]     },
+      { label: 'Nível 5', color: '#ef4444', values: [4,5,6,5,6]     },
+    ],
+    CH: [
+      { label: 'Nível 1', color: '#4BB8FA', values: [9,9,11,8,10]   },
+      { label: 'Nível 2', color: '#3b82f6', values: [8,8,7,9,9]     },
+      { label: 'Nível 3', color: '#a855f7', values: [7,7,8,7,7]     },
+      { label: 'Nível 4', color: '#FFC94D', values: [5,6,6,7,6]     },
+      { label: 'Nível 5', color: '#ef4444', values: [4,5,5,5,6]     },
+    ],
+  };
 
-      const dadosMedia = {
-        LC: {
-          labels: ["h3", "h5", "h1", "h20", "h26", "h17", "h10", "h8", "h9"],
-          values: [450, 400, 470, 310, 370, 430, 490, 460, 440],
-        },
-        MT: {
-          labels: ["h5", "h12", "h3", "h28", "h7", "h1", "h22", "h9", "h4"],
-          values: [420, 380, 460, 290, 350, 410, 470, 440, 420],
-        },
-        CN: {
-          labels: ["h10", "h15", "h8", "h2", "h11", "h6", "h19", "h3", "h7"],
-          values: [440, 410, 460, 300, 360, 420, 480, 450, 430],
-        },
-        CH: {
-          labels: ["h4", "h9", "h21", "h13", "h16", "h20", "h25", "h8", "h3"],
-          values: [430, 390, 450, 310, 370, 410, 470, 440, 420],
-        },
-      };
+  // ── HELPERS: MENSAGEM DE VAZIO ────────────────────────────────────────────
+  function exibirMensagemVazio(canvasId, mensagem) {
+    const env = document.getElementById(canvasId).parentElement;
+    env.querySelector('.sem-dados-msg')?.remove();
+    env.style.position = 'relative';
+    const msg = document.createElement('p');
+    msg.className   = 'sem-dados-msg';
+    msg.textContent = mensagem ?? 'Nenhum dado disponível.';
+    msg.style.cssText =
+      'position:absolute;inset:0;display:flex;align-items:center;' +
+      'justify-content:center;margin:0;font-size:13px;font-weight:600;' +
+      'color:#94a3b8;pointer-events:none;';
+    env.appendChild(msg);
+  }
 
-      const dadosPilha = {
-        todos: [
-          { label: "Nível 1", color: "#22c55e", values: [38, 42, 45, 40, 44] },
-          { label: "Nível 2", color: "#3b82f6", values: [32, 35, 30, 38, 36] },
-          { label: "Nível 3", color: "#a855f7", values: [28, 30, 32, 28, 30] },
-          { label: "Nível 4", color: "#f97316", values: [22, 25, 24, 26, 25] },
-          { label: "Nível 5", color: "#ef4444", values: [18, 20, 22, 20, 23] },
-        ],
-        LC: [
-          { label: "Nível 1", color: "#22c55e", values: [10, 12, 11, 13, 12] },
-          { label: "Nível 2", color: "#3b82f6", values: [8, 9, 8, 10, 9] },
-          { label: "Nível 3", color: "#a855f7", values: [7, 8, 9, 7, 8] },
-          { label: "Nível 4", color: "#f97316", values: [5, 6, 6, 6, 7] },
-          { label: "Nível 5", color: "#ef4444", values: [5, 5, 6, 5, 6] },
-        ],
-        MT: [
-          { label: "Nível 1", color: "#22c55e", values: [9, 10, 12, 10, 11] },
-          { label: "Nível 2", color: "#3b82f6", values: [8, 9, 7, 9, 9] },
-          { label: "Nível 3", color: "#a855f7", values: [7, 7, 8, 7, 7] },
-          { label: "Nível 4", color: "#f97316", values: [6, 6, 6, 6, 6] },
-          { label: "Nível 5", color: "#ef4444", values: [5, 5, 5, 5, 5] },
-        ],
-        CN: [
-          { label: "Nível 1", color: "#22c55e", values: [10, 11, 11, 9, 11] },
-          { label: "Nível 2", color: "#3b82f6", values: [8, 9, 8, 10, 9] },
-          { label: "Nível 3", color: "#a855f7", values: [7, 8, 7, 7, 8] },
-          { label: "Nível 4", color: "#f97316", values: [6, 7, 6, 7, 6] },
-          { label: "Nível 5", color: "#ef4444", values: [4, 5, 6, 5, 6] },
-        ],
-        CH: [
-          { label: "Nível 1", color: "#22c55e", values: [9, 9, 11, 8, 10] },
-          { label: "Nível 2", color: "#3b82f6", values: [8, 8, 7, 9, 9] },
-          { label: "Nível 3", color: "#a855f7", values: [7, 7, 8, 7, 7] },
-          { label: "Nível 4", color: "#f97316", values: [5, 6, 6, 7, 6] },
-          { label: "Nível 5", color: "#ef4444", values: [4, 5, 5, 5, 6] },
-        ],
-      };
+  function limparMensagem(canvasId) {
+    document.getElementById(canvasId)
+      .parentElement.querySelector('.sem-dados-msg')?.remove();
+  }
 
-      const anos = ["2019", "2021", "2022", "2023", "2024"];
+  // ── CONFIGS DE CHART ──────────────────────────────────────────────────────
 
-      // ── HELPERS ──────────────────────────────────────────────────────────────────
-
-      const azulBase = "#314595";
-
-      function barrasHorizontaisConfig(labels, values, cor) {
-        return {
-          type: "bar",
-          data: {
-            labels,
-            datasets: [
-              {
-                data: values,
-                backgroundColor: cor || azulBase,
-                borderRadius: 3,
-                borderSkipped: false,
-              },
-            ],
-          },
-          options: {
-            indexAxis: "y",
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              x: { grid: { color: "#f0f0f0" }, ticks: { font: { size: 14 } } },
-              y: {
-                ticks: { font: { size: 15 }, color: "#1e293b" },
-                grid: { display: false },
-              },
+  function barrasTRIConfig(labels, values, cores, rotulos, linhaDominio) {
+  const linha = linhaDominio ?? LINHA_DOMINIO_PERCENT;
+  return {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data:            values,
+        backgroundColor: cores,   // ← vem do servidor via classificarChance
+        borderRadius:    4,
+        borderSkipped:   false,
+        barThickness:    18,
+      }],
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: ctx => ctx[0].label,
+            label(ctx) {
+              const chance  = ctx.raw;
+              const rotulo  = rotulos?.[ctx.dataIndex] ?? '—';  // ← "Alta", "Média", etc.
+              const dominio = chance >= LINHA_DOMINIO_PERCENT ? '✓ Dominada' : '✗ Não dominada';
+              return [`Chance de acerto: ${chance}%`, `Classificação: ${rotulo}`, dominio];
             },
           },
-        };
-      }
+        },
+      },
+      scales: {
+        x: {
+          min: 0, max: 100,
+          grid:  { color: '#f0f0f0' },
+          ticks: { font: { size: 11 }, color: '#1e293b', callback: v => `${v}%` },
+          title: { display: true, text: '% Chance de acerto (Parâmetro B — TRI)', font: { size: 11, weight: '600' }, color: '#64748b' },
+        },
+        y: { ticks: { font: { size: 11 }, color: '#1e293b' }, grid: { display: false } },
+      },
+    },
+  };
+}
 
-      function barrasVerticaisConfig(labels, values) {
-        return {
-          type: "bar",
-          data: {
-            labels,
-            datasets: [
-              {
-                data: values,
-                backgroundColor: values.map((v) =>
-                  v < 380 ? "#ef4444" : v < 430 ? "#f97316" : "#314595",
-                ),
-                borderRadius: 3,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              x: { ticks: { font: { size: 15 } }, grid: { display: false } },
-              y: {
-                min: 200,
-                max: 700,
-                grid: { color: "#f0f0f0" },
-                ticks: { font: { size: 10 }, stepSize: 50 },
-                title: {
-                  display: true,
-                  text: "Notas",
-                  font: { size: 20 },
-                  color: "#64748b",
-                },
-              },
+function barrasImpactoConfig(labels, values, cores, rotulos) {
+  return {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data:            values,
+        backgroundColor: cores,
+        borderRadius:    4,
+        borderSkipped:   false,
+        barThickness:    70,
+      }],
+    },
+    options: {
+      indexAxis: 'x',  // ← horizontal
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: ctx => ctx[0].label,
+            label(ctx) {
+              return [
+                `Índice de impacto: ${ctx.raw}`,
+                rotulos?.[ctx.dataIndex] ?? '—',
+              ];
             },
           },
-        };
+        },
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          grid:  { color: '#f0f0f0' },
+          ticks: { font: { size: 11 }, color: '#1e293b' },
+          title: {
+            display: true,
+            text:    'Índice de impacto (Parâmetro A / 1 + |B|)',
+            font:    { size: 11, weight: '600' },
+            color:   '#64748b',
+          },
+        },
+        y: {
+          ticks: { font: { size: 11 }, color: '#1e293b' },
+          grid:  { display: false },
+        },
+      },
+    },
+  };
+}
+
+  // ── CRIAÇÃO DOS CHARTS ────────────────────────────────────────────────────
+
+function criarChart(area, tipo) {
+  const canvasId = tipo === 'abaixo' ? 'chartAbaixo' : 'chartAcima';
+
+  fetch(`/dashboard/habilidades-${tipo}-media/${area}`)
+    .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+    .then(d => {
+      limparMensagem(canvasId);
+
+      // ← usa as variáveis let diretamente, não window[]
+      if (tipo === 'abaixo') {
+        if (chartAbaixo) chartAbaixo.destroy();
+      } else {
+        if (chartAcima) chartAcima.destroy();
       }
 
-      // ── INSTÂNCIAS ────────────────────────────────────────────────────────────────
+      if (!d.labels?.length) {
+        exibirMensagemVazio(canvasId, 'Nenhuma habilidade encontrada para esta área.');
+        return;
+      }
 
-      let chartAbaixo, chartAcima, chartMedia, chartRadar, chartPilha;
+const chart = new Chart(
+  document.getElementById(canvasId),
+  barrasTRIConfig(d.labels, d.values, d.cores, d.rotulos, d.linhaDominio)  // ← d.cores agora é usado
+);
 
-  // ── CONSTANTES DOS DADOS REAIS (fallback se API falhar) ──────────────────────
-const LINHA_DOMINIO_PERCENT = 60;
+      if (tipo === 'abaixo') chartAbaixo = chart;
+      else chartAcima = chart;
+    })
+    .catch(err => {
+      console.warn(`[criarChart] ${tipo}/${area}:`, err);
+      exibirMensagemVazio(canvasId, 'Nenhuma habilidade encontrada para esta área.');
+    });
+}
+  function criarChartAbaixo(area) { criarChart(area, 'abaixo'); }
+  function criarChartAcima(area)  { criarChart(area, 'acima');  }
 
-function barrasHorizontaisConfig(labels, values, cores, rotulos, linhaDominio) {
-    return {
-        type: 'bar',
-        data: {
+  function criarChartImpacto(area) {
+    fetch(`/dashboard/habilidades-impacto-nota/${area}`)
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then(d => {
+        limparMensagem('chartImpacto');
+        if (chartImpacto) chartImpacto.destroy();
+        if (!d.labels?.length) {
+          exibirMensagemVazio('chartImpacto', 'Nenhum dado disponível para esta área.');
+          return;
+        }
+        chartImpacto = new Chart(
+          document.getElementById('chartImpacto'),
+          barrasImpactoConfig(d.labels, d.values, d.cores, d.rotulos)
+        );
+      })
+      .catch(err => {
+        console.warn('[criarChartImpacto]', err);
+        exibirMensagemVazio('chartImpacto', 'Nenhum dado disponível para esta área.');
+      });
+  }
+
+  function criarChartRadar() {
+    fetch('/dashboard/questoes-por-area')
+      .then(r => r.ok ? r.json() : null)
+      .then(dados => {
+        const labels = dados?.labels ?? ['Matemática', 'Linguagens', 'Ciências Humanas', 'Ciências da Natureza'];
+        const values = dados?.values ?? [35, 10, 35, 20];
+        if (chartRadar) chartRadar.destroy();
+        chartRadar = new Chart(document.getElementById('chartRadar'), {
+          type: 'radar',
+          data: {
             labels,
             datasets: [{
-                data: values,
-                backgroundColor: cores,
-                borderRadius: 4,
-                borderSkipped: false,
-                barThickness: 18,
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                annotation: {
-                    annotations: {
-                        linhaDominio: {
-                            type: 'line',
-                            xMin: linhaDominio || LINHA_DOMINIO_PERCENT,
-                            xMax: linhaDominio || LINHA_DOMINIO_PERCENT,
-                            borderColor: '#22c55e',
-                            borderWidth: 2.5,
-                            borderDash: [6, 4],
-                            label: {
-                                display: true,
-                                content: '60% — linha de domínio',
-                                position: 'start',
-                                color: '#16a34a',
-                                font: { size: 11, weight: '700' },
-                                backgroundColor: 'rgba(255,255,255,0.9)',
-                                padding: { x: 6, y: 3 },
-                                yAdjust: -14,
-                            }
-                        }
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        title: (ctx) => ctx[0].label,
-                        label: function(ctx) {
-                            const i = ctx.dataIndex;
-                            const chance = ctx.raw;
-                            const rotulo = rotulos ? rotulos[i] : '';
-                            const dominio = chance >= 60 ? '✓ Dominada' : '✗ Não dominada';
-                            return [
-                                `Chance de acerto: ${chance}%`,
-                                `Classificação: ${rotulo}`,
-                                dominio
-                            ];
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    min: 0,
-                    max: 100,
-                    grid: { color: '#f0f0f0' },
-                    ticks: {
-                        font: { size: 11 },
-                        color: '#1e293b',
-                        callback: v => `${v}%`
-                    },
-                    title: {
-                        display: true,
-                        text: '% Chance de acerto (baseado no Parâmetro B da TRI)',
-                        font: { size: 11, weight: '600' },
-                        color: '#64748b'
-                    }
-                },
-                y: {
-                    ticks: { font: { size: 11 }, color: '#1e293b' },
-                    grid: { display: false }
-                }
-            }
-        }
-    };
-}
-
-// ── CRIAÇÃO DOS CHARTS ────────────────────────────────────────────────────────
-function criarChartAbaixo(area) {
-    fetch(`/dashboard/habilidades-abaixo-media/${area}`)
-        .then(r => r.ok ? r.json() : null)
-        .then(d => {
-            if (chartAbaixo) chartAbaixo.destroy();
-            const labels  = d ? d.labels  : dadosAbaixo[area].labels;
-            const values  = d ? d.values  : dadosAbaixo[area].values;
-            const cores   = d ? d.cores   : dadosAbaixo[area].cores;
-            const rotulos = d ? d.rotulos : [];
-            const linha   = d ? d.linhaDominio : LINHA_DOMINIO_PERCENT;
-            chartAbaixo = new Chart(
-                document.getElementById('chartAbaixo'),
-                barrasHorizontaisConfig(labels, values, cores, rotulos, linha)
-            );
-        })
-        .catch(() => {
-            const d = dadosAbaixo[area];
-            if (chartAbaixo) chartAbaixo.destroy();
-            chartAbaixo = new Chart(
-                document.getElementById('chartAbaixo'),
-                barrasHorizontaisConfig(d.labels, d.values, d.cores, [], LINHA_DOMINIO_PERCENT)
-            );
-        });
-}
-
-function criarChartAcima(area) {
-    fetch(`/dashboard/habilidades-acima-media/${area}`)
-        .then(r => r.ok ? r.json() : null)
-        .then(d => {
-            if (chartAcima) chartAcima.destroy();
-            const labels  = d ? d.labels  : dadosAcima[area].labels;
-            const values  = d ? d.values  : dadosAcima[area].values;
-            const cores   = d ? d.cores   : dadosAcima[area].cores;
-            const rotulos = d ? d.rotulos : [];
-            const linha   = d ? d.linhaDominio : LINHA_DOMINIO_PERCENT;
-            chartAcima = new Chart(
-                document.getElementById('chartAcima'),
-                barrasHorizontaisConfig(labels, values, cores, rotulos, linha)
-            );
-        })
-        .catch(() => {
-            const d = dadosAcima[area];
-            if (chartAcima) chartAcima.destroy();
-            chartAcima = new Chart(
-                document.getElementById('chartAcima'),
-                barrasHorizontaisConfig(d.labels, d.values, d.cores, [], LINHA_DOMINIO_PERCENT)
-            );
-        });
-}
-      function criarChartMedia(area) {
-        fetch(`/dashboard/notas-habilidades/${area}`)
-          .then((resposta) => resposta.ok ? resposta.json() : dadosMedia[area])
-          .then((d) => {
-            d = d || dadosMedia[area];
-            if (chartMedia) chartMedia.destroy();
-            chartMedia = new Chart(
-              document.getElementById("chartMedia"),
-              barrasVerticaisConfig(d.labels, d.values),
-            );
-          })
-          .catch(() => {
-            const d = dadosMedia[area];
-            if (chartMedia) chartMedia.destroy();
-            chartMedia = new Chart(document.getElementById("chartMedia"), barrasVerticaisConfig(d.labels, d.values));
-          });
-      }
-
-      function criarChartRadar() {
-        fetch("/dashboard/questoes-por-area")
-          .then((resposta) => resposta.ok ? resposta.json() : null)
-          .then((dados) => {
-            const labels = dados && dados.labels ? dados.labels : [
-              "Matemática",
-              "Linguagens",
-              "Ciências Humanas",
-              "Ciências da Natureza",
-            ];
-            const values = dados && dados.values ? dados.values : [35, 10, 35, 20];
-
-            chartRadar = new Chart(document.getElementById("chartRadar"), {
-          type: "radar",
-          data: {
-            labels,
-            datasets: [
-              {
-                label: "Questões",
-                data: values,
-                backgroundColor: "rgba(49,69,149,.2)",
-                borderColor: "#314595",
-                pointBackgroundColor: "#314595",
-                pointRadius: 4,
-              },
-            ],
+              label: 'Questões', data: values,
+              backgroundColor: 'rgba(49,69,149,.2)', borderColor: azulBase,
+              pointBackgroundColor: azulBase, pointRadius: 4,
+            }],
           },
           options: {
-            responsive: true,
-            maintainAspectRatio: false,
+            responsive: true, maintainAspectRatio: false,
             plugins: { legend: { display: false } },
-            scales: {
-              r: {
-                min: 0,
-                max: 180,
-                ticks: { stepSize: 36, font: { size: 10 } },
-                pointLabels: { font: { size: 12 }, color: "#1e293b" },
-              },
-            },
+            scales: { r: { min: 0, max: 180, ticks: { stepSize: 36, font: { size: 10 } }, pointLabels: { font: { size: 12 }, color: '#1e293b' } } },
           },
         });
-          })
-          .catch((erro) => console.log("Erro ao buscar radar", erro));
-      }
+      })
+      .catch(err => console.warn('[criarChartRadar]', err));
+  }
 
-      function criarChartPilha(area) {
-        fetch(`/dashboard/questoes-por-nivel/${area}`)
-          .then((resposta) => resposta.ok ? resposta.json() : null)
-          .then((retorno) => {
-            const labels = retorno && retorno.labels && retorno.labels.length > 0 ? retorno.labels : anos;
-            const dados = retorno && retorno.datasets && retorno.datasets.length > 0 ? retorno.datasets : (dadosPilha[area] || dadosPilha.todos);
-
-            if (chartPilha) chartPilha.destroy();
-            chartPilha = new Chart(document.getElementById("chartPilha"), {
-          type: "bar",
+  function criarChartPilha(area) {
+    fetch(`/dashboard/questoes-por-nivel/${area}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(retorno => {
+        const labels = retorno?.labels?.length ? retorno.labels : anos;
+        const dados  = retorno?.datasets?.length ? retorno.datasets : (dadosPilha[area] ?? dadosPilha.todos);
+        if (chartPilha) chartPilha.destroy();
+        chartPilha = new Chart(document.getElementById('chartPilha'), {
+          type: 'bar',
           data: {
             labels,
-            datasets: dados.map((d) => ({
-              label: d.label,
-              data: d.values || d.data,
-              backgroundColor: d.color || "#314595",
-              borderRadius: 2,
+            datasets: dados.map(d => ({
+              label: d.label, data: d.values ?? d.data,
+              backgroundColor: d.color ?? azulBase, borderRadius: 2,
             })),
           },
           options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "bottom",
-                labels: { font: { size: 15 }, boxWidth: 15, padding: 8 },
-              },
-            },
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { font: { size: 15 }, boxWidth: 15, padding: 8 } } },
             scales: {
-              x: {
-                stacked: true,
-                ticks: { font: { size: 15 } },
-                grid: { display: false },
-              },
-              y: {
-                stacked: true,
-                ticks: { font: { size: 11 } },
-                grid: { color: "#f0f0f0" },
-              },
+              x: { stacked: true, ticks: { font: { size: 15 } }, grid: { display: false } },
+              y: { stacked: true, ticks: { font: { size: 11 } }, grid: { color: '#f0f0f0' } },
             },
           },
         });
-          })
-          .catch((erro) => console.log("Erro ao buscar recorrência por nível", erro));
-      }
+      })
+      .catch(err => console.warn('[criarChartPilha]', err));
+  }
 
-      function carregarTabelaHabilidadesFrequentes() {
-        fetch("/dashboard/habilidades-frequentes")
-          .then((resposta) => resposta.ok ? resposta.json() : [])
-          .then((dados) => {
-            if (!dados || dados.length == 0) return;
+  function carregarTabelaHabilidadesFrequentes() {
+    fetch('/dashboard/habilidades-frequentes')
+      .then(r => r.ok ? r.json() : [])
+      .then(dados => {
+        if (!dados?.length) return;
+        document.getElementById('tbodyHabilidadesFrequentes').innerHTML =
+          dados.map(item => `
+            <tr>
+              <td>${item.area}</td>
+              <td>${String(item.habilidade).startsWith('H') ? item.habilidade : `H${item.habilidade}`}</td>
+              <td>${item.dificuldade}</td>
+              <td>${item.quantidade}</td>
+            </tr>
+          `).join('');
+      })
+      .catch(err => console.warn('[carregarTabelaHabilidadesFrequentes]', err));
+  }
 
-            tbodyHabilidadesFrequentes.innerHTML = dados.map((item) => `
-              <tr>
-                <td>${item.area}</td>
-                <td>${String(item.habilidade).startsWith("H") ? item.habilidade : `H${item.habilidade}`}</td>
-                <td>${item.dificuldade}</td>
-                <td>${item.quantidade}</td>
-              </tr>
-            `).join("");
-          })
-          .catch((erro) => console.log("Erro ao buscar habilidades frequentes", erro));
-      }
+  // ── FILTROS ───────────────────────────────────────────────────────────────
+  function bindFiltros(containerId, callback) {
+    document.getElementById(containerId).addEventListener('click', e => {
+      const btn = e.target.closest('.botao-filtro');
+      if (!btn) return;
+      document.querySelectorAll(`#${containerId} .botao-filtro`)
+        .forEach(b => b.classList.remove('ativo'));
+      btn.classList.add('ativo');
+      callback(btn.dataset.area);
+    });
+  }
 
-      // ── FILTROS ───────────────────────────────────────────────────────────────────
+  // ── INIT ──────────────────────────────────────────────────────────────────
+  criarChartAbaixo('LC');
+  criarChartAcima('LC');
+  criarChartImpacto('LC');
+  criarChartRadar();
+  criarChartPilha('todos');
+  carregarTabelaHabilidadesFrequentes();
 
-      function bindFiltros(containerId, callback) {
-        document
-          .getElementById(containerId)
-          .querySelectorAll(".botao-filtro")
-          .forEach((btn) => {
-            btn.addEventListener("click", () => {
-              document
-                .getElementById(containerId)
-                .querySelectorAll(".botao-filtro")
-                .forEach((b) => b.classList.remove("ativo"));
-              btn.classList.add("ativo");
-              callback(btn.dataset.area);
-            });
-          });
-      }
-
-      // ── INIT ──────────────────────────────────────────────────────────────────────
-
-      criarChartAbaixo("LC");
-      criarChartAcima("LC");
-      criarChartMedia("LC");
-      criarChartRadar();
-      criarChartPilha("todos");
-      carregarTabelaHabilidadesFrequentes();
-
-      bindFiltros("filtroAbaixo", criarChartAbaixo);
-      bindFiltros("filtroAcima", criarChartAcima);
-      bindFiltros("filtroMedia", criarChartMedia);
-      bindFiltros("filtroPilha", criarChartPilha);
-    </script>
+  bindFiltros('filtroAbaixo',  criarChartAbaixo);
+  bindFiltros('filtroAcima',   criarChartAcima);
+  bindFiltros('filtroImpacto', criarChartImpacto);
+  bindFiltros('filtroPilha',   criarChartPilha);
+</script>
   </body>
 </html>

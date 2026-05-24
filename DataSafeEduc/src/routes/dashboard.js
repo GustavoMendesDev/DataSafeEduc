@@ -18,6 +18,9 @@ router.get("/habilidades-abaixo-media/:sigla", function (req, res) {
 router.get("/habilidades-acima-media/:sigla", function (req, res) {
     dashboardController.buscarHabilidadesAcimaMedia(req, res);
 });
+router.get('/habilidades-impacto-nota/:sigla', function (req, res) {
+    dashboardController.buscarHabilidadesMaiorImpactoNota(req, res);
+});
 
 router.get("/notas-habilidades/:sigla", function (req, res) {
     dashboardController.buscarNotasHabilidades(req, res);
