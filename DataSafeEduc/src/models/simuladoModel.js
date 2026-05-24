@@ -1,5 +1,35 @@
 var database = require("../database/config");
 
+function escapar(valor) {
+    return String(valor).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
+function valorSql(valor) {
+    if (valor == undefined || valor == "") {
+        return "NULL";
+    }
+
+    return `'${escapar(valor)}'`;
+}
+
+function filtroDificuldadeSql(dificuldade) {
+    if (!dificuldade) return "";
+
+    if (dificuldade == "Fácil") {
+        return "AND parametroTri.parametroB < -0.5";
+    }
+
+    if (dificuldade == "Médio") {
+        return "AND parametroTri.parametroB >= -0.5 AND parametroTri.parametroB <= 0.8";
+    }
+
+    if (dificuldade == "Difícil") {
+        return "AND parametroTri.parametroB > 0.8";
+    }
+
+    return `AND parametroTri.nivel = ${valorSql(dificuldade)}`;
+}
+
 function listar() {
     var instrucaoSql = `
         SELECT
@@ -55,10 +85,10 @@ function detalhar(idSimulado) {
 }
 
 function buscarQuestoesParaSimulado(sigla, dificuldade, habilidades, quantidade) {
-    var filtroArea = sigla ? `AND areaConhecimento.sigla = '${sigla}'` : "";
-    var filtroDificuldade = dificuldade ? `AND parametroTri.nivel = '${dificuldade}'` : "";
+    var filtroArea = sigla ? `AND areaConhecimento.sigla = ${valorSql(sigla)}` : "";
+    var filtroDificuldade = filtroDificuldadeSql(dificuldade);
     var filtroHabilidades = habilidades && habilidades.length > 0
-        ? `AND habilidade.numero IN (${habilidades.map(function (item) { return `'${item}'`; }).join(",")})`
+        ? `AND habilidade.numero IN (${habilidades.map(function (item) { return valorSql(item); }).join(",")})`
         : "";
 
     var instrucaoSql = `
@@ -79,10 +109,53 @@ function buscarQuestoesParaSimulado(sigla, dificuldade, habilidades, quantidade)
     return database.executar(instrucaoSql);
 }
 
+function listarQuestoesDisponiveis(sigla, dificuldade, habilidades, idSimulado, codigoAtual) {
+    var filtroArea = sigla ? `AND areaConhecimento.sigla = ${valorSql(sigla)}` : "";
+    var filtroDificuldade = filtroDificuldadeSql(dificuldade);
+    var filtroHabilidades = habilidades && habilidades.length > 0
+        ? `AND habilidade.numero IN (${habilidades.map(function (item) { return valorSql(item); }).join(",")})`
+        : "";
+    var filtroSimulado = idSimulado
+        ? `AND (
+            questao.codigoItem NOT IN (
+                SELECT fkQuestao FROM questaoSimulado WHERE fkSimulado = ${Number(idSimulado)}
+            )
+            ${codigoAtual ? `OR questao.codigoItem = ${valorSql(codigoAtual)}` : ""}
+        )`
+        : "";
+
+    var instrucaoSql = `
+        SELECT
+            questao.codigoItem,
+            questao.anoExame,
+            areaConhecimento.nome AS area,
+            areaConhecimento.sigla,
+            habilidade.numero AS habilidade,
+            parametroTri.nivel AS dificuldade,
+            parametroTri.parametroA,
+            parametroTri.parametroB,
+            parametroTri.parametroC
+        FROM questao
+        JOIN habilidade ON questao.fkHabilidade = habilidade.id
+        JOIN areaConhecimento ON habilidade.fkAreaConhecimento = areaConhecimento.id
+        JOIN parametroTri ON questao.fkParametroTri = parametroTri.id
+        WHERE 1 = 1
+            ${filtroArea}
+            ${filtroDificuldade}
+            ${filtroHabilidades}
+            ${filtroSimulado}
+        ORDER BY questao.anoExame DESC, questao.codigoItem
+        LIMIT 50;
+    `;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function criar(nomeSimulado, quantidadeQuestoes, fkUsuario) {
     var instrucaoSql = `
         INSERT INTO simulado (nomeSimulado, quantidadeQuestoes, fkUsuario)
-        VALUES ('${nomeSimulado}', ${quantidadeQuestoes}, ${fkUsuario});
+        VALUES (${valorSql(nomeSimulado)}, ${quantidadeQuestoes}, ${fkUsuario});
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -91,12 +164,24 @@ function criar(nomeSimulado, quantidadeQuestoes, fkUsuario) {
 
 function vincularQuestoes(idSimulado, questoes) {
     var valores = questoes.map(function (questao) {
-        return `('${questao.codigoItem}', ${idSimulado})`;
+        var codigoItem = typeof questao == "string" ? questao : questao.codigoItem;
+        return `(${valorSql(codigoItem)}, ${idSimulado})`;
     }).join(",");
 
     var instrucaoSql = `
         INSERT INTO questaoSimulado (fkQuestao, fkSimulado)
         VALUES ${valores};
+    `;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function atualizarQuantidade(idSimulado, quantidadeQuestoes) {
+    var instrucaoSql = `
+        UPDATE simulado
+        SET quantidadeQuestoes = ${Number(quantidadeQuestoes)}
+        WHERE id = ${Number(idSimulado)};
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -143,8 +228,10 @@ module.exports = {
     listar,
     detalhar,
     buscarQuestoesParaSimulado,
+    listarQuestoesDisponiveis,
     criar,
     vincularQuestoes,
+    atualizarQuantidade,
     excluirQuestoes,
     excluir,
     listarHabilidades

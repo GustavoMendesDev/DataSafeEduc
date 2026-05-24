@@ -101,7 +101,7 @@
 
         <!-- ÁREA -->
         <label>Área:</label>
-        <div class="filtros">
+        <div class="filtros" id="filtroAreaSimulado">
           <span data-sigla="MT" onclick="selectArea(this)">Matemática</span>
           <span data-sigla="LC" onclick="selectArea(this)">Linguagens</span>
           <span data-sigla="CH" onclick="selectArea(this)"
@@ -114,7 +114,7 @@
 
         <!-- DIFICULDADE -->
         <label>Dificuldade:</label>
-        <div class="filtros">
+        <div class="filtros" id="filtroDificuldadeSimulado">
           <span data-dificuldade="Fácil" onclick="selectDificuldade(this)"
             >Fácil</span
           >
@@ -140,6 +140,9 @@
           <option>5</option>
           <option>10</option>
           <option>15</option>
+          <option>20</option>
+          <option>25</option>
+          <option>30</option>
         </select>
 
         <div class="modal-actions">
@@ -221,38 +224,7 @@
 
         <div class="modal-actions">
           <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
-          <button class="btn-add">Atualizar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="modalEditar">
-      <div class="modal-box-editar">
-        <h2>Editar simulado</h2>
-
-        <div class="questoes-container-scroll">
-          <div class="questao-item">
-            <div class="numero-circulo">1</div>
-            <div class="questao-info">
-              <strong>item-112897 - habilidade 17</strong>
-              <p>Prova AZUL • CO_PROVA 1401 • Gabarito B</p>
-            </div>
-            <button class="btn-tag-dificuldade">Difícil</button>
-          </div>
-
-          <div class="questao-item selecionado">
-            <div class="numero-circulo">3</div>
-            <div class="questao-info">
-              <strong>item-140980 - habilidade 18</strong>
-              <p>Prova BRANCA • CO_PROVA 1356 • Gabarito E</p>
-            </div>
-            <button class="btn-tag-dificuldade">Difícil</button>
-          </div>
-        </div>
-
-        <div class="modal-actions">
-          <button class="btn-atualizar">Atualizar</button>
-          <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
+          <button onclick="atualizarSimulado()" class="btn-add">Atualizar</button>
         </div>
       </div>
     </div>
@@ -261,7 +233,7 @@
       <div class="edit-mod-content">
         <h2 class="edit-mod-title">Editar simulado</h2>
 
-        <div class="edit-mod-scroll-area">
+        <div class="edit-mod-scroll-area" id="listaQuestoesSubstituicao">
           <div class="edit-mod-card">
             <div class="edit-mod-number">1</div>
             <div class="edit-mod-info">
@@ -311,38 +283,83 @@
           <button onclick="fecharSub()" class="edit-mod-btn-close">
             Cancelar
           </button>
-          <button class="edit-mod-btn-update">Atualizar</button>
+          <button onclick="confirmarSubstituicao()" class="edit-mod-btn-update">Atualizar</button>
         </div>
       </div>
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", carregarSimulados);
+      let simuladoEditando = null;
+      let questoesEditando = [];
+      let indiceSubstituindo = null;
+      let questaoSelecionadaSubstituicao = null;
 
-      document.addEventListener("DOMContentLoaded", carregarHabilidades);
+      document.addEventListener("DOMContentLoaded", function () {
+        carregarSimulados();
+        carregarHabilidades();
+      });
 
-      function carregarHabilidades() {
+      function parseJson(resposta) {
+        if (resposta.status == 204) return Promise.resolve(null);
+        return resposta.json();
+      }
 
+      function formatarHabilidade(habilidade) {
+        const texto = String(habilidade || "");
+        return texto.toUpperCase().startsWith("H") ? texto : `H${texto}`;
+      }
 
-        fetch("/habilidades")
+      function normalizarDificuldade(dificuldade, parametroB) {
+        const b = Number(parametroB);
+        if (!Number.isNaN(b)) {
+          if (b < -0.5) return "Fácil";
+          if (b <= 0.8) return "Médio";
+          return "Difícil";
+        }
+
+        if (String(dificuldade).includes("Fácil")) return "Fácil";
+        if (String(dificuldade).includes("Difícil")) return "Difícil";
+        return "Médio";
+      }
+
+      function carregarHabilidades(sigla) {
+        const container = document.getElementById("habilidades-container");
+        const rota = sigla
+          ? `/simulados/opcoes/habilidades/${sigla}`
+          : "/simulados/opcoes/habilidades";
+
+        container.innerHTML = `<span class="loading-text">Carregando...</span>`;
+
+        fetch(rota)
           .then((resposta) => (resposta.ok ? resposta.json() : []))
           .then((habilidades) => {
-            const container = document.querySelector(".habilidades-box");
+            if (!habilidades || habilidades.length == 0) {
+              container.innerHTML = `<span class="loading-text">Nenhuma habilidade encontrada.</span>`;
+              return;
+            }
+
             container.innerHTML = habilidades
               .map(
                 (hab) => `
-                        <label><input type="checkbox" value="${hab.id}"> ${hab.nome}</label>
-                    `,
-                    console.log(habilidades)
+                  <label>
+                    <input type="checkbox" value="${hab.numero}">
+                    ${formatarHabilidade(hab.numero)}
+                  </label>
+                `,
               )
               .join("");
           })
-          .catch((erro) => console.log("Erro ao carregar habilidades", erro));
+          .catch((erro) => {
+            console.log("Erro ao carregar habilidades", erro);
+            container.innerHTML = `<span class="loading-text">Erro ao carregar habilidades.</span>`;
+          });
       }
 
       function carregarSimulados() {
+        tbodySimulados.innerHTML = `<tr><td colspan="7">Carregando simulados...</td></tr>`;
+
         fetch("/simulados")
-          .then((resposta) => (resposta.ok ? resposta.json() : []))
+          .then((resposta) => (resposta.ok ? parseJson(resposta) : []))
           .then((simulados) => {
             if (!simulados || simulados.length == 0) {
               tbodySimulados.innerHTML = `<tr><td colspan="7">Nenhum simulado criado.</td></tr>`;
@@ -352,16 +369,16 @@
             tbodySimulados.innerHTML = simulados
               .map(
                 (simulado) => `
-                        <tr>
-                            <td>${String(simulado.id).padStart(2, "0")}</td>
-                            <td>${simulado.tema || simulado.nomeSimulado}</td>
-                            <td>${simulado.habilidades || "-"}</td>
-                            <td>${simulado.dificuldade || "-"}</td>
-                            <td>${simulado.quantidadeQuestoes || 0}</td>
-                            <td><button class="icon-btn" onclick="abrirEditar(${simulado.id})">⚙️</button></td>
-                            <td><button class="icon-btn" onclick="excluirSimulado(${simulado.id})">🗑️</button></td>
-                        </tr>
-                    `,
+                  <tr>
+                    <td>${String(simulado.id).padStart(2, "0")}</td>
+                    <td>${simulado.tema || simulado.nomeSimulado}</td>
+                    <td>${simulado.habilidades || "-"}</td>
+                    <td>${simulado.dificuldade || "-"}</td>
+                    <td>${simulado.quantidadeQuestoes || 0}</td>
+                    <td><button class="icon-btn" onclick="abrirEditar(${simulado.id})">⚙️</button></td>
+                    <td><button class="icon-btn" onclick="excluirSimulado(${simulado.id})">🗑️</button></td>
+                  </tr>
+                `,
               )
               .join("");
           })
@@ -372,46 +389,82 @@
       }
 
       function gerarSimulado() {
-        const areaSelecionada = document.querySelector(".filtros span.active");
-        const dificuldadeSelecionada = document.querySelector(
-          ".filtros span.active-style",
-        );
-        const habilidades = [
-          ...document.querySelectorAll(".habilidades-box input:checked"),
-        ].map((input) => input.value);
+        const areaSelecionada = document.querySelector("#filtroAreaSimulado span.active");
+        const dificuldadeSelecionada = document.querySelector("#filtroDificuldadeSimulado span.active-style");
+        const habilidades = [...document.querySelectorAll("#habilidades-container input:checked")].map((input) => input.value);
+        const quantidadeQuestoes = Number(selectQuantidadeQuestoes.value);
+        const nomeSimulado = inputNomeSimulado.value.trim();
+
+        if (!nomeSimulado) {
+          alert("Informe o nome do simulado.");
+          return;
+        }
+
+        if (!areaSelecionada) {
+          alert("Selecione uma área.");
+          return;
+        }
+
+        if (!dificuldadeSelecionada) {
+          alert("Selecione uma dificuldade.");
+          return;
+        }
+
+        if (habilidades.length == 0) {
+          alert("Selecione ao menos uma habilidade.");
+          return;
+        }
+
+        if (!quantidadeQuestoes || quantidadeQuestoes <= 0) {
+          alert("Selecione uma quantidade válida de questões.");
+          return;
+        }
 
         fetch("/simulados/criar", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            nomeSimulado: inputNomeSimulado.value,
-            quantidadeQuestoes: Number(selectQuantidadeQuestoes.value),
+            nomeSimulado,
+            quantidadeQuestoes,
             fkUsuario: Number(sessionStorage.ID_USUARIO || 1),
-            sigla: areaSelecionada ? areaSelecionada.dataset.sigla : undefined,
-            dificuldade: dificuldadeSelecionada
-              ? dificuldadeSelecionada.dataset.dificuldade
-              : undefined,
+            sigla: areaSelecionada.dataset.sigla,
+            dificuldade: dificuldadeSelecionada.dataset.dificuldade,
             habilidades,
           }),
         })
           .then((resposta) => {
-            if (resposta.ok) {
-              fecharModal();
-              carregarSimulados();
+            if (!resposta.ok) {
+              return resposta.text().then((texto) => Promise.reject(texto));
             }
+
+            fecharModal();
+            carregarSimulados();
+            alert("Simulado criado com sucesso.");
           })
-          .catch((erro) => console.log("Erro ao criar simulado", erro));
+          .catch((erro) => alert(`Erro ao criar simulado: ${erro}`));
       }
 
       function excluirSimulado(id) {
+        if (!confirm("Deseja excluir este simulado?")) return;
+
         fetch(`/simulados/${id}`, { method: "DELETE" })
           .then((resposta) => {
-            if (resposta.ok) carregarSimulados();
+            if (!resposta.ok) {
+              return resposta.text().then((texto) => Promise.reject(texto));
+            }
+
+            carregarSimulados();
+            alert("Simulado excluído com sucesso.");
           })
-          .catch((erro) => console.log("Erro ao excluir simulado", erro));
+          .catch((erro) => alert(`Erro ao excluir simulado: ${erro}`));
       }
 
       function abrirModal() {
+        inputNomeSimulado.value = "";
+        document.querySelectorAll("#filtroAreaSimulado span").forEach((item) => item.classList.remove("active"));
+        document.querySelectorAll("#filtroDificuldadeSimulado span").forEach((item) => item.classList.remove("active-style"));
+        document.querySelectorAll("#habilidades-container input").forEach((item) => (item.checked = false));
+        selectQuantidadeQuestoes.value = "5";
         document.getElementById("modalCriar").style.display = "flex";
       }
 
@@ -421,73 +474,206 @@
 
       function abrirEditar(id) {
         document.getElementById("modalEditar").style.display = "flex";
-        if (!id) return;
+        simuladoEditando = null;
+        questoesEditando = [];
+        document.querySelector(".questoes-box").innerHTML = `<p>Carregando questões...</p>`;
 
         fetch(`/simulados/${id}`)
           .then((resposta) => (resposta.ok ? resposta.json() : null))
           .then((simulado) => {
             if (!simulado) return;
 
-            document.querySelector(".indicadores-simulado").innerHTML = `
-                        <div class="indicador"><p>${simulado.indicadores.questoes}</p><p>Questões</p></div>
-                        <div class="indicador"><p>${simulado.indicadores.parametroAMedio}</p><p>param .A Médio</p></div>
-                        <div class="indicador"><p>${simulado.indicadores.parametroBMedio}</p><p>param .B Médio</p></div>
-                        <div class="indicador"><p>${simulado.indicadores.qtdHabilidades}</p><p>Qtd. Habilidades</p></div>
-                    `;
+            simuladoEditando = simulado;
+            questoesEditando = simulado.questoes.map((questao) => ({
+              codigoItem: questao.codigoItem,
+              anoExame: questao.anoExame,
+              habilidade: questao.habilidade,
+              dificuldade: questao.dificuldade,
+              parametroA: Number(questao.parametroA || 0),
+              parametroB: Number(questao.parametroB || 0),
+              parametroC: Number(questao.parametroC || 0),
+            }));
 
-            document.querySelector(".indicadores-simulado-2").innerHTML = `
-                        <div class="indicador-2"><p>${simulado.area}</p></div>
-                        <div class="indicador-2"><p>${simulado.dificuldade}</p></div>
-                        <div class="indicador-2"><p>${simulado.habilidades.join(", ")}</p></div>
-                    `;
-
-            document.querySelector(".questoes-box").innerHTML =
-              simulado.questoes
-                .map(
-                  (questao, indice) => `
-                        <div class="questao-item">
-                            <div class="questao">
-                                <p>${indice + 1}</p>
-                                <span>item-${questao.codigoItem} - habilidade ${questao.habilidade}</span>
-                                <p>Ano ${questao.anoExame} • ${questao.dificuldade}</p>
-                            </div>
-                            <button onclick="substituir()" class="btn-substituir">Subsituir</button>
-                            <button class="btn-excluir">Excluir</button>
-                        </div>
-                    `,
-                )
-                .join("");
+            renderizarEdicao();
           })
           .catch((erro) => console.log("Erro ao detalhar simulado", erro));
+      }
+
+      function renderizarEdicao() {
+        if (!simuladoEditando) return;
+
+        const qtdHabilidades = new Set(questoesEditando.map((questao) => questao.habilidade)).size;
+        const parametroAMedio = media(questoesEditando, "parametroA");
+        const parametroBMedio = media(questoesEditando, "parametroB");
+        const dificuldade = normalizarDificuldade(simuladoEditando.dificuldade, questoesEditando[0] && questoesEditando[0].parametroB);
+        const habilidades = [...new Set(questoesEditando.map((questao) => formatarHabilidade(questao.habilidade)))];
+
+        document.querySelector(".indicadores-simulado").innerHTML = `
+          <div class="indicador"><p>${questoesEditando.length}</p><p>Questões</p></div>
+          <div class="indicador"><p>${parametroAMedio}</p><p>param .A Médio</p></div>
+          <div class="indicador"><p>${parametroBMedio}</p><p>param .B Médio</p></div>
+          <div class="indicador"><p>${qtdHabilidades}</p><p>Qtd. Habilidades</p></div>
+        `;
+
+        document.querySelector(".indicadores-simulado-2").innerHTML = `
+          <div class="indicador-2"><p>${simuladoEditando.area || "-"}</p></div>
+          <div class="indicador-2"><p>${dificuldade}</p></div>
+          <div class="indicador-2"><p>${habilidades.join(", ") || "-"}</p></div>
+        `;
+
+        document.querySelector(".questoes-box").innerHTML = questoesEditando
+          .map(
+            (questao, indice) => `
+              <div class="questao-item">
+                <div class="questao">
+                  <p>${indice + 1}</p>
+                  <span>${questao.codigoItem} - habilidade ${formatarHabilidade(questao.habilidade)}</span>
+                  <p>Ano ${questao.anoExame} • ${questao.dificuldade}</p>
+                </div>
+                <button onclick="substituir(${indice})" class="btn-substituir">Substituir</button>
+                <button onclick="excluirItemEdicao(${indice})" class="btn-excluir">Excluir</button>
+              </div>
+            `,
+          )
+          .join("");
       }
 
       function fecharEditar() {
         document.getElementById("modalEditar").style.display = "none";
       }
 
-      function substituir() {
+      function substituir(indice) {
+        indiceSubstituindo = indice;
+        questaoSelecionadaSubstituicao = null;
+        const questaoAtual = questoesEditando[indice];
+        const dificuldade = normalizarDificuldade(questaoAtual.dificuldade, questaoAtual.parametroB);
+        const params = new URLSearchParams({
+          sigla: simuladoEditando.sigla || "",
+          dificuldade,
+          habilidades: questoesEditando.map((questao) => questao.habilidade).join(","),
+          idSimulado: simuladoEditando.id,
+          codigoAtual: questaoAtual.codigoItem,
+        });
+
+        listaQuestoesSubstituicao.innerHTML = `<p>Carregando questões...</p>`;
         document.getElementById("modalSub").style.display = "flex";
+
+        fetch(`/simulados/opcoes/questoes?${params.toString()}`)
+          .then((resposta) => (resposta.ok ? resposta.json() : []))
+          .then((questoes) => {
+            if (!questoes || questoes.length == 0) {
+              listaQuestoesSubstituicao.innerHTML = `<p>Nenhuma questão disponível para substituição.</p>`;
+              return;
+            }
+
+            listaQuestoesSubstituicao.innerHTML = questoes
+              .map(
+                (questao, indiceQuestao) => `
+                  <div class="edit-mod-card ${questao.codigoItem == questaoAtual.codigoItem ? "edit-mod-selected" : ""}"
+                    onclick="selecionarQuestaoSubstituicao(${indiceQuestao})"
+                    data-codigo="${questao.codigoItem}">
+                    <div class="edit-mod-number">${indiceQuestao + 1}</div>
+                    <div class="edit-mod-info">
+                      <span class="edit-mod-item-id">${questao.codigoItem} - habilidade ${formatarHabilidade(questao.habilidade)}</span>
+                      <p class="edit-mod-details">Ano ${questao.anoExame} • ${questao.dificuldade}</p>
+                    </div>
+                    <button class="edit-mod-tag">${normalizarDificuldade(questao.dificuldade, questao.parametroB)}</button>
+                  </div>
+                `,
+              )
+              .join("");
+
+            window.questoesSubstituicao = questoes;
+          })
+          .catch((erro) => {
+            console.log("Erro ao buscar questões para substituição", erro);
+            listaQuestoesSubstituicao.innerHTML = `<p>Erro ao carregar questões.</p>`;
+          });
+      }
+
+      function selecionarQuestaoSubstituicao(indiceQuestao) {
+        questaoSelecionadaSubstituicao = window.questoesSubstituicao[indiceQuestao];
+        document.querySelectorAll(".edit-mod-card").forEach((card) => card.classList.remove("edit-mod-selected"));
+        document.querySelectorAll(".edit-mod-card")[indiceQuestao].classList.add("edit-mod-selected");
+      }
+
+      function confirmarSubstituicao() {
+        if (!questaoSelecionadaSubstituicao) {
+          alert("Selecione uma questão para substituir.");
+          return;
+        }
+
+        questoesEditando[indiceSubstituindo] = {
+          codigoItem: questaoSelecionadaSubstituicao.codigoItem,
+          anoExame: questaoSelecionadaSubstituicao.anoExame,
+          habilidade: questaoSelecionadaSubstituicao.habilidade,
+          dificuldade: questaoSelecionadaSubstituicao.dificuldade,
+          parametroA: Number(questaoSelecionadaSubstituicao.parametroA || 0),
+          parametroB: Number(questaoSelecionadaSubstituicao.parametroB || 0),
+          parametroC: Number(questaoSelecionadaSubstituicao.parametroC || 0),
+        };
+
+        fecharSub();
+        renderizarEdicao();
       }
 
       function fecharSub() {
         document.getElementById("modalSub").style.display = "none";
       }
 
+      function excluirItemEdicao(indice) {
+        if (questoesEditando.length == 1) {
+          alert("O simulado precisa ter ao menos uma questão.");
+          return;
+        }
+
+        questoesEditando.splice(indice, 1);
+        renderizarEdicao();
+      }
+
+      function atualizarSimulado() {
+        if (!simuladoEditando) return;
+
+        fetch(`/simulados/${simuladoEditando.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            questoes: questoesEditando.map((questao) => questao.codigoItem),
+          }),
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              return resposta.text().then((texto) => Promise.reject(texto));
+            }
+
+            fecharEditar();
+            carregarSimulados();
+            alert("Simulado atualizado com sucesso.");
+          })
+          .catch((erro) => alert(`Erro ao atualizar simulado: ${erro}`));
+      }
+
+      function media(lista, campo) {
+        if (lista.length == 0) return 0;
+        const soma = lista.reduce((total, item) => total + Number(item[campo] || 0), 0);
+        return (soma / lista.length).toFixed(2);
+      }
+
       function selectArea(el) {
-        // Remove a classe 'active' de todos
         document
-          .querySelectorAll(".filtros span")
+          .querySelectorAll("#filtroAreaSimulado span")
           .forEach((e) => e.classList.remove("active"));
 
-        // Adiciona apenas no clicado
         el.classList.add("active");
+        carregarHabilidades(el.dataset.sigla);
       }
 
       function selectDificuldade(el) {
-        // O toggle faz todo o trabalho:
-        // Se clicar e não tiver a classe, ele coloca (seleciona).
-        // Se clicar e já tiver a classe, ele tira (desmarca).
-        el.classList.toggle("active-style");
+        document
+          .querySelectorAll("#filtroDificuldadeSimulado span")
+          .forEach((e) => e.classList.remove("active-style"));
+
+        el.classList.add("active-style");
       }
     </script>
   </body>

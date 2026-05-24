@@ -120,6 +120,43 @@ function excluir(req, res) {
         });
 }
 
+function atualizar(req, res) {
+    var idSimulado = Number(req.params.id);
+    var questoes = req.body.questoes || [];
+
+    if (!idSimulado) {
+        res.status(400).send("ID do simulado inválido!");
+    } else if (!Array.isArray(questoes)) {
+        res.status(400).send("Questões do simulado inválidas!");
+    } else if (questoes.length == 0) {
+        res.status(400).send("O simulado precisa ter ao menos uma questão!");
+    } else {
+        var questoesNormalizadas = questoes.map(function (questao) {
+            return typeof questao == "string" ? questao : questao.codigoItem;
+        }).filter(function (codigoItem) {
+            return codigoItem != undefined && codigoItem != "";
+        });
+        questoesNormalizadas = [...new Set(questoesNormalizadas)];
+
+        if (questoesNormalizadas.length == 0) {
+            res.status(400).send("O simulado precisa ter ao menos uma questão válida!");
+            return;
+        }
+
+        simuladoModel.excluirQuestoes(idSimulado)
+            .then(function () {
+                return simuladoModel.vincularQuestoes(idSimulado, questoesNormalizadas);
+            }).then(function () {
+                return simuladoModel.atualizarQuantidade(idSimulado, questoesNormalizadas.length);
+            }).then(function (resultado) {
+                res.status(200).json(resultado);
+            }).catch(function (erro) {
+                console.log(erro);
+                res.status(500).json(erro.sqlMessage);
+            });
+    }
+}
+
 function listarHabilidades(req, res) {
     var sigla = req.params.sigla;
 
@@ -137,6 +174,28 @@ function listarHabilidades(req, res) {
         });
 }
 
+function listarQuestoesDisponiveis(req, res) {
+    var sigla = req.query.sigla;
+    var dificuldade = req.query.dificuldade;
+    var habilidades = req.query.habilidades ? req.query.habilidades.split(",") : [];
+    var idSimulado = req.query.idSimulado;
+    var codigoAtual = req.query.codigoAtual;
+
+    if (sigla && !areasValidas.includes(sigla)) {
+        res.status(400).send("Área inválida!");
+    } else if (dificuldade && !dificuldadesValidas.includes(dificuldade)) {
+        res.status(400).send("Dificuldade inválida!");
+    } else {
+        simuladoModel.listarQuestoesDisponiveis(sigla, dificuldade, habilidades, idSimulado, codigoAtual)
+            .then(function (resultado) {
+                res.status(200).json(resultado);
+            }).catch(function (erro) {
+                console.log(erro);
+                res.status(500).json(erro.sqlMessage);
+            });
+    }
+}
+
 function media(lista, campo) {
     if (lista.length == 0) return 0;
     var soma = lista.reduce(function (total, item) {
@@ -150,6 +209,8 @@ module.exports = {
     listar,
     detalhar,
     criar,
+    atualizar,
     excluir,
-    listarHabilidades
+    listarHabilidades,
+    listarQuestoesDisponiveis
 };

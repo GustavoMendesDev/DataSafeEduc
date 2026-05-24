@@ -36,12 +36,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 app.use("/duck-ia", duckIaRouter);
-app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/simulados", simuladoRouter);
 app.use("/coordenadores", coordenadorRouter);
 app.use("/professores", professorRouter);
+app.use("/", indexRouter);
 // app.use("/avisos", avisosRouter);
 // app.use("/medidas", medidasRouter);
 // app.use("/aquarios", aquariosRouter);
