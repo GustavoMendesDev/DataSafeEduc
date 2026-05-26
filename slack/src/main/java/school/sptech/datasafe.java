@@ -8,9 +8,9 @@ import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 public class datasafe {
 
     public static void main(String[] args) {
-        String slackToken = "xoxb-11164360058514-11148990687367-k6Rt3ej3VblOT71mu2bBoiCj";
+        // String slackToken = "";
 
-        String canalId = "#equipe-datasafe";
+       // String canalId = "#";
 
         Slack slack = Slack.getInstance();
         MethodsClient methods = slack.methods(slackToken);
