@@ -1,11 +1,16 @@
 var database = require("../database/config")
 
+function escapar(valor) {
+    return String(valor).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
 function autenticar(email, senha) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
     var instrucaoSql = `
         SELECT
-            usuario.id,
+            usuario.id AS idUsuario,
             usuario.nome,
+            usuario.email,
             usuario.senha,
             usuario.fkNivelAcesso,
             nivelAcesso.nome AS nivelAcesso,
@@ -14,6 +19,16 @@ function autenticar(email, senha) {
         JOIN nivelAcesso ON usuario.fkNivelAcesso = nivelAcesso.id
         WHERE usuario.email = '${email}' AND usuario.senha = '${senha}';
     `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function registrarAcesso(idUsuario, ip) {
+    var instrucaoSql = `
+        INSERT INTO logAcesso (ip, dataCriacao, fkUsuario)
+        VALUES ('${escapar(ip)}', NOW(), ${Number(idUsuario)});
+    `;
+
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -114,6 +129,7 @@ function excluir(idUsuario) {
 
 module.exports = {
     autenticar,
+    registrarAcesso,
     cadastrar,
     listarPorNivel,
     cadastrarCompleto,

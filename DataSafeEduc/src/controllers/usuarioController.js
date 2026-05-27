@@ -20,12 +20,22 @@ function autenticar(req, res) {
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
 
-                        res.json({
-                            idUsuario: resultadoAutenticar[0].idUsuario,
-                            nome: resultadoAutenticar[0].nome,
-                            email: resultadoAutenticar[0].email
+                        var usuarioAutenticado = resultadoAutenticar[0];
+                        var ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || req.ip || "";
 
-                        });
+                        usuarioModel.registrarAcesso(usuarioAutenticado.idUsuario, ip)
+                            .then(function () {
+                                res.json({
+                                    id: usuarioAutenticado.idUsuario,
+                                    idUsuario: usuarioAutenticado.idUsuario,
+                                    nome: usuarioAutenticado.nome,
+                                    email: usuarioAutenticado.email
+                                });
+                            }).catch(function (erro) {
+                                console.log(erro);
+                                console.log("\nHouve um erro ao registrar o acesso! Erro: ", erro.sqlMessage);
+                                res.status(500).json(erro.sqlMessage);
+                            });
                     } else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Senha inválido(s)");
                     } else {

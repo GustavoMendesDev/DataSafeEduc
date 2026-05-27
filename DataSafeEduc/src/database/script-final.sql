@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS nivelAcesso (
 CREATE TABLE IF NOT EXISTS usuario (
   id            INT          NOT NULL AUTO_INCREMENT,
   nome          VARCHAR(80)  NULL,
+  email         VARCHAR(120) NULL,
   senha         VARCHAR(255) NULL,
   dataCriacao   DATETIME     NULL,
   fkNivelAcesso INT          NOT NULL,
@@ -60,7 +61,11 @@ CREATE TABLE IF NOT EXISTS logAcesso (
   id          INT         NOT NULL AUTO_INCREMENT,
   ip          VARCHAR(45) NULL,
   dataCriacao DATETIME    NULL,
-  PRIMARY KEY (id)
+  fkUsuario   INT         NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT fkLogAcessoUsuario
+    FOREIGN KEY (fkUsuario)
+    REFERENCES usuario (id)
 );
 
 CREATE TABLE IF NOT EXISTS areaConhecimento (
@@ -1063,7 +1068,5 @@ VALUES (0, 0, 0, 0);
 INSERT INTO municipio (nome, estado, fkNotaMunicipal) VALUES ('São Paulo', 'SP', 1);
 
 -- Inserir o usuário
-INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkMunicipio)
-VALUES ('user@gmail.com', '123', NOW(), 1, 1);
-
-
+INSERT INTO usuario (nome, email, senha, dataCriacao, fkNivelAcesso, fkMunicipio)
+VALUES ('Usuário Data Safe', 'user@gmail.com', '123', NOW(), 1, 1);
