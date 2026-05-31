@@ -4,8 +4,9 @@ function escapar(valor) {
     return String(valor).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
-function autenticar(email, senha) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
+function autenticar(email, senha, codigoConvite) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha, codigoConvite)
+    
     var instrucaoSql = `
         SELECT
             usuario.id AS idUsuario,
@@ -14,11 +15,17 @@ function autenticar(email, senha) {
             usuario.senha,
             usuario.fkNivelAcesso,
             nivelAcesso.nome AS nivelAcesso,
-            usuario.fkMunicipio
+            usuario.fkMunicipio,
+            usuario.cursinho_id,
+            cursinho.nome AS nomeCursinho
         FROM usuario
         JOIN nivelAcesso ON usuario.fkNivelAcesso = nivelAcesso.id
-        WHERE usuario.email = '${email}' AND usuario.senha = '${senha}';
+        JOIN cursinho ON usuario.cursinho_id = cursinho.id
+        WHERE usuario.email = '${email}' 
+          AND usuario.senha = '${senha}'
+          AND cursinho.token = '${codigoConvite}';
     `;
+
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }

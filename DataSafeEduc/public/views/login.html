@@ -19,7 +19,6 @@
     <link rel="stylesheet"
         href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css">
 
-
 </head>
 
 <main>
@@ -46,8 +45,8 @@
         </div>
 
         <div class="input">
-            <label for="token">Token de Acesso:</label><br>
-            <input type="text" id="iptToken">
+            <label for="convite">Código de Convite</label><br>
+            <input type="text" id="iptConvite">
         </div>
 
         <button onclick="entrar()">Entrar</button>
@@ -88,8 +87,9 @@
 
         var emailVar = iptEmail.value;
         var senhaVar = iptSenha.value;
+        var codigoConviteVar = iptConvite.value;
 
-        if (emailVar == "" || senhaVar == "" || emailVar == null || senhaVar == null) {
+        if (emailVar == "" || senhaVar == "" || codigoConviteVar == "" || emailVar == null || senhaVar == null || codigoConviteVar == null) {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
             finalizarAguardar();
@@ -107,9 +107,9 @@
             finalizarAguardar();
             return false;
         }
-        if (tokenVar == "" || tokenVar == null) {
+        if (codigoConviteVar == "" || codigoConviteVar == null || codigoConviteVar.length != 4) {
             cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para token em branco)";
+            mensagem_erro.innerHTML = "(Mensagem de erro para código de convite em branco)";
             finalizarAguardar();
             return false;
         }
@@ -131,7 +131,8 @@
             },
             body: JSON.stringify({
                 emailServer: emailVar,
-                senhaServer: senhaVar
+                senhaServer: senhaVar,
+                codigoConvite: codigoConviteVar
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
@@ -146,7 +147,7 @@
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.ID_USUARIO = json.id;
                     sessionStorage.FK_NIVEL_ACESSO = json.fkNivelAcesso;
-                    sessionStorage.TOKEN = json.token;
+                    sessionStorage.CODIGO_CONVITE = json.codigoConvite;
 
                     if (json.fkNivelAcesso == 1) {
                         setTimeout(function () {
