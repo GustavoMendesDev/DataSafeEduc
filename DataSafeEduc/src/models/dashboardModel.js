@@ -50,6 +50,7 @@ function buscarHabilidadesAbaixoMedia(sigla) {
         JOIN parametroTri     pt ON q.fkParametroTri    = pt.id
         WHERE ac.sigla      = '${sigla}'
           AND pt.parametroB IS NOT NULL
+          AND q.anoExame    = 2024
         GROUP BY ac.sigla, h.numero
         HAVING chanceAcerto < 30
         ORDER BY chanceAcerto ASC
@@ -73,6 +74,7 @@ function buscarHabilidadesAcimaMedia(sigla) {
         JOIN parametroTri     pt ON q.fkParametroTri    = pt.id
         WHERE ac.sigla      = '${sigla}'
           AND pt.parametroB IS NOT NULL
+          AND q.anoExame    = 2024
         GROUP BY ac.sigla, h.numero
         HAVING mediaBParam < 1.0
         ORDER BY mediaBParam ASC
@@ -91,6 +93,7 @@ function buscarHabilidadesAcimaMedia(sigla) {
         JOIN parametroTri     pt ON q.fkParametroTri    = pt.id
         WHERE ac.sigla      = '${sigla}'
           AND pt.parametroB IS NOT NULL
+          AND q.anoExame    = 2024
         GROUP BY ac.sigla, h.numero
         ORDER BY chanceAcerto DESC
         LIMIT 8;
@@ -124,6 +127,7 @@ function buscarHabilidadesMaiorImpactoNota(sigla) {
         WHERE ac.sigla      = '${sigla}'
           AND pt.parametroA IS NOT NULL
           AND pt.parametroB IS NOT NULL
+          AND q.anoExame    = 2024
         GROUP BY ac.sigla, h.numero
         ORDER BY impactoNota DESC
         LIMIT 8;

@@ -120,10 +120,6 @@
         console.log("FORM LOGIN: ", emailVar);
         console.log("FORM SENHA: ", senhaVar);
 
-        setTimeout(function () {
-            window.location = "views/dash-monitoramento.html";
-        }, 1000); // apenas para exibir o loading
-
         fetch("/usuarios/autenticar", {
             method: "POST",
             headers: {
@@ -145,6 +141,7 @@
                     console.log(JSON.stringify(json));
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.EMAIL_USUARIO = json.email;
+<<<<<<< Updated upstream
                     sessionStorage.ID_USUARIO = json.id;
                     sessionStorage.FK_NIVEL_ACESSO = json.fkNivelAcesso;
                     sessionStorage.CODIGO_CONVITE = json.codigoConvite;
@@ -162,6 +159,17 @@
                             window.location = "./simulados.html";
                         }, 1000);
                     }
+=======
+                    sessionStorage.ID_USUARIO = json.idUsuario;
+
+
+                    console.log("NOME DO USUÁRIO: " + sessionStorage.NOME_USUARIO);
+                    console.log("EMAIL DO USUÁRIO: " + sessionStorage.EMAIL_USUARIO);
+                    console.log("ID DO USUÁRIO: " + sessionStorage.ID_USUARIO);
+                    setTimeout(function () {
+                        window.location = "./dash-monitoramento.html";
+                    }, 10000);
+>>>>>>> Stashed changes
 
                 });
 
