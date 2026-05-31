@@ -29,6 +29,14 @@ CREATE TABLE IF NOT EXISTS nivelAcesso (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS cursinho (
+    id INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL,
+    cnpj VARCHAR(45) NOT NULL,
+    codigoConvite CHAR(4),
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS usuario (
   id            INT          NOT NULL AUTO_INCREMENT,
   nome          VARCHAR(80)  NULL,
