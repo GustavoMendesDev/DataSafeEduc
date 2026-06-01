@@ -4,8 +4,8 @@ function escapar(valor) {
     return String(valor).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
-function autenticar(email, senha, codigoConvite) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha, codigoConvite)
+function autenticar(email, senha) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
     
     var instrucaoSql = `
         SELECT
@@ -22,8 +22,7 @@ function autenticar(email, senha, codigoConvite) {
         JOIN nivelAcesso ON usuario.fkNivelAcesso = nivelAcesso.id
         JOIN cursinho ON usuario.cursinho_id = cursinho.id
         WHERE usuario.email = '${email}' 
-          AND usuario.senha = '${senha}'
-          AND cursinho.token = '${codigoConvite}';
+          AND usuario.senha = '${senha}';
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -41,26 +40,55 @@ function registrarAcesso(idUsuario, ip) {
 }
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucaoSql
-function cadastrar(nome,email,senha) {
+async function cadastrar(nome,email,senha,codigoConvite) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email,senha);
     
-    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
-    //  e na ordem de inserção dos dados.
-    var instrucaoSql = `
-        INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkMunicipio, email)
-        VALUES (
-            '${nome}',
-            '${senha}',
-            NOW(),
-            (SELECT id FROM nivelAcesso ORDER BY id LIMIT 1),
-            (SELECT id FROM municipio ORDER BY id LIMIT 1),
-            '${email}'
-             
-        );
-    `;
-    // se você tiver olhando essa parte do codigo, é uma má pratica vulgo so quero que funcione
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+ var buscarCurso = `SELECT id FROM cursinho WHERE codigoConvite = '${codigoConvite}';`;
+
+    try {
+        // 2. Executa a busca usando o seu objeto 'database.executar'
+        // Na sua estrutura, esse método já retorna o array de resultados do banco
+        const resultadoBusca = await database.executar(buscarCurso);
+
+        // 3. Verifica se o banco encontrou o cursinho
+        if (resultadoBusca.length > 0) {
+            // Pega o primeiro objeto retornado do array
+            const primeiroCursinho = resultadoBusca[0]; 
+            
+            // Captura o ID do cursinho encontrado (ajuste se a coluna tiver outro nome no banco, ex: idCursinho)
+            var idCursinho = primeiroCursinho.id; 
+            
+            console.log(`Cursinho encontrado! ID: ${idCursinho}`);
+
+            // 4. Cria a instrução de INSERT utilizando o idCursinho que acabamos de achar
+            var instrucaoSql = `
+                INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkMunicipio, email, cursinho_id)
+                VALUES (
+                    '${nome}',
+                    '${senha}',
+                    NOW(),
+                    (SELECT id FROM nivelAcesso ORDER BY id LIMIT 1),
+                    (SELECT id FROM municipio ORDER BY id LIMIT 1),
+                    '${email}',
+                    ${idCursinho}
+                );
+            `;
+
+            console.log("Executando a instrução SQL de Cadastro: \n" + instrucaoSql);
+            
+            // Executa e retorna o resultado do cadastro
+            return await database.executar(instrucaoSql);
+
+        } else {
+            console.log("Nenhum cursinho encontrado com o código de convite fornecido.");
+            // Lança um erro ou retorna uma mensagem para tratar no seu controller
+            throw new Error("Código de convite inválido.");
+        }
+
+    } catch (erro) {
+        console.error("Erro no processo de cadastro:", erro);
+        throw erro; // Repassa o erro para o controller tratar a resposta HTTP
+    }
 }
 
 function cadastrarCoordenadores(nomeCursinho, email, senha, confirmarSenha){

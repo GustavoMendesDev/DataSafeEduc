@@ -37,7 +37,7 @@ main{
 .container{
     height: 100%;
     width: 50%;
-    background-image:linear-gradient(var(--main)), url(../assets/imgs/login.png);
+    background-image:linear-gradient(rgba(5, 11, 100, 0.815),rgba(5, 11, 100, 0.815)), url(../assets/imgs/login.png);
 
     background-size: cover;
     background-position: center;

@@ -41,7 +41,7 @@
       </div>
 
         <div class="input">
-        <label for="email id="email">Email:</label><br>
+        <label for="email" id="email">Email:</label><br>
         <input type="text" id="iptEmail">
       </div>
 
@@ -50,6 +50,10 @@
         <input type="password" id="iptSenha">
       </div>
 
+      <div class="input">
+        <label for="convite" id="codigoConvite">Convite:</label><br>
+        <input type="text" id="iptConvite">
+      </div>
       <button onclick="cadastrar()">Cadastrar</button>
                 <div id="mensagem_erro"></div>
 
@@ -74,6 +78,7 @@
     var nomeVar = iptNome.value;
     var emailVar = iptEmail.value;
     var senhaVar = iptSenha.value;
+    var conviteVar = iptConvite.value;
 
   var mensagem_erro = document.getElementById("mensagem_erro");
 
@@ -81,7 +86,8 @@
     if (
       nomeVar == "" ||
       emailVar == "" ||
-      senhaVar == ""
+      senhaVar == "" ||
+      conviteVar == ""
     ) {
       // cardErro.style.display = "block";
       mensagem_erro.innerHTML =
@@ -101,7 +107,8 @@
         // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
         emailServer: emailVar,
-        senhaServer: senhaVar
+        senhaServer: senhaVar,
+        conviteServer: conviteVar
       }),
     })
       .then(function (resposta) {

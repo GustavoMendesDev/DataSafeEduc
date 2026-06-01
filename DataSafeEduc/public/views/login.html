@@ -21,6 +21,7 @@
 
 </head>
 
+<body>
 <main>
 
     <div class="container-formulario">
@@ -60,7 +61,6 @@
 
 </main>
 </body>
-
 </html>
 
 <script>
@@ -87,35 +87,28 @@
 
         var emailVar = iptEmail.value;
         var senhaVar = iptSenha.value;
-        var codigoConviteVar = iptConvite.value;
 
-        if (emailVar == "" || senhaVar == "" || codigoConviteVar == "" || emailVar == null || senhaVar == null || codigoConviteVar == null) {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            finalizarAguardar();
-            return false;
-        }
-        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".") == -1) {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para formato de email inválido)";
-            finalizarAguardar();
-            return false;
-        }
-        if (senhaVar.length < 6 || senhaVar.length > 50) {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para senha com limitação de caracteres)";
-            finalizarAguardar();
-            return false;
-        }
-        if (codigoConviteVar == "" || codigoConviteVar == null || codigoConviteVar.length != 4) {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para código de convite em branco)";
-            finalizarAguardar();
-            return false;
-        }
-        else {
-            setInterval(sumirMensagem, 5000)
-        }
+        // if (emailVar == "" || senhaVar == "" || emailVar == null || senhaVar == null) {
+        //     cardErro.style.display = "block"
+        //     mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+        //     finalizarAguardar();
+        //     return false;
+        // }
+        // if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".") == -1) {
+        //     cardErro.style.display = "block"
+        //     mensagem_erro.innerHTML = "(Mensagem de erro para formato de email inválido)";
+        //     finalizarAguardar();
+        //     return false;
+        // }
+        // if (senhaVar.length < 6 || senhaVar.length > 50) {
+        //     cardErro.style.display = "block"
+        //     mensagem_erro.innerHTML = "(Mensagem de erro para senha com limitação de caracteres)";
+        //     finalizarAguardar();
+        //     return false;
+        // }
+        // else {
+        //     setInterval(sumirMensagem, 5000)
+        // }
 
         console.log("FORM LOGIN: ", emailVar);
         console.log("FORM SENHA: ", senhaVar);
@@ -128,7 +121,6 @@
             body: JSON.stringify({
                 emailServer: emailVar,
                 senhaServer: senhaVar,
-                codigoConvite: codigoConviteVar
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
@@ -141,10 +133,8 @@
                     console.log(JSON.stringify(json));
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.EMAIL_USUARIO = json.email;
-<<<<<<< Updated upstream
                     sessionStorage.ID_USUARIO = json.id;
                     sessionStorage.FK_NIVEL_ACESSO = json.fkNivelAcesso;
-                    sessionStorage.CODIGO_CONVITE = json.codigoConvite;
 
                     if (json.fkNivelAcesso == 1) {
                         setTimeout(function () {
@@ -159,18 +149,6 @@
                             window.location = "./simulados.html";
                         }, 1000);
                     }
-=======
-                    sessionStorage.ID_USUARIO = json.idUsuario;
-
-
-                    console.log("NOME DO USUÁRIO: " + sessionStorage.NOME_USUARIO);
-                    console.log("EMAIL DO USUÁRIO: " + sessionStorage.EMAIL_USUARIO);
-                    console.log("ID DO USUÁRIO: " + sessionStorage.ID_USUARIO);
-                    setTimeout(function () {
-                        window.location = "./dash-monitoramento.html";
-                    }, 10000);
->>>>>>> Stashed changes
-
                 });
 
             } else {
