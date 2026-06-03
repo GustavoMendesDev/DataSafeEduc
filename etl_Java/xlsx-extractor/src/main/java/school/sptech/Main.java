@@ -18,12 +18,6 @@ public class Main {
 
         tabelasBanco();
 
-
-
-
-
-
-
         String caminhoHabilidades    = "matriz_referencia_enem.xlsx";
 
         String caminhoQuestoes     = "questoesEnem.xlsx";
@@ -58,8 +52,21 @@ public class Main {
         List<Questao> questoes = leitor.getQuestoes();
 
         QuestaoDao questaoDao = new QuestaoDao();
-        questaoDao.inserirTodos(questoes);
 
+        leitor.lerArquivo(caminhoQuestoes);
+        questaoDao.inserirQuestoes(leitor.getQuestoes(), 2024);
+
+        leitor.lerArquivo(caminhoQuestoes2023);
+        questaoDao.inserirQuestoes(leitor.getQuestoes(), 2023);
+
+        leitor.lerArquivo(caminhoQuestoes2022);
+        questaoDao.inserirQuestoes(leitor.getQuestoes(), 2022);
+
+        leitor.lerArquivo(caminhoQuestoes2021);
+        questaoDao.inserirQuestoes(leitor.getQuestoes(), 2021);
+
+        leitor.lerArquivo(caminhoQuestoes2020);
+        questaoDao.inserirQuestoes(leitor.getQuestoes(), 2020);
         // ── 3. Notas Municipais ───────────────────────────────────
         info("--- Carregando Notas ---");
         LeitorNotas leitorNotas = new LeitorNotas();
