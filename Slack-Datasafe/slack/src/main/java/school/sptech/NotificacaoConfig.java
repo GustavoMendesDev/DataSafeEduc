@@ -14,7 +14,15 @@ public class NotificacaoConfig implements ObservadorInatividade {
     private String dbDatabase;
     private String dbUser;
     private String dbPassword;
+    private String smtpHost;
+    private String smtpPort;
+    private String smtpUser;
+    private String smtpPassword;
+    private String smtpFrom;
+    private Boolean smtpStartTls;
+    private ControleNotificacao controleNotificacao;
     private transient SlackBot slackBot;
+    private transient EmailService emailService;
 
     public static NotificacaoConfig carregar() {
         NotificacaoConfig config = new NotificacaoConfig();
@@ -29,6 +37,19 @@ public class NotificacaoConfig implements ObservadorInatividade {
         config.dbDatabase = lerVariavel("DB_DATABASE", "dataSafe");
         config.dbUser = lerVariavel("DB_USER", "root");
         config.dbPassword = lerVariavel("DB_PASSWORD", "12345678");
+        config.smtpHost = lerVariavel("SMTP_HOST", "");
+        config.smtpPort = lerVariavel("SMTP_PORT", "587");
+        config.smtpUser = lerVariavel("SMTP_USER", "");
+        config.smtpPassword = lerVariavel("SMTP_PASSWORD", "");
+        config.smtpFrom = lerVariavel("SMTP_FROM", config.smtpUser);
+        config.smtpStartTls = Boolean.parseBoolean(lerVariavel("SMTP_STARTTLS", "true"));
+        config.controleNotificacao = new ControleNotificacao(
+                config.canalSlack,
+                config.periodicidadeMinutos,
+                true,
+                false,
+                false
+        );
 
         validar(config);
 
@@ -75,14 +96,18 @@ public class NotificacaoConfig implements ObservadorInatividade {
         return """
                 :warning: *Alerta de inatividade - Data Safe*
 
-                O usuário *%s* está há *%d dia(s)* sem acessar ou utilizar o sistema.
+                O usuário *%s* está há *%s* sem acessar ou utilizar o sistema.
 
                 Acesse o painel: %s
-                """.formatted(usuario.nome(), usuario.diasSemAcesso(), linkSistema);
+                """.formatted(usuario.nome(), formatarPeriodo(usuario.minutosSemAcesso()), linkSistema);
     }
 
     public void definirSlackBot(SlackBot slackBot) {
         this.slackBot = slackBot;
+    }
+
+    public void definirEmailService(EmailService emailService) {
+        this.emailService = emailService;
     }
 
     @Override
@@ -96,9 +121,46 @@ public class NotificacaoConfig implements ObservadorInatividade {
             return;
         }
 
-        usuariosInativos.forEach(usuario ->
-                slackBot.enviarMensagem(montarMensagem(usuario))
-        );
+        ControleNotificacao controle = configAtualBanco();
+        slackBot.definirCanal(controle.canalSlack());
+
+        usuariosInativos.forEach(usuario -> {
+            slackBot.enviarMensagem(montarMensagem(usuario));
+
+            if (Boolean.TRUE.equals(controle.notificarEmail()) && emailService != null) {
+                emailService.enviarEmail(usuario, formatarPeriodo(usuario.minutosSemAcesso()));
+            }
+        });
+    }
+
+    public ControleNotificacao configAtualBanco() {
+        return controleNotificacao;
+    }
+
+    public void definirControleNotificacao(ControleNotificacao controleNotificacao) {
+        if (controleNotificacao == null) {
+            return;
+        }
+
+        this.controleNotificacao = controleNotificacao;
+        setCanalSlack(controleNotificacao.canalSlack());
+        setPeriodicidadeMinutos(controleNotificacao.periodoMinutos());
+    }
+
+    public String formatarPeriodo(Integer minutos) {
+        if (minutos == null) {
+            return "0 minuto";
+        }
+
+        if (minutos < 60) {
+            return minutos + " minuto(s)";
+        }
+
+        if (minutos < 1440) {
+            return (minutos / 60) + " hora(s)";
+        }
+
+        return (minutos / 1440) + " dia(s)";
     }
 
     public String getTokenSlack() {
@@ -109,8 +171,20 @@ public class NotificacaoConfig implements ObservadorInatividade {
         return canalSlack;
     }
 
+    public void setCanalSlack(String canalSlack) {
+        if (canalSlack != null && !canalSlack.isBlank()) {
+            this.canalSlack = canalSlack;
+        }
+    }
+
     public Integer getPeriodicidadeMinutos() {
         return periodicidadeMinutos;
+    }
+
+    public void setPeriodicidadeMinutos(Integer periodicidadeMinutos) {
+        if (periodicidadeMinutos != null && periodicidadeMinutos > 0) {
+            this.periodicidadeMinutos = periodicidadeMinutos;
+        }
     }
 
     public Integer getLimiteDiasSemAcesso() {
@@ -128,5 +202,39 @@ public class NotificacaoConfig implements ObservadorInatividade {
 
     public String getDbPassword() {
         return dbPassword;
+    }
+
+    public String getLinkSistema() {
+        return linkSistema;
+    }
+
+    public String getSmtpHost() {
+        return smtpHost;
+    }
+
+    public String getSmtpPort() {
+        return smtpPort;
+    }
+
+    public String getSmtpUser() {
+        return smtpUser;
+    }
+
+    public String getSmtpPassword() {
+        return smtpPassword;
+    }
+
+    public String getSmtpFrom() {
+        return smtpFrom == null || smtpFrom.isBlank() ? smtpUser : smtpFrom;
+    }
+
+    public Boolean isSmtpStartTls() {
+        return smtpStartTls;
+    }
+
+    public Boolean isEmailConfigurado() {
+        return smtpHost != null && !smtpHost.isBlank()
+                && smtpUser != null && !smtpUser.isBlank()
+                && smtpPassword != null && !smtpPassword.isBlank();
     }
 }

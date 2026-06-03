@@ -16,20 +16,24 @@ public class InatividadeRepository {
     }
 
     public List<InatividadeUsuario> listarUsuariosInativos() {
+        ControleNotificacao controle = buscarControleNotificacao();
+        config.definirControleNotificacao(controle);
+
         String sql = """
                 SELECT
                     usuario.id,
                     usuario.nome,
+                    usuario.nome AS email,
                     COALESCE(
-                        DATEDIFF(NOW(), MAX(logAcesso.dataCriacao)),
-                        DATEDIFF(NOW(), usuario.dataCriacao),
+                        TIMESTAMPDIFF(MINUTE, MAX(logAcesso.dataCriacao), NOW()),
+                        TIMESTAMPDIFF(MINUTE, usuario.dataCriacao, NOW()),
                         0
-                    ) AS diasSemAcesso
+                    ) AS minutosSemAcesso
                 FROM usuario
                 LEFT JOIN logAcesso ON logAcesso.fkUsuario = usuario.id
                 GROUP BY usuario.id, usuario.nome, usuario.dataCriacao
-                HAVING diasSemAcesso >= ?
-                ORDER BY diasSemAcesso DESC, usuario.nome ASC;
+                HAVING minutosSemAcesso >= ?
+                ORDER BY minutosSemAcesso DESC, usuario.nome ASC;
                 """;
 
         List<InatividadeUsuario> usuarios = new ArrayList<>();
@@ -42,14 +46,15 @@ public class InatividadeRepository {
                 );
                 PreparedStatement statement = conexao.prepareStatement(sql)
         ) {
-            statement.setInt(1, config.getLimiteDiasSemAcesso());
+            statement.setInt(1, controle.periodoMinutos());
 
             try (ResultSet resultado = statement.executeQuery()) {
                 while (resultado.next()) {
                     usuarios.add(new InatividadeUsuario(
                             resultado.getInt("id"),
                             resultado.getString("nome"),
-                            resultado.getInt("diasSemAcesso")
+                            resultado.getString("email"),
+                            resultado.getInt("minutosSemAcesso")
                     ));
                 }
             }
@@ -58,5 +63,54 @@ public class InatividadeRepository {
         }
 
         return usuarios;
+    }
+
+    public ControleNotificacao buscarControleNotificacao() {
+        String sql = """
+                SELECT
+                    slack_channel_id,
+                    periodo,
+                    notificarSistema,
+                    notificarEmail,
+                    encerrarSessao
+                FROM controleNotificacao
+                WHERE ativo = 1
+                ORDER BY id DESC
+                LIMIT 1;
+                """;
+
+        try (
+                Connection conexao = DriverManager.getConnection(
+                        config.getJdbcUrl(),
+                        config.getDbUser(),
+                        config.getDbPassword()
+                );
+                PreparedStatement statement = conexao.prepareStatement(sql);
+                ResultSet resultado = statement.executeQuery()
+        ) {
+            if (resultado.next()) {
+                ControleNotificacao controle = new ControleNotificacao(
+                        resultado.getString("slack_channel_id"),
+                        resultado.getInt("periodo"),
+                        resultado.getBoolean("notificarSistema"),
+                        resultado.getBoolean("notificarEmail"),
+                        resultado.getBoolean("encerrarSessao")
+                );
+                config.definirControleNotificacao(controle);
+                return controle;
+            }
+        } catch (Exception erro) {
+            System.err.println("Erro ao consultar controleNotificacao no banco: " + erro.getMessage());
+        }
+
+        ControleNotificacao controlePadrao = new ControleNotificacao(
+                config.getCanalSlack(),
+                config.getPeriodicidadeMinutos(),
+                true,
+                false,
+                false
+        );
+        config.definirControleNotificacao(controlePadrao);
+        return controlePadrao;
     }
 }

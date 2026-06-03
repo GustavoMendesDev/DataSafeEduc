@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuração de Notificações</title>
+
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/educacional-dash.css" />
+    <link rel="stylesheet" href="../css/configuracao-notificacoes.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="container-painel">
+      <aside class="barra-lateral">
+        <div class="perfil-lateral">
+          <p class="nome-perfil">Lavínia Todarelli</p>
+          <p class="cargo-perfil">Administrador</p>
+        </div>
+        <nav class="nav-lateral">
+          <a href="analise-desempenho.html"><button class="nav-btn">Análise e Desempenho por Tema</button></a>
+          <a href="dash-monitoramento.html"><button class="nav-btn">Monitoramento de Desempenho por habilidade</button></a>
+          <a href="lista-desempenho.html"><button class="nav-btn">Lista de Desempenho por questão</button></a>
+          <a href="simulados.html"><button class="nav-btn">Simulados</button></a>
+          <a href="gerenciamento-professores.html"><button class="nav-btn">Gerenciamento de professores</button></a>
+          <a href="gerenciamento-coordenadores.html"><button class="nav-btn">Gerenciamento de Coordenadores</button></a>
+          <a href="configuracao-notificacoes.html"><button class="nav-btn active">Configurações de Notificação</button></a>
+        </nav>
+      </aside>
+
+      <main class="conteudo-principal">
+        <header class="cabecalho-painel">
+          <h1>Configurações de Notificação de Inatividade</h1>
+        </header>
+
+        <section class="area-configuracao">
+          <div class="cartao-configuracao">
+            <h2 class="titulo-configuracao">Notificações de Inatividade - DataSafe Educ</h2>
+
+            <label class="rotulo-secao" for="slackChannelId">Canal do Slack</label>
+            <div class="linha-formulario">
+              <input class="campo-texto" id="slackChannelId" placeholder="#equipe-datasafe" />
+            </div>
+
+            <span class="rotulo-secao">Intervalo de inatividade</span>
+            <div class="grade-periodos" id="gradePeriodos">
+              <button class="opcao-periodo ativo" data-minutos="120" type="button">
+                <span class="valor-periodo">2</span>
+                <span class="unidade-periodo">horas</span>
+              </button>
+              <button class="opcao-periodo" data-minutos="240" type="button">
+                <span class="valor-periodo">4</span>
+                <span class="unidade-periodo">horas</span>
+              </button>
+              <button class="opcao-periodo" data-minutos="1440" type="button">
+                <span class="valor-periodo">1</span>
+                <span class="unidade-periodo">dia</span>
+              </button>
+              <button class="opcao-periodo" data-minutos="2880" type="button">
+                <span class="valor-periodo">2</span>
+                <span class="unidade-periodo">dias</span>
+              </button>
+            </div>
+
+            <div class="linha-formulario" style="margin-top: 12px;">
+              <label for="valorPersonalizado">Personalizado:</label>
+              <input class="campo-numero" type="number" id="valorPersonalizado" min="1" max="999" placeholder="45" />
+              <select class="campo-select" id="unidadePersonalizada">
+                <option value="minutos">minutos</option>
+                <option value="horas">horas</option>
+              </select>
+              <button class="botao-secundario" type="button" onclick="aplicarPersonalizado()">Aplicar</button>
+            </div>
+
+            <span class="rotulo-secao">Canais e ações</span>
+            <div class="linha-opcao">
+              <div>
+                <p class="titulo-opcao">Notificação no sistema</p>
+                <p class="descricao-opcao">Mantém a configuração registrada para avisos internos da plataforma.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notificarSistema" checked onchange="atualizarResumo()" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="linha-opcao">
+              <div>
+                <p class="titulo-opcao">Notificação por e-mail</p>
+                <p class="descricao-opcao">Envia e-mail ao usuário informando há quanto tempo ele está inativo.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notificarEmail" onchange="atualizarResumo()" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="linha-opcao">
+              <div>
+                <p class="titulo-opcao">Encerrar sessão automaticamente</p>
+                <p class="descricao-opcao">Registra a regra para logout após o período configurado.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="encerrarSessao" onchange="atualizarResumo()" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="resumo-configuracao" id="resumoConfiguracao"></div>
+
+            <div class="acoes-configuracao">
+              <button class="botao-primario" type="button" onclick="salvarConfiguracao()">Salvar configurações</button>
+              <button class="botao-secundario" type="button" onclick="restaurarPadrao()">Restaurar padrão</button>
+            </div>
+            <p class="mensagem-retorno" id="mensagemRetorno"></p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      var periodoSelecionado = 120;
+      var opcoesPeriodo = document.querySelectorAll(".opcao-periodo");
+
+      document.addEventListener("DOMContentLoaded", function () {
+        slackChannelId.value = "#equipe-datasafe";
+        configurarEventosPeriodo();
+        carregarConfiguracao();
+        atualizarResumo();
+      });
+
+      function configurarEventosPeriodo() {
+        opcoesPeriodo.forEach(function (opcao) {
+          opcao.addEventListener("click", function () {
+            selecionarPeriodo(Number(opcao.dataset.minutos));
+            valorPersonalizado.value = "";
+          });
+        });
+      }
+
+      function selecionarPeriodo(minutos) {
+        periodoSelecionado = minutos;
+        opcoesPeriodo.forEach(function (opcao) {
+          opcao.classList.toggle("ativo", Number(opcao.dataset.minutos) == minutos);
+        });
+        atualizarResumo();
+      }
+
+      function aplicarPersonalizado() {
+        var valor = Number(valorPersonalizado.value);
+
+        if (!valor || valor <= 0) {
+          exibirMensagem("Informe um valor personalizado válido.", true);
+          return;
+        }
+
+        var minutos = unidadePersonalizada.value == "horas" ? valor * 60 : valor;
+        selecionarPeriodo(minutos);
+      }
+
+      function formatarPeriodo(minutos) {
+        if (minutos < 60) return minutos + " minuto" + (minutos == 1 ? "" : "s");
+        if (minutos < 1440) {
+          var horas = minutos / 60;
+          return horas + " hora" + (horas == 1 ? "" : "s");
+        }
+        var dias = minutos / 1440;
+        return dias + " dia" + (dias == 1 ? "" : "s");
+      }
+
+      function atualizarResumo() {
+        var canais = ["Slack"];
+
+        if (notificarSistema.checked) canais.push("sistema");
+        if (notificarEmail.checked) canais.push("e-mail");
+
+        var logout = encerrarSessao.checked ? " A sessão também será encerrada automaticamente." : "";
+
+        resumoConfiguracao.innerHTML =
+          "Após <strong>" + formatarPeriodo(periodoSelecionado) +
+          "</strong> de inatividade, a regra notificará via <strong>" +
+          canais.join(", ") + "</strong>." + logout;
+      }
+
+      function carregarConfiguracao() {
+        fetch("/notificacoes/configuracao")
+          .then(function (resposta) {
+            if (resposta.status == 204) return null;
+            return resposta.ok ? resposta.json() : Promise.reject("Erro ao carregar configuração.");
+          })
+          .then(function (configuracao) {
+            if (!configuracao) return;
+
+            slackChannelId.value = configuracao.slackChannelId || "#equipe-datasafe";
+            notificarSistema.checked = Boolean(configuracao.notificarSistema);
+            notificarEmail.checked = Boolean(configuracao.notificarEmail);
+            encerrarSessao.checked = Boolean(configuracao.encerrarSessao);
+            selecionarPeriodo(Number(configuracao.periodo || 120));
+          })
+          .catch(function (erro) {
+            console.log("Erro ao carregar configuração", erro);
+          });
+      }
+
+      function salvarConfiguracao() {
+        if (slackChannelId.value == "") {
+          exibirMensagem("Informe o canal do Slack.", true);
+          return;
+        }
+
+        fetch("/notificacoes/configuracao", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            slackChannelId: slackChannelId.value,
+            periodo: periodoSelecionado,
+            notificarSistema: notificarSistema.checked,
+            notificarEmail: notificarEmail.checked,
+            encerrarSessao: encerrarSessao.checked,
+            usuarioId: sessionStorage.ID_USUARIO || null
+          })
+        })
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              return resposta.text().then(function (mensagem) {
+                return Promise.reject(mensagem);
+              });
+            }
+
+            exibirMensagem("Configurações salvas com sucesso.", false);
+          })
+          .catch(function (erro) {
+            exibirMensagem("Erro ao salvar configurações: " + erro, true);
+          });
+      }
+
+      function restaurarPadrao() {
+        slackChannelId.value = "#equipe-datasafe";
+        notificarSistema.checked = true;
+        notificarEmail.checked = false;
+        encerrarSessao.checked = false;
+        valorPersonalizado.value = "";
+        unidadePersonalizada.value = "minutos";
+        selecionarPeriodo(120);
+        exibirMensagem("Configurações restauradas para o padrão.", false);
+      }
+
+      function exibirMensagem(mensagem, erro) {
+        mensagemRetorno.textContent = mensagem;
+        mensagemRetorno.classList.toggle("erro", erro);
+      }
+    </script>
+  </body>
+</html>
