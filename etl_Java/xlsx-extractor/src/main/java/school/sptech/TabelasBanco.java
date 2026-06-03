@@ -120,21 +120,22 @@ public class TabelasBanco {
             )
         """);
 
+
         connection.execute("""
-            CREATE TABLE IF NOT EXISTS questao (
-              codigoItem     VARCHAR(20) NOT NULL,
-              anoExame       YEAR        NULL,
-              fkHabilidade   INT         NOT NULL,
-              fkParametroTri INT         NOT NULL,
-              PRIMARY KEY (codigoItem),
-              CONSTRAINT fkHabilidade
-                FOREIGN KEY (fkHabilidade)
-                REFERENCES habilidade (id),
-              CONSTRAINT fkParametroTri
-                FOREIGN KEY (fkParametroTri)
-                REFERENCES parametroTri (id)
-            )
-        """);
+    CREATE TABLE IF NOT EXISTS questao (
+      codigoItem     VARCHAR(20) NOT NULL,
+      anoExame       YEAR        NOT NULL,
+      fkHabilidade   INT         NOT NULL,
+      fkParametroTri INT         NOT NULL,
+      PRIMARY KEY (codigoItem, anoExame),   -- chave composta
+      CONSTRAINT fkHabilidade
+        FOREIGN KEY (fkHabilidade)
+        REFERENCES habilidade (id),
+      CONSTRAINT fkParametroTri
+        FOREIGN KEY (fkParametroTri)
+        REFERENCES parametroTri (id)
+    )
+""");
 
         connection.execute("""
             CREATE TABLE IF NOT EXISTS questaoSimulado (

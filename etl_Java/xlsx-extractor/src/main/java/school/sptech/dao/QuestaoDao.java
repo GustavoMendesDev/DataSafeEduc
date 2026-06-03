@@ -16,18 +16,17 @@ import static school.sptech.Log.info;
 
 public class QuestaoDao {
 
-    private static Integer contador = -1;
+    private static Integer contador = 0;
 
 
         public void inserirQuestoes(List<Questao> questoes, int anoExame) {
 
-            contador++;
             String url = "jdbc:mysql://localhost:3306/datasafe?useSSL=true&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true";
             String user = "root";
             String password = "#0612@Gm";
 
-            String sqlParametroTri = "INSERT INTO parametroTri (id, nivel, parametroA, parametroB, parametroC) VALUES (?, ?, ?, ?, ?)";
-            String sqlQuestao      = "INSERT INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES (?, ?, ?, ?)";
+            String sqlParametroTri = "INSERT IGNORE INTO parametroTri (id, nivel, parametroA, parametroB, parametroC) VALUES (?, ?, ?, ?, ?)";
+            String sqlQuestao      = "INSERT IGNORE INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES (?, ?, ?, ?)";
 
             try (Connection conexao = DriverManager.getConnection(url, user, password);
                  PreparedStatement psParametroTri = conexao.prepareStatement(sqlParametroTri);
@@ -39,6 +38,7 @@ public class QuestaoDao {
 
                 for (Questao questao : questoes) {
                     if (questao == null || questao.getDificuldade() == null) continue;
+                    contador++;
 
                     psParametroTri.setInt(1, questao.getDificuldade().getId());
                     psParametroTri.setString(2, questao.getDificuldade().calcularDificuldade(questao.getDificuldade().getParametro_b()));
@@ -48,7 +48,7 @@ public class QuestaoDao {
                     psParametroTri.addBatch();
 
                     psQuestao.setInt(1, questao.getCodigoItem());
-                    psQuestao.setInt(2, 2024 - contador);
+                    psQuestao.setInt(2, anoExame);
                     psQuestao.setInt(3, questao.getHabilidade().getId());
                     psQuestao.setInt(4, questao.getDificuldade().getId());
                     psQuestao.addBatch();

@@ -8,6 +8,7 @@ import school.sptech.dao.QuestaoDao;
 import school.sptech.model.NotaMunicipal;
 import school.sptech.model.Questao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static school.sptech.Log.info;
@@ -18,19 +19,17 @@ public class Main {
 
         tabelasBanco();
 
-        String caminhoHabilidades    = "matriz_referencia_enem.xlsx";
-
-        String caminhoQuestoes     = "questoesEnem.xlsx";
-        String caminhoQuestoes2023 = "questoesEnem2023.xlsx";
-        String caminhoQuestoes2022 = "questoesEnem2022.xlsx";
-        String caminhoQuestoes2021 = "questoesEnem2021.xlsx";
-        String caminhoQuestoes2020 = "questoesEnem2020.xlsx";
-
-         String caminhoNotasMunicipio = "municipioDeSaoPauloResultadosEnem.xlsx";
-
-//        String caminhoHabilidades    = "src/main/resources/matriz_referencia_enem.xlsx";
-//        String caminhoQuestoes       = "src/main/resources/questoesEnem.xlsx";
-//        String caminhoNotasMunicipio = "src/main/resources/municipioDeSaoPauloResultadosEnem.xlsx";
+        String caminhoHabilidades        = "matriz_referencia_enem.xlsx";
+        String caminhoQuestoes           = "questoesEnem.xlsx";
+        String caminhoQuestoes2023       = "questoesEnem2023.xlsx";
+        String caminhoQuestoes2022       = "questoesEnem2022.xlsx";
+        String caminhoQuestoes2021       = "questoesEnem2021.xlsx";
+        String caminhoQuestoes2020       = "questoesEnem2020.xlsx";
+        String caminhoNotasMunicipio     = "municipioDeSaoPauloResultadosEnem.xlsx";
+        String caminhoNotasMunicipio2023 = "municipioDeSaoPauloResultadosEnem2023.xlsx";
+        String caminhoNotasMunicipio2022 = "municipioDeSaoPauloResultadosEnem2022.xlsx";
+        String caminhoNotasMunicipio2021 = "municipioDeSaoPauloResultadosEnem2021.xlsx";
+        String caminhoNotasMunicipio2020 = "municipioDeSaoPauloResultadosEnem2020.xlsx";
 
         // ── 1. Habilidades ────────────────────────────────────────
         info("--- Carregando Habilidades ---");
@@ -40,17 +39,8 @@ public class Main {
         habilidadeDao.inserirAreaConhecimento();
         habilidadeDao.inserirTodos(leitor.getHabilidades());
 
-// ── 2. Questões ───────────────────────────────────────────
+        // ── 2. Questões ───────────────────────────────────────────
         info("--- Carregando Questoes ---");
-
-        leitor.lerArquivo(caminhoQuestoes);
-       leitor.lerArquivo(caminhoQuestoes2023);
-        leitor.lerArquivo(caminhoQuestoes2022);
-        leitor.lerArquivo(caminhoQuestoes2021);
-        leitor.lerArquivo(caminhoQuestoes2020);
-
-        List<Questao> questoes = leitor.getQuestoes();
-
         QuestaoDao questaoDao = new QuestaoDao();
 
         leitor.lerArquivo(caminhoQuestoes);
@@ -67,15 +57,30 @@ public class Main {
 
         leitor.lerArquivo(caminhoQuestoes2020);
         questaoDao.inserirQuestoes(leitor.getQuestoes(), 2020);
+
         // ── 3. Notas Municipais ───────────────────────────────────
         info("--- Carregando Notas ---");
         LeitorNotas leitorNotas = new LeitorNotas();
-        leitorNotas.lerArquivo(caminhoNotasMunicipio);
-
-        NotaMunicipal nota = leitorNotas.calcularMediaTemas();
-
         NotaMunicipalDao notaMunicipalDao = new NotaMunicipalDao();
-        notaMunicipalDao.inserir(nota);
+
+        List<NotaMunicipal> todasAsNotas = new ArrayList<>();
+
+        leitorNotas.lerArquivo(caminhoNotasMunicipio);
+        todasAsNotas.add(leitorNotas.calcularMediaTemas());
+
+        leitorNotas.lerArquivo(caminhoNotasMunicipio2023);
+        todasAsNotas.add(leitorNotas.calcularMediaTemas());
+
+        leitorNotas.lerArquivo(caminhoNotasMunicipio2022);
+        todasAsNotas.add(leitorNotas.calcularMediaTemas());
+
+        leitorNotas.lerArquivo(caminhoNotasMunicipio2021);
+        todasAsNotas.add(leitorNotas.calcularMediaTemas());
+
+        leitorNotas.lerArquivo(caminhoNotasMunicipio2020);
+        todasAsNotas.add(leitorNotas.calcularMediaTemas());
+
+        notaMunicipalDao.inserirTodos(todasAsNotas);
 
     }
 }
