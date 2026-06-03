@@ -27,11 +27,6 @@ public class Questao {
         this.gabarito = gabarito;
     }
 
-
-
-
-
-
     public boolean jaExisteEsseCodigo(List<Questao> listaQuestoes, Integer codQuestao) {
 
         for (Questao questao : listaQuestoes) {
@@ -43,14 +38,6 @@ public class Questao {
         }
         return false;
     }
-
-
-
-
-
-
-
-
 
     public Integer getCodigoItem() {
         return codigoItem;

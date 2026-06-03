@@ -92,24 +92,24 @@ public class LeitorNotas extends BaseLeitor {
 
                     switch (cell.getColumnIndex()) {
                         case 22:
-                            Double notaCn = extrairValorNumerico(cell);
+                            Double notaCn = super.extrairValorNumerico(cell);
                             if (notaCn != null) adicionarNotaCn(notaCn);
                             break;
                         case 23:
-                            Double notaCh = extrairValorNumerico(cell);
+                            Double notaCh = super.extrairValorNumerico(cell);
                             if (notaCh != null) adicionarNotaCh(notaCh);
                             break;
                         case 24:
-                            Double notaLc = extrairValorNumerico(cell);
+                            Double notaLc = super.extrairValorNumerico(cell);
                             if (notaLc != null) adicionarNotaLc(notaLc);
                             break;
                         case 25:
-                            Double notaMt = extrairValorNumerico(cell);
+                            Double notaMt = super.extrairValorNumerico(cell);
                             if (notaMt != null) adicionarNotaMt(notaMt);
                             break;
                     }
                 }
-        info("Leitura da notas realizadas com sucesso!");
+       // info("Leitura da notas realizadas com sucesso!");
 
     }
 
@@ -117,23 +117,5 @@ public class LeitorNotas extends BaseLeitor {
 
 
 
-    private Double extrairValorNumerico(Cell cell) {
-        switch (cell.getCellType()) {
-            case NUMERIC:
-                return cell.getNumericCellValue();
-            case STRING:
-                String valor = cell.getStringCellValue().trim();
-                if (valor.isEmpty()) return null;
-                try {
-                    return Double.parseDouble(valor);
-                } catch (NumberFormatException e) {
-                    return null;
-                }
-            case BLANK:
-                return null;
-            default:
-                return null;
-        }
-    }
 
 }

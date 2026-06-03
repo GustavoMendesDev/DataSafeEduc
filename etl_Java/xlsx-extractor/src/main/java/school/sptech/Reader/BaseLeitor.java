@@ -1,12 +1,12 @@
 package school.sptech.Reader;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import school.sptech.S3Service;
-
-
+import com.github.pjfanning.xlsx.StreamingReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -18,8 +18,15 @@ public class BaseLeitor {
     protected void processarLinha(Row row){}
 
     public void lerArquivo(String nomeArquivo) {
-        try (InputStream arquivo = S3Service.getArquivo(nomeArquivo);
-             Workbook workbook = new XSSFWorkbook(arquivo)) {
+        long tempoInicial = System.currentTimeMillis();
+
+
+        // try (InputStream arquivo = S3Service.getArquivo(nomeArquivo);
+       try(// InputStream arquivo = S3Service.getArquivo(nomeArquivo);
+               InputStream arquivo = getClass().getClassLoader().getResourceAsStream(nomeArquivo);
+         Workbook workbook = StreamingReader.builder().rowCacheSize(10).bufferSize(256).open(arquivo)
+       //Workbook workbook =  new XSSFWorkbook(arquivo)
+       ) {
 
             info("[] - (BaseLeitor) - Leitura do arquivo " + nomeArquivo + " realizada com sucesso!");
 
@@ -36,8 +43,28 @@ public class BaseLeitor {
         } catch (Exception e) {
             info("[] - (BaseLeitor) - Erro ao ler arquivo " + nomeArquivo + ": " + e);
         }
+        long tempoFinal = System.currentTimeMillis();
+        System.out.printf("%.3f s%n", (tempoFinal - tempoInicial) / 1000d);
     }
 
 
+    protected Double extrairValorNumerico(Cell cell) {
+        switch (cell.getCellType()) {
+            case NUMERIC:
+                return cell.getNumericCellValue();
+            case STRING:
+                String valor = cell.getStringCellValue().trim();
+                if (valor.isEmpty()) return null;
+                try {
+                    return Double.parseDouble(valor);
+                } catch (NumberFormatException e) {
+                    return null;
+                }
+            case BLANK:
+                return null;
+            default:
+                return null;
+        }
+    }
 
 }

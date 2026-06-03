@@ -4,6 +4,7 @@ package school.sptech;
 import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.net.UnknownHostException;
 
 import school.sptech.ConexaoBanco;
 
@@ -12,10 +13,10 @@ import school.sptech.util.Data;
 
 public class Log {
 
+
     // Atributo constante para formatar data e hora.
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
 
 
     // Métodos para informar o tipo de log que será salvo no banco
@@ -37,6 +38,18 @@ public class Log {
         salvarLog("WARNING", mensagem);
     }
 
+    public static String buscarIpMaquina() {
+
+        try {
+
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            System.out.println("ERRO PARA BUSCAR IP MAQUINA [Log] = [buscarIpMaquina]" + e.getMessage());
+        }
+        return null;
+    }
+
+
     // Método para formatar as mensagens dos logs no terminal
     private static void salvarLog(
             String nivel,
@@ -52,19 +65,17 @@ public class Log {
         // Tratamento de exceções + inserção no banco
         try {
 
-            String ip =
-                    InetAddress.getLocalHost()
-                            .getHostAddress();
+
 
             ConexaoBanco.CONEXAO.update(
                     """
-                            INSERT INTO logAcesso
-                            (mensagem, nivel, ip, dataCriacao)
-                            VALUES (?, ?, ?, ?)
-                            """,
+                    INSERT INTO `log`
+                    (mensagem, nivel, ip, dataCriacao)
+                    VALUES (?, ?, ?, ?)
+                    """,
                     mensagem,
                     nivel,
-                    ip,
+                    buscarIpMaquina(),
                     LocalDateTime.now()
             );
 
@@ -73,6 +84,12 @@ public class Log {
             System.out.println(
                     "[" + Data.mostrarDataAtual() + "] "
                             + "[ERRO] - Falha ao salvar log no banco"
+            );
+
+
+            System.out.println(
+                    "[" + e.getMessage() + "] "
+                            + "[ERRO] - ERRO"
             );
         }
     }

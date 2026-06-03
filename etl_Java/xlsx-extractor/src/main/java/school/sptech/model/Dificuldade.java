@@ -63,4 +63,15 @@ public class Dificuldade {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Dificuldade{" +
+                "id=" + id +
+                ", nivel='" + nivel + '\'' +
+                ", parametro_a=" + parametro_a +
+                ", parametro_b=" + parametro_b +
+                ", parametro_c=" + parametro_c +
+                '}';
+    }
 }

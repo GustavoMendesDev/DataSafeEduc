@@ -11,6 +11,8 @@ import static school.sptech.Log.info;
 
 public class QuestaoDao {
 
+    private static Integer contador = -1;
+
     public void inserirParametroTri(Questao questao) {
         try {
             ConexaoBanco.CONEXAO.update(
@@ -21,10 +23,10 @@ public class QuestaoDao {
                     questao.getDificuldade().getParametro_b(),
                     questao.getDificuldade().getParametro_c()
             );
-            info("(QuestaoDao) - ParametroTri da questão " + questao.getCodigoItem() + " inserido com sucesso!");
+          // info("(QuestaoDao) - ParametroTri da questão " + questao.getCodigoItem() + " inserido com sucesso!");
 
         } catch (Exception e) {
-            erro("(QuestaoDao) - Falha ao inserir parametroTri da questão " + questao.getCodigoItem() + ": " + e.getMessage());
+           erro("(QuestaoDao) - Falha ao inserir parametroTri da questão " + questao.getCodigoItem() + ": " + e.getMessage());
         }
     }
 
@@ -33,25 +35,29 @@ public class QuestaoDao {
             ConexaoBanco.CONEXAO.update(
                     "INSERT INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES (?, ?, ?, ?)",
                     questao.getCodigoItem(),
-                    2024,
+                    2024 - contador,
                     questao.getHabilidade().getId(),
                     questao.getDificuldade().getId()
             );
-            info("(QuestaoDao) - Questão " + questao.getCodigoItem() + " inserida com sucesso!");
+       //     info("(QuestaoDao) - Questão " + questao.getCodigoItem() + " inserida com sucesso!");
 
         } catch (Exception e) {
-            erro("(QuestaoDao) - Falha ao inserir questão " + questao.getCodigoItem() + ": " + e.getMessage());
+          erro("(QuestaoDao) - Falha ao inserir questão " + questao.getCodigoItem() + ": " + e.getMessage());
         }
     }
 
     public void inserirTodos(List<Questao> questoes) {
-        info("(QuestaoDao) - Iniciando inserção de " + questoes.size() + " questões...");
-
+        contador ++;
         for (Questao questao : questoes) {
-            inserirParametroTri(questao);
-            inserir(questao);
+
+            if(questao != null && questao.getDificuldade() != null) {
+                inserirParametroTri(questao);
+               inserir(questao);
+            }
+
         }
 
-        info("(QuestaoDao) - Inserção de questões finalizada!");
+        info("(QuestaoDao) - Inserção de questões finalizada!" + questoes.size() + "Foram inseridas ao banco");
+
     }
 }

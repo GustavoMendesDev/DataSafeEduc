@@ -18,28 +18,42 @@ public class Main {
 
         tabelasBanco();
 
-//        String caminhoHabilidades    = "src\\main\\resources\\matriz_referencia_enem.xlsx";
-//        String caminhoQuestoes       = "src\\main\\resources\\questoesEnem.xlsx";
-//        String caminhoNotasMunicipio = "src\\main\\resources\\municipioDeSaoPauloResutadosEnem.xlsx";
+
+
+
+
 
 
         String caminhoHabilidades    = "matriz_referencia_enem.xlsx";
-        String caminhoQuestoes       = "questoesEnem.xlsx";
-        String caminhoNotasMunicipio = "municipioDeSaoPauloResultadosEnem.xlsx";
 
+        String caminhoQuestoes     = "questoesEnem.xlsx";
+        String caminhoQuestoes2023 = "questoesEnem2023.xlsx";
+        String caminhoQuestoes2022 = "questoesEnem2022.xlsx";
+        String caminhoQuestoes2021 = "questoesEnem2021.xlsx";
+        String caminhoQuestoes2020 = "questoesEnem2020.xlsx";
 
+         String caminhoNotasMunicipio = "municipioDeSaoPauloResultadosEnem.xlsx";
+
+//        String caminhoHabilidades    = "src/main/resources/matriz_referencia_enem.xlsx";
+//        String caminhoQuestoes       = "src/main/resources/questoesEnem.xlsx";
+//        String caminhoNotasMunicipio = "src/main/resources/municipioDeSaoPauloResultadosEnem.xlsx";
 
         // ── 1. Habilidades ────────────────────────────────────────
         info("--- Carregando Habilidades ---");
-        LeitorQuestoes leitor = new LeitorQuestoes(caminhoHabilidades); // lê habilidades no construtor
+        LeitorQuestoes leitor = new LeitorQuestoes(caminhoHabilidades);
 
         HabilidadeDao habilidadeDao = new HabilidadeDao();
         habilidadeDao.inserirAreaConhecimento();
         habilidadeDao.inserirTodos(leitor.getHabilidades());
 
-        // ── 2. Questões ───────────────────────────────────────────
+// ── 2. Questões ───────────────────────────────────────────
         info("--- Carregando Questoes ---");
-        leitor.lerArquivo(caminhoQuestoes); // lê questões usando habilidades já carregadas
+
+        leitor.lerArquivo(caminhoQuestoes);
+       leitor.lerArquivo(caminhoQuestoes2023);
+        leitor.lerArquivo(caminhoQuestoes2022);
+        leitor.lerArquivo(caminhoQuestoes2021);
+        leitor.lerArquivo(caminhoQuestoes2020);
 
         List<Questao> questoes = leitor.getQuestoes();
 

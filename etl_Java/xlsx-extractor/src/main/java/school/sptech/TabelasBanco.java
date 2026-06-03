@@ -77,9 +77,9 @@ public class TabelasBanco {
         """);
 
         connection.execute("""
-          CREATE TABLE IF NOT EXISTS logAcesso (
+          CREATE TABLE IF NOT EXISTS log (
                        id            INT           NOT NULL AUTO_INCREMENT,
-                       mensagem      VARCHAR(255)  NULL,
+                       mensagem      VARCHAR(999)  NULL,
                        nivel         VARCHAR(20)   NULL,
                        ip            VARCHAR(45)   NULL,
                        dataCriacao   DATETIME      NULL,
@@ -113,9 +113,9 @@ public class TabelasBanco {
             CREATE TABLE IF NOT EXISTS parametroTri (
               id         INT            NOT NULL ,
               nivel      VARCHAR(45)    NULL,
-              parametroA DECIMAL(5,2)  NULL,
-              parametroB DECIMAL(5,2)  NULL,
-              parametroC DECIMAL(5,2)  NULL,
+              parametroA DECIMAL(10,2)  NULL,
+              parametroB DECIMAL(10,2)  NULL,
+              parametroC DECIMAL(10,2)  NULL,
               PRIMARY KEY (id)
             )
         """);

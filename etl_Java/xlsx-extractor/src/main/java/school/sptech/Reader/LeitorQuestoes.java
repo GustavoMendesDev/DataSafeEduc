@@ -71,6 +71,7 @@ public class LeitorQuestoes extends BaseLeitor {
                     break;
 
                 case 4:
+
                     Integer numero = (int) cell.getNumericCellValue();
 
                     Habilidade habilidade = buscarHabilidade(habilidades, questao.getArea(), numero);
@@ -78,16 +79,17 @@ public class LeitorQuestoes extends BaseLeitor {
 
                     break;
                 case 7:
-
-                    dificuldade.setParametro_a(cell.getNumericCellValue());
+                   Double parametroA = super.extrairValorNumerico(cell);
+                    dificuldade.setParametro_a(parametroA);
                     break;
                 case 8:
+                    Double parametroB = super.extrairValorNumerico(cell);
                     dificuldadeQuestao = dificuldade.calcularDificuldade(cell.getNumericCellValue());
-                    dificuldade.setParametro_b(cell.getNumericCellValue());
+                    dificuldade.setParametro_b(parametroB);
                     break;
                 case 9:
-
-                    dificuldade.setParametro_c(cell.getNumericCellValue());
+                    Double parametroC = super.extrairValorNumerico(cell);
+                    dificuldade.setParametro_c(parametroC);
                     questao.setDificuldade(dificuldade);
                     break;
             }
@@ -102,10 +104,18 @@ public class LeitorQuestoes extends BaseLeitor {
 
             adicionarQuestao(questao);
 
-            info("[] - (LeitorQuestoes) - (Reader) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
+           // info("[] - (LeitorQuestoes) - (Reader) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
         }
-        info(questoes.size() + " questoes encontradas.");
+      //  info(questoes.size() + " questoes encontradas.");
 
+    }
+
+    public void apresentarQuestoes (List <Questao> questoes) {
+        for (Questao questao : questoes) {
+            if(questao.getDificuldade() != null) {
+                System.out.println(questao.getDificuldade().toString());
+            }
+        }
     }
 
     public List<Questao> getQuestoes() {

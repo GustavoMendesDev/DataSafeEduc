@@ -14,8 +14,8 @@ public enum SiglaEnum {
     CH("Ciências Humanas", 4);
 
 
-    private String areaConhecimento;
-    private Integer codigo;
+    private final String areaConhecimento;
+    private final Integer codigo;
 
 
 
