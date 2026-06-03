@@ -8,16 +8,19 @@ public class DataSafeSlackApplication {
 
     public static void main(String[] args) {
         NotificacaoConfig config = NotificacaoConfig.carregar();
-        SlackBot slackBot = new SlackBot(config.getTokenSlack(), config.getCanalSlack());
         InatividadeRepository inatividadeRepository = new InatividadeRepository(config);
+        ControleNotificacao controle = inatividadeRepository.buscarControleNotificacao();
+        SlackBot slackBot = new SlackBot(config.getTokenSlack(), config.getCanalSlack());
+        EmailService emailService = new EmailService(config);
         MonitorInatividade monitorInatividade = new MonitorInatividade(inatividadeRepository);
         config.definirSlackBot(slackBot);
+        config.definirEmailService(emailService);
         monitorInatividade.adicionarObservador(config);
 
         System.out.println("Data Safe Slack iniciado.");
         System.out.println("Canal: " + config.getCanalSlack());
-        System.out.println("Periodicidade: 3 hora(s).");
-        System.out.println("Limite de inatividade: " + config.getLimiteDiasSemAcesso() + " dia(s).");
+        System.out.println("Periodicidade: " + config.formatarPeriodo(config.getPeriodicidadeMinutos()) + ".");
+        System.out.println("E-mail: " + (Boolean.TRUE.equals(controle.notificarEmail()) ? "habilitado" : "desabilitado") + ".");
 
         ScheduledExecutorService agendador = Executors.newSingleThreadScheduledExecutor();
 
@@ -26,8 +29,8 @@ public class DataSafeSlackApplication {
         agendador.scheduleAtFixedRate(
                 tarefa,
                 0,
-                3,
-                TimeUnit.HOURS
+                config.getPeriodicidadeMinutos(),
+                TimeUnit.MINUTES
         );
     }
 }

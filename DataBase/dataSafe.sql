@@ -92,10 +92,15 @@ CREATE TABLE questaoSimulado (
 );
 
 CREATE TABLE controleNotificacao (
+    id                    INT PRIMARY KEY AUTO_INCREMENT,
     slack_channel_id      VARCHAR(100),
-    periodo               INT,
+    periodo               INT NOT NULL DEFAULT 120,
     receberNotificacao    VARCHAR(45),
     tipoNotificacao       TINYINT(1),
+    notificarSistema      TINYINT(1) NOT NULL DEFAULT 1,
+    notificarEmail        TINYINT(1) NOT NULL DEFAULT 0,
+    encerrarSessao        TINYINT(1) NOT NULL DEFAULT 0,
+    ativo                 TINYINT(1) NOT NULL DEFAULT 1,
     usuario_id            INT,
     FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
@@ -105,5 +110,7 @@ CREATE TABLE logAcesso (
     mensagem    VARCHAR(255),
     nivel       VARCHAR(20),
     ip          VARCHAR(45),
-    dataCriacao DATETIME
+    dataCriacao DATETIME,
+    fkUsuario   INT,
+    FOREIGN KEY (fkUsuario) REFERENCES usuario(id)
 );

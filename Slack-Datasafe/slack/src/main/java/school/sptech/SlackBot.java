@@ -8,11 +8,17 @@ import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 public class SlackBot {
 
     private final MethodsClient client;
-    private final String canal;
+    private String canal;
 
     public SlackBot(String token, String canal) {
         this.client = Slack.getInstance().methods(token);
         this.canal = canal;
+    }
+
+    public void definirCanal(String canal) {
+        if (canal != null && !canal.isBlank()) {
+            this.canal = canal;
+        }
     }
 
     public void enviarMensagem(String mensagem) {
