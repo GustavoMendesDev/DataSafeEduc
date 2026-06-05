@@ -41,7 +41,7 @@
             ><button class="nav-btn">Gerenciamento de professores</button></a
           >
           <a href="gerenciamento-coordenadores.html"
-            ><button class="nav-btn active">Gerenciamento de Coordenadores</button></a
+            ><button class="nav-btn active">Gerenciamento de coordenadores</button></a
           >
         </nav>
       </aside>
@@ -49,7 +49,7 @@
       <!-- MAIN -->
       <main class="main-content">
         <header class="dashboard-header">
-          <h1>Gerenciamento de Gestores</h1>
+          <h1>Gerenciamento de Coordenadores</h1>
         </header>
 
         <div class="dashboard-content">
@@ -62,7 +62,7 @@
                 align-items: center;
               "
             >
-              <h2>Lista de gestores</h2>
+              <h2>Lista de coordenadores</h2>
               <button class="btn-add" onclick="abrirModal()">
                 Adicionar usuário
               </button>
@@ -72,10 +72,9 @@
               <table class="details-table">
                 <thead>
                   <tr>
-                    <th>Cod</th>
+                    <th>Nome</th>
                     <th>Email</th>
-                    <th>Senha</th>
-                    <th>Nome cursinho</th>
+                    <th>Cargo</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                   </tr>
@@ -133,13 +132,12 @@
       <div class="modal-box">
         <h2>Cadastro de Coordenador</h2>
 
-        <input placeholder="Nome cursinho" id="cursinho"/>
+        <input placeholder="Nome" id="nome"/>
         <input placeholder="Email" id="email"/>
         <input type="password" placeholder="Senha" id="senha" />
         <input type="password" placeholder="Confirmar senha" id="confirmarSenha" />
 
         <select>
-          <option>Gestor</option>
           <option>Coordenador</option>
         </select>
 
@@ -153,9 +151,9 @@
     <!-- MODAL EDITAR -->
     <div class="modal" id="modalEditar">
       <div class="modal-box">
-        <h2>Editar cadastro gestor</h2>
+        <h2>Editar coordenador</h2>
 
-        <input placeholder="Nome cursinho" id="editarCursinho" />
+        <input placeholder="Nome" id="editarNome" />
         <input placeholder="Email" id="editarEmail" />
         <input type="password" placeholder="Nova senha" id="editarSenha" />
         <input type="hidden" id="editarId" />
@@ -176,10 +174,14 @@
       document.addEventListener("DOMContentLoaded", carregarCoordenadores);
 
       function limparCadastro() {
-        cursinho.value = "";
+        nome.value = "";
         email.value = "";
         senha.value = "";
         confirmarSenha.value = "";
+      }
+
+      function buscarFkCursinho() {
+        return sessionStorage.FK_CURSINHO || sessionStorage.fkCursinho || "";
       }
 
       function carregarCoordenadores() {
@@ -197,14 +199,13 @@
 
             tbodyCoordenadores.innerHTML = coordenadores.map((coordenador) => `
               <tr>
-                <td>${String(coordenador.id).padStart(2, "0")}</td>
-                <td>${coordenador.email || coordenador.nome}</td>
-                <td>${coordenador.senha || ""}</td>
-                <td>${coordenador.nomeCursinho || coordenador.municipio || ""}</td>
+                <td>${String(coordenador.nome)}</td>
+                <td>${coordenador.email}</td>
+                <td>${coordenador.cargo || ""}</td>
                 <td>
-                  <button class="icon-btn" onclick="abrirEditar(${coordenador.id}, '${escaparTexto(coordenador.email || coordenador.nome)}', '${escaparTexto(coordenador.nomeCursinho || coordenador.municipio || "")}')">
-                    ✏️
-                  </button>
+                  <button class="icon-btn" onclick="abrirEditar(${coordenador.id}, '${escaparTexto(coordenador.nome)}', '${escaparTexto(coordenador.email)}')">
+  ✏️
+</button>
                 </td>
                 <td>
                   <button class="icon-btn" onclick="excluirCoordenador(${coordenador.id})">🗑️</button>
@@ -216,12 +217,12 @@
       }
 
       function cadastrarCoordenador() {
-        var nomeCursinho = cursinho.value;
+        var nomeCoordenador = nome.value;
         var emailCoordenador = email.value;
         var senhaCoordenador = senha.value;
         var confirmarSenhaCoordenador = confirmarSenha.value;
 
-        if (nomeCursinho == "" || emailCoordenador == "" || senhaCoordenador == "" || confirmarSenhaCoordenador == "") {
+        if (nomeCoordenador == "" || emailCoordenador == "" || senhaCoordenador == "" || confirmarSenhaCoordenador == "") {
           alert("Preencha todos os campos.");
           return false;
         }
@@ -230,10 +231,11 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            nomeCursinho: nomeCursinho,
+            nome: nomeCoordenador,
             email: emailCoordenador,
             senha: senhaCoordenador,
-            confirmarSenha: confirmarSenhaCoordenador
+            confirmarSenha: confirmarSenhaCoordenador,
+            fkCursinho: buscarFkCursinho()
           })
         })
           .then((resposta) => {
@@ -250,7 +252,7 @@
 
       function atualizarCoordenador() {
         var id = editarId.value;
-        var nomeCursinho = editarCursinho.value;
+        var nomeCoordenador = editarNome.value;
         var emailCoordenador = editarEmail.value;
         var senhaCoordenador = editarSenha.value;
 
@@ -263,9 +265,10 @@
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            nomeCursinho: nomeCursinho,
+            nome: nomeCoordenador,
             email: emailCoordenador,
-            senha: senhaCoordenador
+            senha: senhaCoordenador,
+            fkCursinho: buscarFkCursinho()
           })
         })
           .then((resposta) => {
@@ -303,10 +306,10 @@
         document.getElementById("modalCadastro").style.display = "none";
       }
 
-      function abrirEditar(id, emailCoordenador, nomeCursinho) {
+      function abrirEditar(id, nomeCoordenador, emailCoordenador) {
         editarId.value = id;
+        editarNome.value = nomeCoordenador || "";
         editarEmail.value = emailCoordenador || "";
-        editarCursinho.value = nomeCursinho || "";
         editarSenha.value = "";
         document.getElementById("modalEditar").style.display = "flex";
       }

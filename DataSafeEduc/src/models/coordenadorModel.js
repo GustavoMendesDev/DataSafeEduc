@@ -16,42 +16,13 @@ function nivelCoordenadorSql() {
     return "(SELECT id FROM nivelAcesso WHERE nome LIKE '%Coordenador%' LIMIT 1)";
 }
 
-function municipioSql(fkMunicipio, nomeCursinho) {
-    if (fkMunicipio != undefined && fkMunicipio != "") {
-        return Number(fkMunicipio);
-    }
-
-    if (nomeCursinho != undefined && nomeCursinho != "") {
-        return `COALESCE(
-            (SELECT id FROM municipio WHERE nome = ${valorSql(nomeCursinho)} LIMIT 1),
-            (SELECT id FROM municipio ORDER BY id LIMIT 1)
-        )`;
-    }
-
-    return "(SELECT id FROM municipio ORDER BY id LIMIT 1)";
-}
-
-function cursinhoSql(fkCursinho, nomeCursinho) {
-    if (fkCursinho != undefined && fkCursinho != "") {
-        return Number(fkCursinho);
-    }
-
-    if (nomeCursinho != undefined && nomeCursinho != "") {
-        return `COALESCE(
-            (SELECT id FROM cursinho WHERE id = ${valorSql(nomeCursinho)} LIMIT 1),
-            (SELECT id FROM cursinho ORDER BY id LIMIT 1)
-        )`;
-    }
-
-    return "(SELECT id FROM cursinho ORDER BY id LIMIT 1)";
-}
 
 function listar() {
     var instrucaoSql = `
         SELECT
             usuario.id,
             usuario.nome,
-            usuario.nome AS email,
+            usuario.email AS email,
             usuario.senha,
             usuario.dataCriacao,
             usuario.fkNivelAcesso,
@@ -74,7 +45,7 @@ function buscarPorId(idCoordenador) {
         SELECT
             usuario.id,
             usuario.nome,
-            usuario.nome AS email,
+            usuario.email AS email,
             usuario.senha,
             usuario.dataCriacao,
             usuario.fkNivelAcesso,
@@ -92,15 +63,16 @@ function buscarPorId(idCoordenador) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrar(nome, senha, nomeCursinho, fkCursinho) {
+function cadastrar(nome, email, senha, fkCursinho) {
     var instrucaoSql = `
-        INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkCursinho)
+        INSERT INTO usuario (nome, email,  senha, dataCriacao, fkNivelAcesso, fkCursinho)
         VALUES (
             ${valorSql(nome)},
+            ${valorSql(email)},
             ${valorSql(senha)},
             NOW(),
             ${nivelCoordenadorSql()},
-            ${cursinhoSql(fkCursinho, nomeCursinho)}
+            ${Number(fkCursinho)}
         );
     `;
 
@@ -108,16 +80,21 @@ function cadastrar(nome, senha, nomeCursinho, fkCursinho) {
     return database.executar(instrucaoSql);
 }
 
-function atualizar(idCoordenador, nome, senha, fkCursinho) {
+function atualizar(idCoordenador, nome, email, senha, fkCursinho) {
+    
     var campos = [`nome = ${valorSql(nome)}`];
+
+    if (email != undefined && email != "") {
+        campos.push(`email = ${valorSql(email)}`);
+    }
 
     if (senha != undefined && senha != "") {
         campos.push(`senha = ${valorSql(senha)}`);
     }
 
-    if ((fkCursinho != undefined && fkCursinho != "")) {
-        campos.push(`fkCursinho = ${cursinhoSql(fkCursinho)}`);
-    }
+    if (fkCursinho != undefined && fkCursinho != "") {
+    campos.push(`fkCursinho = ${Number(fkCursinho)}`);
+}
 
     var instrucaoSql = `
         UPDATE usuario

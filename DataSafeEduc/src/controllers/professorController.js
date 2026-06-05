@@ -49,27 +49,26 @@ function cadastrar(req, res) {
     // Recebendo os dados enviados pelo fetch do HTML
     var email = req.body.email; // O HTML manda 'email', a model trata como 'nome'
     var senha = req.body.senha;
-    
-    // Como o front-end de professor não envia fkMunicipio e cursinho, passamos undefined 
-    // para a model lidar com a lógica de fallback que já existe nela
-    var fkMunicipio = undefined; 
-    var nomeCursinho = undefined;
-    var fkCursinho = undefined;
+    // Capturando a fkCursinho do usuário que está logado/cadastrando
+    var fkCursinho = req.body.fkCursinho || req.headers.fkcursinho; 
 
     if (email == undefined) {
         res.status(400).send("Seu email está undefined!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
+    } else if (fkCursinho == undefined) {
+        res.status(400).send("A fkCursinho está undefined!");
     } else {
-        professorModel.cadastrar(email, senha, fkMunicipio, nomeCursinho, fkCursinho)
+        // Enviando APENAS os 3 parâmetros necessários
+        professorModel.cadastrar(email, senha, fkCursinho)
             .then(function (resultado) {
                 res.json(resultado);
             }).catch(function (erro) {
                 console.log(erro);
-                console.log("\nHouve um erro ao realizar o cadastro! Erro: ", erro.sqlMessage);
                 res.status(500).json(erro.sqlMessage);
             });
     }
+   
 }
 
 function atualizar(req, res) {

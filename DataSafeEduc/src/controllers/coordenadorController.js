@@ -37,9 +37,9 @@ function buscarPorId(req, res) {
 
 function cadastrar(req, res) {
     var nome = obterNome(req);
+    var email = req.body.emailServer || req.body.email;
     var senha = req.body.senhaServer || req.body.senha;
     var confirmarSenha = req.body.confirmarSenhaServer || req.body.confirmarSenha;
-    var fkMunicipio = req.body.fkMunicipio;
     var nomeCursinho = req.body.nomeCursinho || req.body.cursinho;
     var fkCursinho = req.body.fkCursinho || req.body.cursinho_id;
 
@@ -49,12 +49,10 @@ function cadastrar(req, res) {
         res.status(400).send("Senha do coordenador está undefined!");
     } else if (confirmarSenha != undefined && senha != confirmarSenha) {
         res.status(400).send("As senhas não conferem!");
-    } else if (fkMunicipio != undefined && fkMunicipio != "" && !Number(fkMunicipio)) {
-        res.status(400).send("Município inválido!");
     } else if (fkCursinho != undefined && fkCursinho != "" && !Number(fkCursinho)) {
         res.status(400).send("Cursinho inválido!");
     } else {
-        coordenadorModel.cadastrar(nome, senha, fkMunicipio, nomeCursinho, fkCursinho)
+        coordenadorModel.cadastrar(nome, email, senha, fkCursinho)
             .then(function (resultado) {
                 res.status(201).json(resultado);
             }).catch(function (erro) {
@@ -67,11 +65,10 @@ function cadastrar(req, res) {
 function atualizar(req, res) {
     var idCoordenador = Number(req.params.id);
     var nome = obterNome(req);
+    var email = req.body.emailServer || req.body.email;
     var senha = req.body.senhaServer || req.body.senha;
     var confirmarSenha = req.body.confirmarSenhaServer || req.body.confirmarSenha;
-    var fkMunicipio = req.body.fkMunicipio;
-    var nomeCursinho = req.body.nomeCursinho || req.body.cursinho;
-    var fkCursinho = req.body.fkCursinho || req.body.cursinho_id;
+    var fkCursinho = req.body.fkCursinho || req.headers.fkcursinho;
 
     if (!idCoordenador) {
         res.status(400).send("ID do coordenador inválido!");
@@ -79,12 +76,10 @@ function atualizar(req, res) {
         res.status(400).send("Nome ou email do coordenador está undefined!");
     } else if (confirmarSenha != undefined && senha != confirmarSenha) {
         res.status(400).send("As senhas não conferem!");
-    } else if (fkMunicipio != undefined && fkMunicipio != "" && !Number(fkMunicipio)) {
-        res.status(400).send("Município inválido!");
     } else if (fkCursinho != undefined && fkCursinho != "" && !Number(fkCursinho)) {
         res.status(400).send("Cursinho inválido!");
     } else {
-        coordenadorModel.atualizar(idCoordenador, nome, senha, fkMunicipio, nomeCursinho, fkCursinho)
+        coordenadorModel.atualizar(idCoordenador, nome, email, senha, fkCursinho)
             .then(function (resultado) {
                 if (resultado.affectedRows == 0) {
                     res.status(404).send("Coordenador não encontrado!");

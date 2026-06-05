@@ -94,8 +94,7 @@ function buscarPorId(idProfessor) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrar(nome, senha, nomeCursinho, fkCursinho) {
-
+function cadastrar(nome, senha, fkCursinho) {
     var instrucaoSql = `
         INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkCursinho)
         VALUES (
@@ -103,7 +102,7 @@ function cadastrar(nome, senha, nomeCursinho, fkCursinho) {
             ${valorSql(senha)},
             NOW(),
             ${nivelProfessorSql()},
-            ${cursinhoSql(fkCursinho, nomeCursinho)}
+            ${Number(fkCursinho)} -- Inserindo diretamente o ID numérico
         );
     `;
 
