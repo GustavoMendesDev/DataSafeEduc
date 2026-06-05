@@ -38,7 +38,7 @@ function cursinhoSql(fkCursinho, nomeCursinho) {
 
     if (nomeCursinho != undefined && nomeCursinho != "") {
         return `COALESCE(
-            (SELECT id FROM cursinho WHERE nome = ${valorSql(nomeCursinho)} LIMIT 1),
+            (SELECT id FROM cursinho WHERE id = ${valorSql(nomeCursinho)} LIMIT 1),
             (SELECT id FROM cursinho ORDER BY id LIMIT 1)
         )`;
     }
@@ -56,14 +56,11 @@ function listar() {
             usuario.dataCriacao,
             usuario.fkNivelAcesso,
             nivelAcesso.nome AS cargo,
-            usuario.fkMunicipio,
-            municipio.nome AS municipio,
-            usuario.cursinho_id,
+            usuario.fkCursinho,
             cursinho.nome AS nomeCursinho
         FROM usuario
         JOIN nivelAcesso ON usuario.fkNivelAcesso = nivelAcesso.id
-        JOIN municipio ON usuario.fkMunicipio = municipio.id
-        JOIN cursinho ON usuario.cursinho_id = cursinho.id
+        JOIN cursinho ON usuario.fkCursinho = cursinho.id
         WHERE nivelAcesso.nome LIKE '%Coordenador%'
         ORDER BY usuario.id;
     `;
@@ -82,14 +79,11 @@ function buscarPorId(idCoordenador) {
             usuario.dataCriacao,
             usuario.fkNivelAcesso,
             nivelAcesso.nome AS cargo,
-            usuario.fkMunicipio,
-            municipio.nome AS municipio,
-            usuario.cursinho_id,
+            usuario.fkCursinho,
             cursinho.nome AS nomeCursinho
         FROM usuario
         JOIN nivelAcesso ON usuario.fkNivelAcesso = nivelAcesso.id
-        JOIN municipio ON usuario.fkMunicipio = municipio.id
-        JOIN cursinho ON usuario.cursinho_id = cursinho.id
+        JOIN cursinho ON usuario.fkCursinho = cursinho.id
         WHERE usuario.id = ${Number(idCoordenador)}
             AND nivelAcesso.nome LIKE '%Coordenador%';
     `;
@@ -98,15 +92,14 @@ function buscarPorId(idCoordenador) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrar(nome, senha, fkMunicipio, nomeCursinho, fkCursinho) {
+function cadastrar(nome, senha, nomeCursinho, fkCursinho) {
     var instrucaoSql = `
-        INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkMunicipio, cursinho_id)
+        INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkCursinho)
         VALUES (
             ${valorSql(nome)},
             ${valorSql(senha)},
             NOW(),
             ${nivelCoordenadorSql()},
-            ${municipioSql(fkMunicipio, nomeCursinho)},
             ${cursinhoSql(fkCursinho, nomeCursinho)}
         );
     `;
@@ -115,19 +108,15 @@ function cadastrar(nome, senha, fkMunicipio, nomeCursinho, fkCursinho) {
     return database.executar(instrucaoSql);
 }
 
-function atualizar(idCoordenador, nome, senha, fkMunicipio, nomeCursinho, fkCursinho) {
+function atualizar(idCoordenador, nome, senha, fkCursinho) {
     var campos = [`nome = ${valorSql(nome)}`];
 
     if (senha != undefined && senha != "") {
         campos.push(`senha = ${valorSql(senha)}`);
     }
 
-    if ((fkMunicipio != undefined && fkMunicipio != "") || (nomeCursinho != undefined && nomeCursinho != "")) {
-        campos.push(`fkMunicipio = ${municipioSql(fkMunicipio, nomeCursinho)}`);
-    }
-
-    if ((fkCursinho != undefined && fkCursinho != "") || (nomeCursinho != undefined && nomeCursinho != "")) {
-        campos.push(`cursinho_id = ${cursinhoSql(fkCursinho, nomeCursinho)}`);
+    if ((fkCursinho != undefined && fkCursinho != "")) {
+        campos.push(`fkCursinho = ${cursinhoSql(fkCursinho)}`);
     }
 
     var instrucaoSql = `

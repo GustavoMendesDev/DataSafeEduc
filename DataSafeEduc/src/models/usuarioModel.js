@@ -15,12 +15,11 @@ function autenticar(email, senha) {
             usuario.senha,
             usuario.fkNivelAcesso,
             nivelAcesso.nome AS nivelAcesso,
-            usuario.fkMunicipio,
-            usuario.cursinho_id,
+            usuario.fkCursinho,
             cursinho.nome AS nomeCursinho
         FROM usuario
         JOIN nivelAcesso ON usuario.fkNivelAcesso = nivelAcesso.id
-        JOIN cursinho ON usuario.cursinho_id = cursinho.id
+        JOIN cursinho ON usuario.fkCursinho = cursinho.id
         WHERE usuario.email = '${email}' 
           AND usuario.senha = '${senha}';
     `;
@@ -62,13 +61,12 @@ async function cadastrar(nome,email,senha,codigoConvite) {
 
             // 4. Cria a instrução de INSERT utilizando o idCursinho que acabamos de achar
             var instrucaoSql = `
-                INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkMunicipio, email, cursinho_id)
+                INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, email, fkCursinho)
                 VALUES (
                     '${nome}',
                     '${senha}',
                     NOW(),
                     (SELECT id FROM nivelAcesso ORDER BY id LIMIT 1),
-                    (SELECT id FROM municipio ORDER BY id LIMIT 1),
                     '${email}',
                     ${idCursinho}
                 );
@@ -115,17 +113,17 @@ function listarPorNivel(nivel) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrarCompleto(nome, senha, fkNivelAcesso, fkMunicipio, email) {
+function cadastrarCompleto(nome, senha, fkNivelAcesso, fkCursinho, email) {
     var instrucaoSql = `
-        INSERT INTO usuario (nome,  senha, dataCriacao, fkNivelAcesso, fkMunicipio,  'email')
-        VALUES ('${nome}', '${senha}', NOW(), ${fkNivelAcesso}, ${fkMunicipio}, ${ElementInternals});
+        INSERT INTO usuario (nome,  senha, dataCriacao, fkNivelAcesso, fkCursinho,  'email')
+        VALUES ('${nome}', '${senha}', NOW(), ${fkNivelAcesso}, ${fkCursinho}, ${ElementInternals});
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function atualizar(idUsuario, nome, email, senha, fkNivelAcesso, fkMunicipio) {
+function atualizar(idUsuario, nome, email, senha, fkNivelAcesso, fkCursinho) {
     var campos = [`nome = '${nome}'`];
 
     if (email != undefined && email != "") {
@@ -140,8 +138,8 @@ function atualizar(idUsuario, nome, email, senha, fkNivelAcesso, fkMunicipio) {
         campos.push(`fkNivelAcesso = ${fkNivelAcesso}`);
     }
 
-    if (fkMunicipio != undefined) {
-        campos.push(`fkMunicipio = ${fkMunicipio}`);
+    if (fkCursinho != undefined) {
+        campos.push(`fkCursinho = ${fkCursinho}`);
     }
 
     var instrucaoSql = `

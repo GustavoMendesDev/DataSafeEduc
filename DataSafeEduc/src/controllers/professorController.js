@@ -1,7 +1,14 @@
 var professorModel = require("../models/professorModel");
 
 function listar(req, res) {
-    professorModel.listar()
+    var fkCursinho = req.query.fkCursinho || req.headers.fkcursinho;
+
+    if (fkCursinho == undefined || fkCursinho == "" || !Number(fkCursinho)) {
+        res.status(400).send("fkCursinho do usuário está undefined!");
+        return;
+    }
+
+    professorModel.listar(fkCursinho)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 res.status(200).json(resultado);
@@ -17,8 +24,14 @@ function listar(req, res) {
 
 function buscarPorId(req, res) {
     var idProfessor = req.params.idProfessor;
+    var fkCursinho = req.query.fkCursinho || req.headers.fkcursinho;
 
-    professorModel.buscarPorId(idProfessor)
+    if (fkCursinho == undefined || fkCursinho == "" || !Number(fkCursinho)) {
+        res.status(400).send("fkCursinho do usuário está undefined!");
+        return;
+    }
+
+    professorModel.buscarPorId(fkCursinho, idProfessor)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 res.status(200).json(resultado[0]);

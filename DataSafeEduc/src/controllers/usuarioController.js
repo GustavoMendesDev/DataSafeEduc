@@ -28,7 +28,9 @@ function autenticar(req, res) {
                                     id: usuarioAutenticado.idUsuario,
                                     idUsuario: usuarioAutenticado.idUsuario,
                                     nome: usuarioAutenticado.nome,
-                                    email: usuarioAutenticado.email
+                                    email: usuarioAutenticado.email,
+                                    fkNivelAcesso: usuarioAutenticado.fkNivelAcesso,
+                                    fkCursinho: usuarioAutenticado.fkCursinho
                                 });
                             }).catch(function (erro) {
                                 console.log(erro);

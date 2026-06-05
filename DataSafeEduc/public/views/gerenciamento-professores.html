@@ -134,8 +134,14 @@
         confirmarSenha.value = "";
       }
 
+      function buscarFkCursinho() {
+        return sessionStorage.FK_CURSINHO || sessionStorage.fkCursinho || "";
+      }
+
       function carregarProfessores() {
-        fetch("/professores") // Rota adaptada para buscar os professores
+        var fkCursinho = buscarFkCursinho();
+
+        fetch(`/professores?fkCursinho=${fkCursinho}`) // Rota adaptada para buscar os professores
           .then((resposta) => resposta.ok ? resposta.json() : [])
           .then((professores) => {
             if (!professores || professores.length == 0) {
@@ -188,7 +194,8 @@
           body: JSON.stringify({
             email: emailProfessor,
             senha: senhaProfessor,
-            confirmarSenha: confirmarSenhaProfessor
+            confirmarSenha: confirmarSenhaProfessor,
+            fkCursinho: buscarFkCursinho()
           })
         })
           .then((resposta) => {
@@ -213,7 +220,7 @@
           return false;
         }
 
-        fetch(`/professores/${id}`, {
+        fetch(`/professores/${id}?fkCursinho=${buscarFkCursinho()}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -234,7 +241,7 @@
 
       function excluirProfessor(id) {
         if (confirm("Tem certeza que deseja excluir este professor?")) {
-          fetch(`/professores/${id}`, { method: "DELETE" })
+          fetch(`/professores/${id}?fkCursinho=${buscarFkCursinho()}`, { method: "DELETE" })
             .then((resposta) => {
               if (resposta.ok) {
                 carregarProfessores();
