@@ -47,20 +47,22 @@ function buscarPorId(req, res) {
 
 function cadastrar(req, res) {
     // Recebendo os dados enviados pelo fetch do HTML
-    var email = req.body.email; // O HTML manda 'email', a model trata como 'nome'
+    var nome = req.body.nome; // Capturando o novo campo
+    var email = req.body.email;
     var senha = req.body.senha;
-    // Capturando a fkCursinho do usuário que está logado/cadastrando
     var fkCursinho = req.body.fkCursinho || req.headers.fkcursinho; 
 
-    if (email == undefined) {
+    if (nome == undefined) {
+        res.status(400).send("Seu nome está undefined!");
+    } else if (email == undefined) {
         res.status(400).send("Seu email está undefined!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
     } else if (fkCursinho == undefined) {
         res.status(400).send("A fkCursinho está undefined!");
     } else {
-        // Enviando APENAS os 3 parâmetros necessários
-        professorModel.cadastrar(email, senha, fkCursinho)
+        // Repassando o nome como primeiro parâmetro
+        professorModel.cadastrar(nome, email, senha, fkCursinho)
             .then(function (resultado) {
                 res.json(resultado);
             }).catch(function (erro) {
@@ -73,17 +75,17 @@ function cadastrar(req, res) {
 
 function atualizar(req, res) {
     var idProfessor = req.params.idProfessor;
+    var nome = req.body.nome; // Capturando o novo campo
     var email = req.body.email;
     var senha = req.body.senha;
 
     var fkMunicipio = undefined;
-    var nomeCursinho = undefined;
     var fkCursinho = undefined;
 
     if (email == undefined) {
         res.status(400).send("Seu email está undefined!");
     } else {
-        professorModel.atualizar(idProfessor, email, senha, fkMunicipio, nomeCursinho, fkCursinho)
+        professorModel.atualizar(idProfessor, nome, email, senha, fkCursinho)
             .then(function (resultado) {
                 res.json(resultado);
             }).catch(function (erro) {

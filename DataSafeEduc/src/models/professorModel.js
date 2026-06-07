@@ -52,7 +52,7 @@ function listar(fkCursinho) {
         SELECT
             usuario.id,
             usuario.nome,
-            usuario.nome AS email,
+            usuario.email,
             usuario.senha,
             usuario.dataCriacao,
             usuario.fkNivelAcesso,
@@ -76,7 +76,7 @@ function buscarPorId(idProfessor) {
         SELECT
             usuario.id,
             usuario.nome,
-            usuario.nome AS email,
+            usuario.email,
             usuario.senha,
             usuario.dataCriacao,
             usuario.fkNivelAcesso,
@@ -94,15 +94,16 @@ function buscarPorId(idProfessor) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrar(nome, senha, fkCursinho) {
+function cadastrar(nome, email, senha, fkCursinho) {
     var instrucaoSql = `
-        INSERT INTO usuario (nome, senha, dataCriacao, fkNivelAcesso, fkCursinho)
+        INSERT INTO usuario (nome, email, senha, dataCriacao, fkNivelAcesso, fkCursinho)
         VALUES (
             ${valorSql(nome)},
+            ${valorSql(email)},
             ${valorSql(senha)},
             NOW(),
             ${nivelProfessorSql()},
-            ${Number(fkCursinho)} -- Inserindo diretamente o ID numérico
+            ${Number(fkCursinho)}
         );
     `;
 
@@ -110,19 +111,22 @@ function cadastrar(nome, senha, fkCursinho) {
     return database.executar(instrucaoSql);
 }
 
-function atualizar(idProfessor, nome, senha, nomeCursinho, fkCursinho) {
-    var campos = [`nome = ${valorSql(nome)}`];
+function atualizar(idProfessor, nome, email, senha, fkCursinho) {
+    // Adicionando NOME e EMAIL no array de atualização
+    var campos = [
+        `nome = ${valorSql(nome)}`,
+    ];
+
+    if (email != undefined && email != "") {
+        campos.push(`email = ${valorSql(email)}`);
+    }
 
     if (senha != undefined && senha != "") {
         campos.push(`senha = ${valorSql(senha)}`);
     }
 
-    if (nomeCursinho != undefined && nomeCursinho != "") {
-        campos.push(`fkCursinho = ${municipioSql(fkMunicipio, nomeCursinho)}`);
-    }
-
-    if ((fkCursinho != undefined && fkCursinho != "") || (nomeCursinho != undefined && nomeCursinho != "")) {
-        campos.push(`cursinho_id = ${cursinhoSql(fkCursinho, nomeCursinho)}`);
+    if (fkCursinho != undefined && fkCursinho != "") {
+        campos.push(`fkCursinho = ${Number(fkCursinho)}`);
     }
 
     var instrucaoSql = `
