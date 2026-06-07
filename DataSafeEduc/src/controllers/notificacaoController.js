@@ -1,7 +1,9 @@
 var notificacaoModel = require("../models/notificacaoModel");
 
 function buscar(req, res) {
-    notificacaoModel.buscar()
+    var usuarioId = req.query.usuarioId;
+
+    notificacaoModel.buscar(usuarioId)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 res.status(200).json(resultado[0]);
@@ -17,28 +19,21 @@ function buscar(req, res) {
 
 function salvar(req, res) {
     var slackChannelId = req.body.slackChannelId;
-    var periodo = req.body.periodo;
-    var notificarSistema = req.body.notificarSistema;
-    var notificarEmail = req.body.notificarEmail;
-    var encerrarSessao = req.body.encerrarSessao;
+    var alertaSisu = req.body.alertaSisu;
+    var alertaRegiao = req.body.alertaRegiao;
+    var alertaTendencias = req.body.alertaTendencias;
     var usuarioId = req.body.usuarioId;
 
-    if (periodo == undefined || Number(periodo) <= 0) {
-        res.status(400).send("Informe um período válido.");
-        return;
-    }
-
-    if (slackChannelId == undefined || slackChannelId == "") {
+    if (slackChannelId == undefined || slackChannelId.trim() == "") {
         res.status(400).send("Informe o canal do Slack.");
         return;
     }
 
     notificacaoModel.salvar(
-        slackChannelId,
-        periodo,
-        notificarSistema,
-        notificarEmail,
-        encerrarSessao,
+        slackChannelId.trim(),
+        alertaSisu,
+        alertaRegiao,
+        alertaTendencias,
         usuarioId
     ).then(function (resultado) {
         res.json(resultado);

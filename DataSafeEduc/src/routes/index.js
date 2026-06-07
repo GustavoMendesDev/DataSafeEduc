@@ -17,6 +17,7 @@ router.get("/:pagina", function (req, res, next) {
         "simulados",
         "gerenciamento-professores",
         "gerenciamento-coordenadores",
+        "configuracao-notificacoes",
         "duck-ia"
     ];
 

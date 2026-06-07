@@ -122,6 +122,7 @@
               <button class="botao-primario" type="button" onclick="salvarConfiguracao()">Salvar configurações</button>
               <button class="botao-secundario" type="button" onclick="restaurarPadrao()">Restaurar padrão</button>
             </div>
+            <p class="mensagem-retorno" id="resumoConfiguracao"></p>
             <p class="mensagem-retorno" id="mensagemRetorno"></p>
           </div>
         </section>
@@ -152,7 +153,10 @@
       }
 
       function carregarConfiguracao() {
-        fetch("/notificacoes/configuracao")
+        var usuarioId = sessionStorage.ID_USUARIO || "";
+        var consulta = usuarioId ? "?usuarioId=" + encodeURIComponent(usuarioId) : "";
+
+        fetch("/notificacoes/configuracao" + consulta)
           .then(function (resposta) {
             if (resposta.status == 204) return null;
             return resposta.ok ? resposta.json() : Promise.reject("Erro ao carregar configuração.");

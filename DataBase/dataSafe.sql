@@ -59,6 +59,29 @@ CREATE TABLE IF NOT EXISTS usuario (
     REFERENCES cursinho(id)
 );
 
+CREATE TABLE IF NOT EXISTS controleNotificacao (
+  id                    INT          NOT NULL AUTO_INCREMENT,
+  slack_channel_id      VARCHAR(100)  NOT NULL,
+  periodo               INT           NOT NULL,
+  receberNotificacao    VARCHAR(3)    NOT NULL,
+  tipoNotificacao       TINYINT(1)    NOT NULL,
+  notificarSistema      TINYINT(1)    NOT NULL,
+  notificarEmail        TINYINT(1)    NOT NULL,
+  encerrarSessao        TINYINT(1)    NOT NULL,
+  ativo                 TINYINT(1)    NOT NULL DEFAULT 1,
+  usuario_id            INT           NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS controleNotificacaoEnvio (
+  id                    INT          NOT NULL AUTO_INCREMENT,
+  fkControleNotificacao INT          NOT NULL,
+  tipo                  VARCHAR(80)  NOT NULL,
+  dataEnvio             DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_controle_tipo (fkControleNotificacao, tipo)
+);
+
 CREATE TABLE IF NOT EXISTS simulado (
   id                 INT         NOT NULL AUTO_INCREMENT,
   nomeSimulado       VARCHAR(45) NULL,

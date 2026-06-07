@@ -7,6 +7,7 @@ public class NotificacaoConfig implements ObservadorInatividade {
     private String tokenSlack;
     private String canalSlack;
     private Integer periodicidadeMinutos;
+    private Integer intervaloCentralSegundos;
     private Integer limiteDiasSemAcesso;
     private String linkSistema;
     private String dbHost;
@@ -27,9 +28,10 @@ public class NotificacaoConfig implements ObservadorInatividade {
     public static NotificacaoConfig carregar() {
         NotificacaoConfig config = new NotificacaoConfig();
 
-        config.tokenSlack = lerVariavel("SLACK_BOT_TOKEN", "xoxb-11164360058514-11148990687367-k6Rt3ej3VblOT71mu2bBoiCj");
+        config.tokenSlack = lerVariavel("SLACK_BOT_TOKEN", "");
         config.canalSlack = lerVariavel("SLACK_CHANNEL_ID", "#equipe-datasafe");
         config.periodicidadeMinutos = lerNumero("PERIODICIDADE_MINUTOS", 180);
+        config.intervaloCentralSegundos = lerNumero("INTERVALO_CENTRAL_SEGUNDOS", 30);
         config.limiteDiasSemAcesso = lerNumero("DIAS_SEM_ACESSO", 7);
         config.linkSistema = lerVariavel("LINK_SISTEMA", "http://localhost:8080");
         config.dbHost = lerVariavel("DB_HOST", "localhost");
@@ -44,6 +46,7 @@ public class NotificacaoConfig implements ObservadorInatividade {
         config.smtpFrom = lerVariavel("SMTP_FROM", config.smtpUser);
         config.smtpStartTls = Boolean.parseBoolean(lerVariavel("SMTP_STARTTLS", "true"));
         config.controleNotificacao = new ControleNotificacao(
+                null,
                 config.canalSlack,
                 config.periodicidadeMinutos,
                 true,
@@ -75,12 +78,12 @@ public class NotificacaoConfig implements ObservadorInatividade {
     }
 
     private static void validar(NotificacaoConfig config) {
-        if (config.tokenSlack == null || config.tokenSlack.isBlank()) {
-            throw new IllegalArgumentException("Configure a variável SLACK_BOT_TOKEN com o token do bot do Slack.");
-        }
-
         if (config.periodicidadeMinutos <= 0) {
             throw new IllegalArgumentException("PERIODICIDADE_MINUTOS precisa ser maior que zero.");
+        }
+
+        if (config.intervaloCentralSegundos <= 0) {
+            throw new IllegalArgumentException("INTERVALO_CENTRAL_SEGUNDOS precisa ser maior que zero.");
         }
 
         if (config.limiteDiasSemAcesso < 0) {
@@ -167,6 +170,10 @@ public class NotificacaoConfig implements ObservadorInatividade {
         return tokenSlack;
     }
 
+    public Boolean isSlackConfigurado() {
+        return tokenSlack != null && !tokenSlack.isBlank();
+    }
+
     public String getCanalSlack() {
         return canalSlack;
     }
@@ -179,6 +186,10 @@ public class NotificacaoConfig implements ObservadorInatividade {
 
     public Integer getPeriodicidadeMinutos() {
         return periodicidadeMinutos;
+    }
+
+    public Integer getIntervaloCentralSegundos() {
+        return intervaloCentralSegundos;
     }
 
     public void setPeriodicidadeMinutos(Integer periodicidadeMinutos) {
