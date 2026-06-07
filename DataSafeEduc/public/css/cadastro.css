@@ -21,10 +21,6 @@ body {
     font-style: normal;
 }
 
-#Logo{
-    padding-bottom: 20px;
-    margin: -150px;
-}
 
 main{
     width: 100vw;
@@ -37,7 +33,7 @@ main{
 .container{
     height: 100%;
     width: 50%;
-    background-color: var(--main);
+    background-image:linear-gradient(rgba(5, 11, 100, 0.815),rgba(5, 11, 100, 0.815)), url(../assets/imgs/cadastro.png);
 
     background-size: cover;
     background-position: center;
@@ -127,9 +123,40 @@ input{
     padding: 5px;
 }
 
+.input-senha-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.input-senha-wrapper input {
+  width: 36vw;
+  height: 6vh;
+  padding-right: 48px;
+  box-sizing: border-box;
+}
+
+.toggle-senha {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: var(--main);
+  transition: color 0.2s;
+}
+
+.toggle-senha:hover {
+  color: var(--terciaria);
+}
+
+.ancora:hover{
+    box-shadow: 0 8px 24px rgba(0,0,0,0); transform: translateY(-3px);
+}
+
 button{
-    background-color: var(--terciaria);
-    color: var(--main);
+    background-color: var(--main);
+    color: var(--terciaria);
     font-size: 1.4rem;
     border-radius: 15px;
     border: none;
@@ -139,9 +166,15 @@ button{
 }
 
 button:hover{
-    background-color: white;
-    color: black;
+    background-color: var(--terciaria);
+    transition: color 1s;
+    color: var(--main);
 }
+
+a:hover{
+    color: var(--main);
+}
+
 
 @media screen and (max-width: 700px) {
     .container-formulario .sub{

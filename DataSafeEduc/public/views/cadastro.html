@@ -11,7 +11,13 @@
   <script src="../js/sessao.js"></script>
 
   <link rel="stylesheet" href="../css/cadastro.css">
-  <link rel="icon" href="../assets/imgs/logo.png" type="img">
+  <link rel="icon" href="../assets/imgs/LogoUpdate.png" type="img">
+
+<link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu" />
+    <link rel="stylesheet"
+        href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css"/>
+
 
 </head>
 
@@ -19,10 +25,10 @@
   <main>
     <div class="container">
       
-      <a class="ancora" href="../views/index.html" ><img class="voltar" src="../assets/icon/arrow_back.png" alt=""></a>
+      <a class="ancora" href="../views/index.html" ><img src="../assets/icon/arrow_back.png" alt=""></a>
 
 
-      <h1>Cadastre-se na <br>Datasafe</h1>
+      <h1>Bem-vindo à DataSafe</h1>
 
     </div>
 
@@ -45,19 +51,23 @@
         <input type="text" id="iptEmail">
       </div>
 
-      <div class="input">
-        <label for="mensagem" id="senha_input">Senha:</label><br>
-        <input type="password" id="iptSenha">
-      </div>
+       <div class="input">
+            <label for="senha" id="senha">Senha:</label><br>
+            <div class="input-senha-wrapper">
+                <input type="password" id="iptSenha">
+                <i class="fi fi-rs-eye toggle-senha" id="toggleSenha"></i>
+            </div>
+        </div>
 
       <div class="input">
         <label for="convite" id="codigoConvite">Convite:</label><br>
         <input type="text" id="iptConvite">
       </div>
+
       <button onclick="cadastrar()">Cadastrar</button>
                 <div id="mensagem_erro"></div>
 
-      <p>Já tem uma conta? <a href="./login">Entrar</a></p>
+      <p>Já tem uma conta? <a href="./login.html">Entrar</a></p>
     </div>
 
   </main>
@@ -66,6 +76,22 @@
 </html>
 
 <script>
+
+const toggleSenha = document.getElementById('toggleSenha');
+    const iptSenha = document.getElementById('iptSenha');
+
+
+    toggleSenha.addEventListener('click', function () {
+        if (iptSenha.type === 'password') {
+            iptSenha.type = 'text';
+            toggleSenha.classList.remove('fi-rs-eye');
+            toggleSenha.classList.add('fi-rs-crossed-eye');
+        } else {
+            iptSenha.type = 'password';
+            toggleSenha.classList.remove('fi-rs-crossed-eye');
+            toggleSenha.classList.add('fi-rs-eye');
+        }
+    });
 
   function limparFormulario() {
     iptNome.value = "";
