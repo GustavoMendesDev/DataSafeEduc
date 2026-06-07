@@ -2,6 +2,7 @@
 .area-rolagem {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 13px 16px;
   display: flex;
   flex-direction: column;
@@ -120,8 +121,16 @@
   height: 280px;   /* altura fixa para o Chart.js renderizar corretamente */
   width: 100%;
 }
-.envoltorio-radar       { height: 525px; }
-.envoltorio-pilha       { height: 290px; width: 900px; }
+.envoltorio-radar { 
+  height: 525px; 
+  width: 100%;
+  position: relative; 
+}
+
+.envoltorio-pilha       {
+  height: 290px; 
+  width: 100%; 
+  position: relative; }
 
 /* ── LEGENDA INLINE DE NÍVEIS COGNITIVOS (chart de impacto) ── */
 .legenda-niveis-inline {
@@ -180,21 +189,43 @@
 .rotulo-nivel { font-weight: 700; }
 
 /* ── TABELA ── */
-.tabela-habilidades { width: 100%; border-collapse: collapse; }
+.tabela-habilidades { 
+  display: block; 
+  width: 100%; 
+  max-height: 245px; 
+  overflow-y: auto;
+  overflow-x: hidden; /* Permite scroll horizontal interno se a tela for muito pequena */
+  border-collapse: collapse; 
+  white-space: nowrap; /* Impede que o texto fique "espremido" quebrando de linha */
+}
+
+/* Scrollbar estilizada (adicionado height para a rolagem horizontal) */
+.tabela-habilidades::-webkit-scrollbar { width: 5px; height: 5px; }
+.tabela-habilidades::-webkit-scrollbar-track { background: transparent; }
+.tabela-habilidades::-webkit-scrollbar-thumb { background: #c0c8e0; border-radius: 3px; }
+
 .tabela-habilidades th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   background: var(--cor-base);
   color: #fff;
-  padding: 8px 10px;
+  padding: 8px 6px; /* Reduzimos um pouco o padding para ganhar espaço */
   text-align: left;
   font-weight: 700;
   font-size: 12px;
+  /* min-width removido para parar de forçar o vazamento! */
 }
+
 .tabela-habilidades td {
-  padding: 7px 10px;
+  padding: 7px 6px; /* Padding alinhado com o cabeçalho */
   border-bottom: 1px solid var(--cor-borda);
   font-size: 12px;
 }
-.tabela-habilidades tr:nth-child(even) td { background: var(--cinza); }
+
+.tabela-habilidades tr:nth-child(even) td { 
+  background: var(--cinza); 
+}
 
 .etiqueta-nivel {
   display: inline-flex;
@@ -204,7 +235,12 @@
   font-size: 12px;
   font-weight: 600;
 }
-.ponto-nivel { width: 9px; height: 9px; border-radius: 50%; }
+
+.ponto-nivel { 
+  width: 9px; 
+  height: 9px; 
+  border-radius: 50%; 
+}
 
 /* ── RECORRÊNCIA ── */
 .grade-recorrencia {
@@ -215,8 +251,8 @@
 }
 
 .grade-recorrencia > div:first-child {
-  width: 570px;
-  flex-shrink: 0;
+  flex: 0 0 40%; /* Ocupa cerca de 40% do espaço em vez de travar em 570px */
+  min-width: 0;  /* Essencial para o Flexbox não estourar o limite */
 }
 
 .grade-recorrencia > div:last-child {

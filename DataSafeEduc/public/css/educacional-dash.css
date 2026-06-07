@@ -99,13 +99,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Adições essenciais para o Flexbox: */
+  flex: 1; 
+  min-height: 0; 
 }
 
 .card-content {
-  width: 75%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  height: 100%;
+  /* Necessário para o Chart.js se ancorar corretamente: */
+  position: relative; 
 }
 
 /* SIDEBAR LINKS */
