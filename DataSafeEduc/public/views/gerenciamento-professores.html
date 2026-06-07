@@ -69,7 +69,7 @@
               <table class="details-table">
                 <thead>
                   <tr>
-                    <th>Cod</th>
+                    <th>Nome</th>
                     <th>Email</th>
                     <th>Senha</th>
                     <th>Cargo</th>
@@ -91,6 +91,7 @@
       <div class="modal-box">
         <h2>Cadastro de Usuário</h2>
 
+        <input placeholder="Nome" id="nome"/>
         <input placeholder="Email" id="email"/>
         <input type="password" placeholder="Senha" id="senha"/>
         <input type="password" placeholder="Confirmar senha" id="confirmarSenha"/>
@@ -110,6 +111,7 @@
       <div class="modal-box">
         <h2>Editar cadastro Professor</h2>
 
+        <input placeholder="Nome" id="editarNome" />
         <input placeholder="Email" id="editarEmail" />
         <input type="password" placeholder="Nova senha" id="editarSenha" />
         <input type="hidden" id="editarId" />
@@ -129,6 +131,7 @@
       document.addEventListener("DOMContentLoaded", carregarProfessores);
 
       function limparCadastro() {
+        nome.value = "";
         email.value = "";
         senha.value = "";
         confirmarSenha.value = "";
@@ -154,26 +157,27 @@
             }
 
             tbodyProfessores.innerHTML = professores.map((professor) => `
-              <tr>
-                <td>${String(professor.id).padStart(2, "0")}</td>
-                <td>${professor.email || professor.nome}</td>
-                <td>${professor.senha ? "********" : ""}</td>
-                <td>${professor.cargo || "Professor"}</td>
-                <td>
-                  <button class="icon-btn" onclick="abrirEditar(${professor.id}, '${escaparTexto(professor.email || professor.nome)}')">
-                    ✏️
-                  </button>
-                </td>
-                <td>
-                  <button class="icon-btn" onclick="excluirProfessor(${professor.id})">🗑️</button>
-                </td>
-              </tr>
+              
+            <tr>
+              <td>${professor.nome}</td> <td>${professor.email}</td>
+              <td>${professor.senha ? "********" : ""}</td>
+              <td>${professor.cargo || "Professor"}</td>
+              <td>
+                <button class="icon-btn" onclick="abrirEditar(${professor.id}, '${escaparTexto(professor.nome)}', '${escaparTexto(professor.email)}')">
+                  ✏️
+                </button>
+              </td>
+              <td>
+                <button class="icon-btn" onclick="excluirProfessor(${professor.id})">🗑️</button>
+              </td>
+            </tr>
             `).join("");
           })
           .catch((erro) => console.log("Erro ao buscar professores", erro));
       }
 
       function cadastrarProfessor() {
+        var nomeProfessor = nome.value;
         var emailProfessor = email.value;
         var senhaProfessor = senha.value;
         var confirmarSenhaProfessor = confirmarSenha.value;
@@ -192,6 +196,7 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            nome: nomeProfessor,
             email: emailProfessor,
             senha: senhaProfessor,
             confirmarSenha: confirmarSenhaProfessor,
@@ -212,6 +217,7 @@
 
       function atualizarProfessor() {
         var id = editarId.value;
+        var nomeProfessor = editarNome.value;
         var emailProfessor = editarEmail.value;
         var senhaProfessor = editarSenha.value;
 
@@ -224,6 +230,7 @@
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            nome: nomeProfessor,
             email: emailProfessor,
             senha: senhaProfessor
           })
@@ -265,8 +272,9 @@
         document.getElementById("modalCadastro").style.display = "none";
       }
 
-      function abrirEditar(id, emailProfessor) {
+      function abrirEditar(id, nomeProfessor, emailProfessor) {
         editarId.value = id;
+        editarNome.value = nomeProfessor || "";
         editarEmail.value = emailProfessor || "";
         editarSenha.value = "";
         document.getElementById("modalEditar").style.display = "flex";
