@@ -142,7 +142,17 @@
               position: "top",
             },
           },
+               scales: {
+  y: {
+    min: 400,       // valor mínimo do eixo
+    max: 700,       // valor máximo do eixo
+    ticks: {
+      stepSize: 25  // de quanto em quanto os valores aparecem
+    }
+  }
+}
         },
+   
       });
 
       carregarNotasMunicipais();
