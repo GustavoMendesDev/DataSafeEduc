@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>DataSafe | Login</title>
     <script src="./js/sessao.js"></script>
     <link rel="icon" href="./assets/imgs/logo.png" type="img">
@@ -49,12 +50,67 @@
         </div>
 
     </main>
+=======
+
+    <title>DataSafe | Login</title>
+
+    <script src="../js/sessao.js"></script>
+
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="icon" href="../assets/imgs/LogoUpdate.png" type="img">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu" />
+    <link rel="stylesheet"
+        href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css">
+
+</head>
+
+<body>
+<main>
+
+    <div class="container-formulario">
+
+        <a class="ancora" href="./index.html"><img class="voltar" src="../assets/icon/arrow_back_azul.png" alt=""></a>
+
+        <img src="../assets/imgs/logoDataSafeRemastered-removebg-preview.png" alt="">
+
+
+
+        <div class="input">
+            <label for="email" id="email">Endereço de e-mail:</label><br>
+            <input type="text" id="iptEmail">
+            <span id="erroEmail" class="msg-erro"></span>
+        </div>
+
+        <div class="input">
+            <label for="senha" id="senha">Senha:</label><br>
+            <div class="input-senha-wrapper">
+                <input type="password" id="iptSenha">
+                <i class="fi fi-rs-eye toggle-senha" id="toggleSenha"></i>
+            </div>
+            <span id="erroSenha" class="msg-erro"></span>
+        </div>
+
+        <button onclick="entrar()">Entrar</button>
+
+        <p class="sub-titulo">Ainda não tem uma conta? <a href="./cadastro.html">Cadastre-se</a></p>
+    </div>
+
+    <div class="container">
+        <h1 class="titulo">Bem-vindo de volta à DataSafe!</h1>
+    </div>
+
+</main>
+>>>>>>> dashboard
 </body>
 </html>
 
 <script>
 
 
+<<<<<<< HEAD
     function entrar() {
         // aguardar();
 
@@ -80,15 +136,80 @@
             window.location = "dash-monitoramento.html";
         }, 1000); // apenas para exibir o loading
 
+=======
+    const toggleSenha = document.getElementById('toggleSenha');
+    const iptSenha = document.getElementById('iptSenha');
+
+
+    toggleSenha.addEventListener('click', function () {
+        if (iptSenha.type === 'password') {
+            iptSenha.type = 'text';
+            toggleSenha.classList.remove('fi-rs-eye');
+            toggleSenha.classList.add('fi-rs-crossed-eye');
+        } else {
+            iptSenha.type = 'password';
+            toggleSenha.classList.remove('fi-rs-crossed-eye');
+            toggleSenha.classList.add('fi-rs-eye');
+        }
+    });
+
+    function entrar() {
+       var emailVar = iptEmail.value.trim();
+        var senhaVar = iptSenha.value.trim();
+        var validacaoOk = true;
+
+        var erroEmail = document.getElementById('erroEmail');
+        var erroSenha = document.getElementById('erroSenha');
+
+        // 1. Oculta mensagens de erro anteriores antes de validar novamente
+        erroEmail.style.display = 'none';
+        erroSenha.style.display = 'none';
+
+        // 2. Validação do campo de E-mail
+        if (emailVar == "") {
+            erroEmail.innerHTML = "O campo de e-mail não pode ficar vazio.";
+            erroEmail.style.display = 'block';
+            validacaoOk = false;
+        } else if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".") == -1) {
+            erroEmail.innerHTML = "Insira um e-mail válido (deve conter '@' e '.').";
+            erroEmail.style.display = 'block';
+            validacaoOk = false;
+        }
+
+        // 3. Validação do campo de Senha
+        if (senhaVar == "") {
+            erroSenha.innerHTML = "O campo de senha não pode ficar vazio.";
+            erroSenha.style.display = 'block';
+            validacaoOk = false;
+        } else if (senhaVar.length < 6) {
+            erroSenha.innerHTML = "A senha deve conter no mínimo 6 caracteres.";
+            erroSenha.style.display = 'block';
+            validacaoOk = false;
+        }
+
+        // Se alguma validação falhar, interrompe a execução
+        if (!validacaoOk) {
+            return false;
+        }
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+>>>>>>> dashboard
         fetch("/usuarios/autenticar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
+<<<<<<< HEAD
                 nomeServer: nomeVar,
                 // emailServer: emailVar,
                 senhaServer: senhaVar
+=======
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+>>>>>>> dashboard
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
@@ -100,6 +221,7 @@
                     console.log(json);
                     console.log(JSON.stringify(json));
                     sessionStorage.NOME_USUARIO = json.nome;
+<<<<<<< HEAD
                     // sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.ID_USUARIO = json.id;
 
@@ -109,11 +231,42 @@
                 });
 
             } else {
+=======
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.FK_NIVEL_ACESSO = json.fkNivelAcesso;
+                    sessionStorage.FK_CURSINHO = json.fkCursinho;
+
+                    if (json.fkNivelAcesso == 1) {
+                        setTimeout(function () {
+                            window.location = "./analise-desempenho.html";
+                            sessionStorage.CARGO_USUARIO = "Administrador";
+                        }, 1000);
+                    } else if (json.fkNivelAcesso == 2) {
+                        setTimeout(function () {
+                            window.location = "./analise-desempenho.html";
+                            sessionStorage.CARGO_USUARIO = "Coordenador";
+                        }, 1000);
+                    } else if (json.fkNivelAcesso == 3) {
+                        setTimeout(function () {
+                            window.location = "./simulados.html";
+                            sessionStorage.CARGO_USUARIO = "Professor"; 
+                        }, 1000);
+                    }
+                });
+
+            } else {
+
+>>>>>>> dashboard
                 console.log("Houve um erro ao tentar realizar o login!");
 
                 resposta.text().then(texto => {
                     console.error(texto);
+<<<<<<< HEAD
                     // finalizarAguardar(texto);
+=======
+                    finalizarAguardar(texto);
+>>>>>>> dashboard
                 });
             }
 
@@ -127,4 +280,9 @@
     function sumirMensagem() {
         cardErro.style.display = "none"
     }
+<<<<<<< HEAD
 </script>
+=======
+
+</script>
+>>>>>>> dashboard

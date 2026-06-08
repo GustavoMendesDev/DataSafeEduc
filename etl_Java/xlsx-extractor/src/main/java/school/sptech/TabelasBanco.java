@@ -77,9 +77,15 @@ public class TabelasBanco {
         """);
 
         connection.execute("""
+<<<<<<< HEAD
           CREATE TABLE IF NOT EXISTS logAcesso (
                        id            INT           NOT NULL AUTO_INCREMENT,
                        mensagem      VARCHAR(255)  NULL,
+=======
+          CREATE TABLE IF NOT EXISTS log (
+                       id            INT           NOT NULL AUTO_INCREMENT,
+                       mensagem      VARCHAR(999)  NULL,
+>>>>>>> dashboard
                        nivel         VARCHAR(20)   NULL,
                        ip            VARCHAR(45)   NULL,
                        dataCriacao   DATETIME      NULL,
@@ -113,28 +119,29 @@ public class TabelasBanco {
             CREATE TABLE IF NOT EXISTS parametroTri (
               id         INT            NOT NULL ,
               nivel      VARCHAR(45)    NULL,
-              parametroA DECIMAL(5,2)  NULL,
-              parametroB DECIMAL(5,2)  NULL,
-              parametroC DECIMAL(5,2)  NULL,
+              parametroA DECIMAL(10,2)  NULL,
+              parametroB DECIMAL(10,2)  NULL,
+              parametroC DECIMAL(10,2)  NULL,
               PRIMARY KEY (id)
             )
         """);
 
+
         connection.execute("""
-            CREATE TABLE IF NOT EXISTS questao (
-              codigoItem     VARCHAR(20) NOT NULL,
-              anoExame       YEAR        NULL,
-              fkHabilidade   INT         NOT NULL,
-              fkParametroTri INT         NOT NULL,
-              PRIMARY KEY (codigoItem),
-              CONSTRAINT fkHabilidade
-                FOREIGN KEY (fkHabilidade)
-                REFERENCES habilidade (id),
-              CONSTRAINT fkParametroTri
-                FOREIGN KEY (fkParametroTri)
-                REFERENCES parametroTri (id)
-            )
-        """);
+    CREATE TABLE IF NOT EXISTS questao (
+      codigoItem     VARCHAR(20) NOT NULL,
+      anoExame       YEAR        NOT NULL,
+      fkHabilidade   INT         NOT NULL,
+      fkParametroTri INT         NOT NULL,
+      PRIMARY KEY (codigoItem, anoExame),   -- chave composta
+      CONSTRAINT fkHabilidade
+        FOREIGN KEY (fkHabilidade)
+        REFERENCES habilidade (id),
+      CONSTRAINT fkParametroTri
+        FOREIGN KEY (fkParametroTri)
+        REFERENCES parametroTri (id)
+    )
+""");
 
         connection.execute("""
             CREATE TABLE IF NOT EXISTS questaoSimulado (

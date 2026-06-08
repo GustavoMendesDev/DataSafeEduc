@@ -21,28 +21,30 @@
       <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
-          <div class="foto-perfil"></div>
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
         <nav class="nav-lateral">
-            <a href="analise-desempenho"> <button class="nav-btn">Análise e Desempenho por Tema</button></a>
-          <a href="dash-monitoramento"
+            <a href="analise-desempenho.html"> <button class="nav-btn">Análise e Desempenho por Tema</button></a>
+          <a href="dash-monitoramento.html"
             ><button class="nav-btn">
               Monitoramento de Desempenho por habilidade
             </button></a
           >
-          <a href="lista-desempenho"
+          <a href="lista-desempenho.html"
             ><button class="nav-btn active">Lista de Desempenho por questão</button></a
           >
-          <a href="simulados"
+          <a href="simulados.html"
             ><button class="nav-btn">Simulados</button></a
           >
-          <a href="gerenciamento-professores"
+          <a href="gerenciamento-professores.html"
             ><button class="nav-btn">Gerenciamento de professores</button></a
           >
-          <a href="gerenciamento-coordenadores"
+          <a href="gerenciamento-coordenadores.html"
             ><button class="nav-btn">Gerenciamento de Coordenadores</button></a
+          >
+          <a href="configuracao-notificacoes.html"
+            ><button class="nav-btn">Configurações de Notificação</button></a
           >
         </nav>
       </aside>
@@ -77,7 +79,7 @@
               </tr>
             </thead>
 
-            <tbody>
+            <tbody id="tbodyQuestoes">
               <tr>
                 <td>023893</td>
                 <td>LC</td>
@@ -123,5 +125,24 @@
         </div>
       </main>
     </div>
+    <script>
+      fetch("/dashboard/questoes")
+        .then((resposta) => resposta.ok ? resposta.json() : [])
+        .then((questoes) => {
+          if (!questoes || questoes.length == 0) return;
+
+          tbodyQuestoes.innerHTML = questoes.map((questao) => `
+            <tr>
+              <td>${questao.codigoItem}</td>
+              <td>${questao.area}</td>
+              <td>${String(questao.habilidade).startsWith("H") ? questao.habilidade : `H${questao.habilidade}`}</td>
+              <td>${questao.dificuldade}</td>
+              <td>${questao.municipio}</td>
+              <td>${Math.round(questao.notaMedia)}</td>
+            </tr>
+          `).join("");
+        })
+        .catch((erro) => console.log("Erro ao buscar questões", erro));
+    </script>
   </body>
 </html>

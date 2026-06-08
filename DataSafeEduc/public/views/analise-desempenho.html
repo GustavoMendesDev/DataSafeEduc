@@ -20,11 +20,11 @@
       <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
-          <div class="foto-perfil"></div>
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
         <nav class="nav-lateral">
+<<<<<<< HEAD
           <a href="analise-desempenho">
             <button class="nav-btn">Análise e Desempenho por Tema</button></a
           >
@@ -38,12 +38,40 @@
           >
           <a href="simulados"><button class="nav-btn">Simulados</button></a>
           <a href="gerenciamento-professores"
+=======
+          <a href="analise-desempenho.html">
+            <button class="nav-btn active">Análise e Desempenho por Tema</button></a
+          >
+          <a href="dash-monitoramento.html"
+            ><button class="nav-btn">
+              Monitoramento de Desempenho por habilidade
+            </button></a
+          >
+          <a href="simulados.html"><button class="nav-btn">Simulados</button></a>
+          <a href="gerenciamento-professores.html"
+>>>>>>> dashboard
             ><button class="nav-btn">Gerenciamento de professores</button></a
           >
-          <a href="gerenciamento-coordenadores"
+          <a href="gerenciamento-coordenadores.html"
             ><button class="nav-btn">Gerenciamento de Coordenadores</button></a
           >
+          <a href="configuracao-notificacoes.html"
+            ><button class="nav-btn">Configurações de Notificação</button></a
+          >
+
+          <a href="duck-ia.html"
+            ><button class="nav-btn active duck">
+              <img
+                src="../assets/imgs/duckIA-removebg-preview.png"
+                alt="DuckIA_image"
+                class="duck-ia-icone"
+              /></button
+          ></a>
         </nav>
+
+        <button class="nav-btn btn-sair" id="btnSair" style="margin-top: auto; color: #ef4444; border-color: #ef4444;">
+          Sair do Sistema
+        </button>
       </aside>
 
       <!-- CONTEÚDO -->
@@ -62,19 +90,19 @@
           <div class="mini-card laranja">
            
             <p>Matemática</p>
-            <strong>529</strong>
+            <strong id="kpiMatematica">--</strong>
           </div>
           <div class="mini-card verde">
             <p>Ciências da Natureza</p>
-            <strong>495</strong>
+            <strong id="kpiNatureza">--</strong>
           </div>
           <div class="mini-card azul">
             <p>Ciências Humanas</p>
-            <strong>517</strong>
+            <strong id="kpiHumanas">--</strong>
           </div>
           <div class="mini-card roxo">
             <p>Linguagens</p>
-            <strong>528</strong>
+            <strong id="kpiLinguagens">--</strong>
           </div>
         </section>
 
@@ -86,10 +114,12 @@
       </main>
     </div>
 
+    <script src="../js/sessao.js"></script>
+
     <script>
       const ctx = document.getElementById("linhaChart");
 
-      new Chart(ctx, {
+      let linhaChart = new Chart(ctx, {
         type: "line",
         data: {
           labels: ["2019", "2021", "2022", "2023", "2024"],
@@ -122,6 +152,7 @@
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false, /* ADICIONE ESTA LINHA */
           plugins: {
             legend: {
               position: "top",
@@ -129,6 +160,42 @@
           },
         },
       });
+
+      carregarNotasMunicipais();
+      carregarEvolucaoNotas();
+
+      function carregarNotasMunicipais() {
+        fetch("/dashboard/notas-municipais")
+          .then((resposta) => resposta.ok ? resposta.json() : null)
+          .then((dados) => {
+            if (!dados) return;
+
+            kpiMatematica.innerHTML = Math.round(dados.matematica);
+            kpiNatureza.innerHTML = Math.round(dados.cienciasDaNatureza);
+            kpiHumanas.innerHTML = Math.round(dados.cienciasHumanas);
+            kpiLinguagens.innerHTML = Math.round(dados.codigosELinguagens);
+          })
+          .catch((erro) => console.log("Erro ao buscar KPIs", erro));
+      }
+
+      function carregarEvolucaoNotas() {
+        fetch("/dashboard/evolucao-notas")
+          .then((resposta) => resposta.ok ? resposta.json() : null)
+          .then((dados) => {
+            if (!dados || !dados.labels || dados.labels.length == 0) return;
+
+            const cores = ["#ec9731", "#4caf50", "#2196f3", "#9c27b0"];
+            linhaChart.data.labels = dados.labels;
+            linhaChart.data.datasets = dados.datasets.map((dataset, indice) => ({
+              label: dataset.label,
+              data: dataset.data,
+              borderColor: cores[indice],
+              tension: 0.4,
+            }));
+            linhaChart.update();
+          })
+          .catch((erro) => console.log("Erro ao buscar evolução", erro));
+      }
     </script>
   </body>
 </html>

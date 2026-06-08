@@ -875,3 +875,21 @@ canvas {
   padding: 8px;
   border-bottom: 1px solid var(--border-color);
 }
+
+.questao-item .btn-substituir {
+  color: var(--cor-base);
+  background-color: white;
+  border: 2px solid var(--cor-base);
+  min-width: 92px;
+}
+
+.questao-item .btn-excluir {
+  color: red;
+  background-color: white;
+  border: 2px solid red;
+  min-width: 82px;
+}
+
+.edit-mod-card {
+  cursor: pointer;
+}

@@ -7,10 +7,10 @@
   --azul-escuro: #1a2a5e;
   --cinza-claro: #f0f2f7;
   --cor-borda: #e0e0e0;
-  --nivel1: #22c55e;
+  --nivel1: #4BB8FA;
   --nivel2: #3b82f6;
   --nivel3: #a855f7;
-  --nivel4: #f97316;
+  --nivel4: #FFC94D;
   --nivel5: #ef4444;
 }
 
@@ -109,3 +109,32 @@ body {
   font-weight: 700;
   letter-spacing: 1.5px;
 }
+
+.duck-ia-icone {
+  display: block;
+  justify-content: center;
+  align-items: center ;
+  height: 30%;
+  width: 75%;
+  object-fit: contain;
+}
+
+.btn-sair {
+  margin-top: auto; /* A mágica acontece aqui */
+  color: #ef4444; 
+  border-color: #ef4444;
+}
+
+.btn-sair:hover {
+  background: #fef2f2; /* Um fundo vermelhinho claro no hover para dar um efeito legal */
+  color: #ef4444;
+}
+
+.msg-erro {
+      color: red; /* <-- É só mudar aqui! */
+      font-size: 13px;
+      font-weight: bold;
+      display: none; /* Escondido por padrão */
+      margin-top: 2px;
+      margin-bottom: 5px;
+    }

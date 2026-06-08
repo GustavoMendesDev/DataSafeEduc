@@ -1,2 +1,6 @@
 .env
+<<<<<<< HEAD
 .env.dev
+=======
+node_modules
+>>>>>>> dashboard

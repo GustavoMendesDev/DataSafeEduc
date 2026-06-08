@@ -2,6 +2,7 @@ package school.sptech;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import javax.sql.DataSource;
 
 
@@ -15,9 +16,10 @@ public class ConexaoBanco {
 
     public ConexaoBanco() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:h2:mem:datasafe;DB_CLOSE_DELAY=-1;MODE=MySQL");
-        basicDataSource.setUsername("datasafe");
-        basicDataSource.setPassword("ds@121314");
+        basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        basicDataSource.setUrl("jdbc:mysql://localhost:3306/datasafe?useSSL=true&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true");
+        basicDataSource.setUsername("root");
+        basicDataSource.setPassword("#0612@Gm");
 
         this.dataSource = basicDataSource;
     }

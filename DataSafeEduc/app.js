@@ -1,3 +1,5 @@
+const { GoogleGenAI } = require("@google/genai");
+
 var ambiente_processo = 'producao';
 // var ambiente_processo = 'desenvolvimento';
 
@@ -17,6 +19,12 @@ var app = express();
 
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
+var dashboardRouter = require("./src/routes/dashboard");
+var simuladoRouter = require("./src/routes/simulados");
+var duckIaRouter = require("./src/routes/duckIa");
+var coordenadorRouter = require("./src/routes/coordenadores");
+var professorRouter = require("./src/routes/professores");
+var notificacaoRouter = require("./src/routes/notificacoes");
 // var avisosRouter = require("./src/routes/avisos");
 // var medidasRouter = require("./src/routes/medidas");
 // var aquariosRouter = require("./src/routes/aquarios");
@@ -28,8 +36,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
 
-app.use("/", indexRouter);
+app.use("/duck-ia", duckIaRouter);
 app.use("/usuarios", usuarioRouter);
+app.use("/dashboard", dashboardRouter);
+app.use("/simulados", simuladoRouter);
+app.use("/coordenadores", coordenadorRouter);
+app.use("/professores", professorRouter);
+app.use("/notificacoes", notificacaoRouter);
+app.use("/", indexRouter);
 // app.use("/avisos", avisosRouter);
 // app.use("/medidas", medidasRouter);
 // app.use("/aquarios", aquariosRouter);
@@ -49,5 +63,5 @@ app.listen(PORTA_APP, function () {
     Você está rodando sua aplicação em ambiente de .:${process.env.AMBIENTE_PROCESSO}:. \n\n
     \tSe .:desenvolvimento:. você está se conectando ao banco local. \n
     \tSe .:producao:. você está se conectando ao banco remoto. \n\n
-    \t\tPara alterar o ambiente, comente ou descomente as linhas 1 ou 2 no arquivo 'app.js'\n\n`);
+    \t\tPara alterar o ambiente, comente ou descomente as linhas 3 ou 4 no arquivo 'app.js'\n\n`);
 });

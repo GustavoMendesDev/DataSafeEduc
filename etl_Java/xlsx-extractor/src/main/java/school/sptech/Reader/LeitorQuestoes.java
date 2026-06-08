@@ -71,6 +71,10 @@ public class LeitorQuestoes extends BaseLeitor {
                     break;
 
                 case 4:
+<<<<<<< HEAD
+=======
+
+>>>>>>> dashboard
                     Integer numero = (int) cell.getNumericCellValue();
 
                     Habilidade habilidade = buscarHabilidade(habilidades, questao.getArea(), numero);
@@ -78,6 +82,7 @@ public class LeitorQuestoes extends BaseLeitor {
 
                     break;
                 case 7:
+<<<<<<< HEAD
 
                     dificuldade.setParametro_a(cell.getNumericCellValue());
                     break;
@@ -88,6 +93,19 @@ public class LeitorQuestoes extends BaseLeitor {
                 case 9:
 
                     dificuldade.setParametro_c(cell.getNumericCellValue());
+=======
+                   Double parametroA = super.extrairValorNumerico(cell);
+                    dificuldade.setParametro_a(parametroA);
+                    break;
+                case 8:
+                    Double parametroB = super.extrairValorNumerico(cell);
+                    dificuldadeQuestao = dificuldade.calcularDificuldade(cell.getNumericCellValue());
+                    dificuldade.setParametro_b(parametroB);
+                    break;
+                case 9:
+                    Double parametroC = super.extrairValorNumerico(cell);
+                    dificuldade.setParametro_c(parametroC);
+>>>>>>> dashboard
                     questao.setDificuldade(dificuldade);
                     break;
             }
@@ -102,12 +120,29 @@ public class LeitorQuestoes extends BaseLeitor {
 
             adicionarQuestao(questao);
 
+<<<<<<< HEAD
             info("[] - (LeitorQuestoes) - (Reader) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
         }
         info(questoes.size() + " questoes encontradas.");
 
     }
 
+=======
+           // info("[] - (LeitorQuestoes) - (Reader) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
+        }
+      //  info(questoes.size() + " questoes encontradas.");
+
+    }
+
+    public void apresentarQuestoes (List <Questao> questoes) {
+        for (Questao questao : questoes) {
+            if(questao.getDificuldade() != null) {
+                System.out.println(questao.getDificuldade().toString());
+            }
+        }
+    }
+
+>>>>>>> dashboard
     public List<Questao> getQuestoes() {
         return questoes;
     }

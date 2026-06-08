@@ -21,17 +21,26 @@
       <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
+<<<<<<< HEAD
           <div class="foto-perfil"></div>
+=======
+>>>>>>> dashboard
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
         <nav class="nav-lateral">
+<<<<<<< HEAD
            <a href="analise-desempenho"> <button class="nav-btn">Análise e Desempenho por Tema</button></a>
           <a href="dash-monitoramento"
+=======
+           <a href="analise-desempenho.html"> <button class="nav-btn">Análise e Desempenho por Tema</button></a>
+          <a href="dash-monitoramento.html"
+>>>>>>> dashboard
             ><button class="nav-btn">
               Monitoramento de Desempenho por habilidade
             </button></a
           >
+<<<<<<< HEAD
           <a href="lista-desempenho"
             ><button class="nav-btn">Lista de Desempenho por questão</button></a
           >
@@ -45,12 +54,43 @@
             ><button class="nav-btn active">Gerenciamento de Coordenadores</button></a
           >
         </nav>
+=======
+          <a href="simulados.html"
+            ><button class="nav-btn">Simulados</button></a
+          >
+          <a href="gerenciamento-professores.html"
+            ><button class="nav-btn">Gerenciamento de professores</button></a
+          >
+          <a href="gerenciamento-coordenadores.html"
+            ><button class="nav-btn active">Gerenciamento de coordenadores</button></a
+          >
+          <a href="configuracao-notificacoes.html"
+            ><button class="nav-btn">Configurações de Notificação</button></a
+          >
+          <a href="duck-ia"
+            ><button class="nav-btn active duck">
+              <img
+                src="../assets/imgs/duckIA-removebg-preview.png"
+                alt="DuckIA_image"
+                class="duck-ia-icone"
+              /></button
+          ></a>
+        </nav>
+
+        <button class="nav-btn btn-sair" id="btnSair" style="margin-top: auto; color: #ef4444; border-color: #ef4444;">
+          Sair do Sistema
+        </button>
+>>>>>>> dashboard
       </aside>
 
       <!-- MAIN -->
       <main class="main-content">
         <header class="dashboard-header">
+<<<<<<< HEAD
           <h1>Gerenciamento de Gestores</h1>
+=======
+          <h1>Gerenciamento de Coordenadores</h1>
+>>>>>>> dashboard
         </header>
 
         <div class="dashboard-content">
@@ -63,7 +103,11 @@
                 align-items: center;
               "
             >
+<<<<<<< HEAD
               <h2>Lista de gestores</h2>
+=======
+              <h2>Lista de coordenadores</h2>
+>>>>>>> dashboard
               <button class="btn-add" onclick="abrirModal()">
                 Adicionar usuário
               </button>
@@ -73,16 +117,26 @@
               <table class="details-table">
                 <thead>
                   <tr>
+<<<<<<< HEAD
                     <th>Cod</th>
                     <th>Email</th>
                     <th>Senha</th>
                     <th>Nome cursinho</th>
+=======
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Cargo</th>
+>>>>>>> dashboard
                     <th>Editar</th>
                     <th>Excluir</th>
                   </tr>
                 </thead>
 
+<<<<<<< HEAD
                 <tbody>
+=======
+                <tbody id="tbodyCoordenadores">
+>>>>>>> dashboard
                   <tr>
                     <td>01</td>
                     <td>gestor@gmail.com</td>
@@ -134,6 +188,7 @@
       <div class="modal-box">
         <h2>Cadastro de Coordenador</h2>
 
+<<<<<<< HEAD
         <input placeholder="Nome cursinho" />
         <input placeholder="Email" />
         <input type="password" placeholder="Senha" />
@@ -141,12 +196,31 @@
 
         <select>
           <option>Gestor</option>
+=======
+        <input placeholder="Nome" id="nome"/>
+        <span id="erroNome" class="msg-erro"></span>
+
+        <input placeholder="Email" id="email"/>
+        <span id="erroEmail" class="msg-erro"></span>
+
+        <input type="password" placeholder="Senha" id="senha" />
+        <span id="erroSenha" class="msg-erro"></span>
+
+        <input type="password" placeholder="Confirmar senha" id="confirmarSenha" />
+        <span id="erroConfirmarSenha" class="msg-erro"></span>
+
+        <select>
+>>>>>>> dashboard
           <option>Coordenador</option>
         </select>
 
         <div class="modal-actions">
           <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
+<<<<<<< HEAD
           <button class="btn-add">Cadastrar</button>
+=======
+          <button class="btn-add" onclick="cadastrarCoordenador()">Cadastrar</button>
+>>>>>>> dashboard
         </div>
       </div>
     </div>
@@ -154,10 +228,25 @@
     <!-- MODAL EDITAR -->
     <div class="modal" id="modalEditar">
       <div class="modal-box">
+<<<<<<< HEAD
         <h2>Editar cadastro gestor</h2>
 
         <input placeholder="Nome cursinho" />
         <input value="gestor@gmail.com" />
+=======
+        <h2>Editar coordenador</h2>
+
+        <input placeholder="Nome" id="editarNome" />
+        <span id="erroEditarNome" class="msg-erro"></span>
+
+        <input placeholder="Email" id="editarEmail" />
+        <span id="erroEditarEmail" class="msg-erro"></span>
+
+        <input type="password" placeholder="Nova senha (opcional)" id="editarSenha" />
+        <span id="erroEditarSenha" class="msg-erro"></span>
+
+        <input type="hidden" id="editarId" />
+>>>>>>> dashboard
 
         <select>
           <option>Gestor</option>
@@ -166,12 +255,206 @@
 
         <div class="modal-actions">
           <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
+<<<<<<< HEAD
           <button class="btn-add">Atualizar</button>
+=======
+          <button class="btn-add" onclick="atualizarCoordenador()">Atualizar</button>
+>>>>>>> dashboard
         </div>
       </div>
     </div>
 
+<<<<<<< HEAD
     <script>
+=======
+    <script src="../js/sessao.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", carregarCoordenadores);
+
+      function limparCadastro() {
+        nome.value = "";
+        email.value = "";
+        senha.value = "";
+        confirmarSenha.value = "";
+      }
+
+      function limparErrosModal(tipo) {
+        if (tipo === 'cadastro') {
+          document.getElementById('erroNome').style.display = 'none';
+          document.getElementById('erroEmail').style.display = 'none';
+          document.getElementById('erroSenha').style.display = 'none';
+          document.getElementById('erroConfirmarSenha').style.display = 'none';
+         
+        } else {
+          document.getElementById('erroEditarNome').style.display = 'none';
+          document.getElementById('erroEditarEmail').style.display = 'none';
+          document.getElementById('erroEditarSenha').style.display = 'none';
+          
+        }
+      }
+
+      function buscarFkCursinho() {
+        return sessionStorage.FK_CURSINHO || sessionStorage.fkCursinho || "";
+      }
+
+      function carregarCoordenadores() {
+        fetch("/coordenadores")
+          .then((resposta) => resposta.ok ? resposta.json() : [])
+          .then((coordenadores) => {
+            if (!coordenadores || coordenadores.length == 0) {
+              tbodyCoordenadores.innerHTML = `
+                <tr>
+                  <td colspan="6">Nenhum coordenador encontrado</td>
+                </tr>
+              `;
+              return;
+            }
+
+            tbodyCoordenadores.innerHTML = coordenadores.map((coordenador) => `
+              <tr>
+                <td>${String(coordenador.nome)}</td>
+                <td>${coordenador.email}</td>
+                <td>${coordenador.cargo || ""}</td>
+                <td>
+                  <button class="icon-btn" onclick="abrirEditar(${coordenador.id}, '${escaparTexto(coordenador.nome)}', '${escaparTexto(coordenador.email)}')">
+  ✏️
+</button>
+                </td>
+                <td>
+                  <button class="icon-btn" onclick="excluirCoordenador(${coordenador.id})">🗑️</button>
+                </td>
+              </tr>
+            `).join("");
+          })
+          .catch((erro) => console.log("Erro ao buscar coordenadores", erro));
+      }
+
+      function cadastrarCoordenador() {
+        var nomeCoordenador = nome.value.trim();
+        var emailCoordenador = email.value.trim();
+        var senhaCoordenador = senha.value.trim();
+        var confirmarSenhaCoordenador = confirmarSenha.value.trim();
+        var validacaoOk = true;
+
+        limparErrosModal('cadastro');
+
+        if (nomeCoordenador == "") {
+          document.getElementById('erroNome').innerHTML = "Preencha o nome.";
+          document.getElementById('erroNome').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (emailCoordenador == "" || emailCoordenador.indexOf("@") == -1) {
+          document.getElementById('erroEmail').innerHTML = "Insira um e-mail válido.";
+          document.getElementById('erroEmail').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (senhaCoordenador == "" || senhaCoordenador.length < 6) {
+          document.getElementById('erroSenha').innerHTML = "A senha deve ter no mínimo 6 caracteres.";
+          document.getElementById('erroSenha').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (senhaCoordenador !== confirmarSenhaCoordenador) {
+          document.getElementById('erroConfirmarSenha').innerHTML = "As senhas não coincidem.";
+          document.getElementById('erroConfirmarSenha').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (!validacaoOk) return false;
+
+        fetch("/coordenadores/cadastrar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: nomeCoordenador,
+            email: emailCoordenador,
+            senha: senhaCoordenador,
+            confirmarSenha: confirmarSenhaCoordenador,
+            fkCursinho: buscarFkCursinho()
+          })
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+
+            fecharModal();
+            limparCadastro();
+            carregarCoordenadores();
+          })
+          .catch((erro) => alert("Erro ao cadastrar coordenador: " + erro));
+      }
+
+      function atualizarCoordenador() {
+        var id = editarId.value;
+        var nomeCoordenador = editarNome.value.trim();
+        var emailCoordenador = editarEmail.value.trim();
+        var senhaCoordenador = editarSenha.value.trim();
+        var validacaoOk = true;
+
+        limparErrosModal('edicao');
+
+        if (nomeCoordenador == "") {
+          document.getElementById('erroEditarNome').innerHTML = "Preencha o nome.";
+          document.getElementById('erroEditarNome').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (emailCoordenador == "" || emailCoordenador.indexOf("@") == -1) {
+          document.getElementById('erroEditarEmail').innerHTML = "Insira um e-mail válido.";
+          document.getElementById('erroEditarEmail').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (senhaCoordenador !== "" && senhaCoordenador.length < 6) {
+           document.getElementById('erroEditarSenha').innerHTML = "A nova senha deve ter no mínimo 6 caracteres.";
+           document.getElementById('erroEditarSenha').style.display = 'block';
+           validacaoOk = false;
+        }
+
+        if (!validacaoOk) return false;
+
+        fetch(`/coordenadores/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: nomeCoordenador,
+            email: emailCoordenador,
+            senha: senhaCoordenador,
+            fkCursinho: buscarFkCursinho()
+          })
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+
+            fecharEditar();
+            carregarCoordenadores();
+          })
+          .catch((erro) => alert("Erro ao atualizar coordenador: " + erro));
+      }
+
+      function excluirCoordenador(id) {
+        fetch(`/coordenadores/${id}`, { method: "DELETE" })
+          .then((resposta) => {
+            if (resposta.ok) {
+              carregarCoordenadores();
+            } else {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+          })
+          .catch((erro) => alert("Erro ao excluir coordenador: " + erro));
+      }
+
+      function escaparTexto(texto) {
+        return String(texto || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+      }
+
+>>>>>>> dashboard
       function abrirModal() {
         document.getElementById("modalCadastro").style.display = "flex";
       }
@@ -180,13 +463,25 @@
         document.getElementById("modalCadastro").style.display = "none";
       }
 
+<<<<<<< HEAD
       function abrirEditar() {
+=======
+      function abrirEditar(id, nomeCoordenador, emailCoordenador) {
+        editarId.value = id;
+        editarNome.value = nomeCoordenador || "";
+        editarEmail.value = emailCoordenador || "";
+        editarSenha.value = "";
+>>>>>>> dashboard
         document.getElementById("modalEditar").style.display = "flex";
       }
 
       function fecharEditar() {
         document.getElementById("modalEditar").style.display = "none";
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> dashboard
     </script>
   </body>
 </html>

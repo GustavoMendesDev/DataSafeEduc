@@ -1,0 +1,12 @@
+school/sptech/ObservadorInatividade.class
+school/sptech/InatividadeUsuario.class
+school/sptech/SlackBot.class
+school/sptech/NotificacaoConfig.class
+school/sptech/InatividadeRepository.class
+school/sptech/EmailService.class
+school/sptech/MonitorInatividade.class
+school/sptech/ControleNotificacao.class
+school/sptech/DataSafeSlackApplication.class
+school/sptech/EmailService$1.class
+school/sptech/NotificacaoEnvioRepository.class
+school/sptech/CentralNotificacoesService.class

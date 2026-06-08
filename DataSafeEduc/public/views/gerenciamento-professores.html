@@ -13,24 +13,39 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans&family=Sora:wght@700&display=swap"
       rel="stylesheet"
     />
+<<<<<<< HEAD
+=======
+    <link rel="icon" href="../assets/imgs/LogoUpdate.png" type="img">
+>>>>>>> dashboard
   </head>
 
   <body>
     <div class="dashboard-container">
+<<<<<<< HEAD
       <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
           <div class="foto-perfil"></div>
+=======
+      <aside class="barra-lateral">
+        <div class="perfil-lateral">
+>>>>>>> dashboard
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
         <nav class="nav-lateral">
+<<<<<<< HEAD
            <a href="analise-desempenho"> <button class="nav-btn">Análise e Desempenho por Tema</button></a>
           <a href="dash-monitoramento"
+=======
+           <a href="analise-desempenho.html"> <button class="nav-btn">Análise e Desempenho por Tema</button></a>
+          <a href="dash-monitoramento.html"
+>>>>>>> dashboard
             ><button class="nav-btn">
               Monitoramento de Desempenho por habilidade
             </button></a
           >
+<<<<<<< HEAD
           <a href="lista-desempenho"
             ><button class="nav-btn">Lista de Desempenho por questão</button></a
           >
@@ -44,6 +59,33 @@
             ><button class="nav-btn">Gerenciamento de Coordenadores</button></a
           >
         </nav>
+=======
+          <a href="simulados.html"
+            ><button class="nav-btn">Simulados</button></a
+          >
+          <a href="gerenciamento-professores.html"
+            ><button class="nav-btn active">Gerenciamento de professores</button></a
+          >
+          <a href="gerenciamento-coordenadores.html"
+            ><button class="nav-btn">Gerenciamento de Coordenadores</button></a
+          >
+          <a href="configuracao-notificacoes.html"
+            ><button class="nav-btn">Configurações de Notificação</button></a
+          >
+          <a href="duck-ia"
+            ><button class="nav-btn active duck">
+              <img
+                src="../assets/imgs/duckIA-removebg-preview.png"
+                alt="DuckIA_image"
+                class="duck-ia-icone"
+              /></button
+          ></a>
+        </nav>
+
+        <button class="nav-btn btn-sair" id="btnSair" style="margin-top: auto; color: #ef4444; border-color: #ef4444;">
+          Sair do Sistema
+        </button>
+>>>>>>> dashboard
       </aside>
 
       <main class="main-content">
@@ -61,7 +103,11 @@
                 align-items: center;
               "
             >
+<<<<<<< HEAD
               <h2>Lista de usuários</h2>
+=======
+              <h2>Lista de Professores</h2>
+>>>>>>> dashboard
               <button class="btn-add" onclick="abrirModal()">
                 Adicionar usuário
               </button>
@@ -71,7 +117,11 @@
               <table class="details-table">
                 <thead>
                   <tr>
+<<<<<<< HEAD
                     <th>Cod</th>
+=======
+                    <th>Nome</th>
+>>>>>>> dashboard
                     <th>Email</th>
                     <th>Senha</th>
                     <th>Cargo</th>
@@ -80,6 +130,7 @@
                   </tr>
                 </thead>
 
+<<<<<<< HEAD
                 <tbody>
                   <tr>
                     <td>01</td>
@@ -94,6 +145,10 @@
                     <td><button class="icon-btn">🗑️</button></td>
                   </tr>
                 </tbody>
+=======
+                <tbody id="tbodyProfessores">
+                  </tbody>
+>>>>>>> dashboard
               </table>
             </div>
           </div>
@@ -101,6 +156,7 @@
       </main>
     </div>
 
+<<<<<<< HEAD
     <!-- MODAL -->
     <div class="modal" id="modal">
       <div class="modal-box">
@@ -118,28 +174,75 @@
         <div class="modal-actions">
           <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
           <button class="btn-add">Cadastrar</button>
+=======
+    <div class="modal" id="modalCadastro">
+      <div class="modal-box">
+        <h2>Cadastro de Usuário</h2>
+
+       <input placeholder="Nome" id="nome"/>
+        <span id="erroNome" class="msg-erro"></span>
+
+        <input placeholder="Email" id="email"/>
+        <span id="erroEmail" class="msg-erro"></span>
+
+        <input type="password" placeholder="Senha" id="senha"/>
+        <span id="erroSenha" class="msg-erro"></span>
+
+        <input type="password" placeholder="Confirmar senha" id="confirmarSenha"/>
+        <span id="erroConfirmarSenha" class="msg-erro"></span>
+
+        <select id="cargoSelect">
+          <option value="Professor">Professor</option>
+        </select>
+        <div class="modal-actions">
+          <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
+          <button class="btn-add" onclick="cadastrarProfessor()">Cadastrar</button>
+>>>>>>> dashboard
         </div>
       </div>
     </div>
 
+<<<<<<< HEAD
     <!-- MODAL EDITAR -->
+=======
+>>>>>>> dashboard
     <div class="modal" id="modalEditar">
       <div class="modal-box">
         <h2>Editar cadastro Professor</h2>
 
+<<<<<<< HEAD
         <input value="gestor@gmail.com" />
 
         <select>
+=======
+        <input placeholder="Nome" id="editarNome" />
+        <span id="erroEditarNome" class="msg-erro"></span>
+
+        <input placeholder="Email" id="editarEmail" />
+        <span id="erroEditarEmail" class="msg-erro"></span>
+
+        <input type="password" placeholder="Nova senha (opcional)" id="editarSenha" />
+        <span id="erroEditarSenha" class="msg-erro"></span>
+
+        <input type="hidden" id="editarId" />
+
+        <select disabled>
+>>>>>>> dashboard
           <option>Professor</option>
         </select>
 
         <div class="modal-actions">
           <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
+<<<<<<< HEAD
           <button class="btn-add">Atualizar</button>
+=======
+          <button class="btn-add" onclick="atualizarProfessor()">Atualizar</button>
+>>>>>>> dashboard
         </div>
       </div>
     </div>
 
+<<<<<<< HEAD
     <script>
       function abrirModal() {
         document.getElementById("modal").style.display = "flex";
@@ -150,6 +253,210 @@
       }
 
       function abrirEditar() {
+=======
+    <script src="../js/sessao.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", carregarProfessores);
+
+      function limparCadastro() {
+        nome.value = "";
+        email.value = "";
+        senha.value = "";
+        confirmarSenha.value = "";
+      }
+
+      function limparErrosModal(tipo) {
+        if (tipo === 'cadastro') {
+          document.getElementById('erroNome').style.display = 'none';
+          document.getElementById('erroEmail').style.display = 'none';
+          document.getElementById('erroSenha').style.display = 'none';
+          document.getElementById('erroConfirmarSenha').style.display = 'none';
+        } else {
+          document.getElementById('erroEditarNome').style.display = 'none';
+          document.getElementById('erroEditarEmail').style.display = 'none';
+          document.getElementById('erroEditarSenha').style.display = 'none';
+        }
+      }
+
+      function buscarFkCursinho() {
+        return sessionStorage.FK_CURSINHO || sessionStorage.fkCursinho || "";
+      }
+
+      function carregarProfessores() {
+        var fkCursinho = buscarFkCursinho();
+
+        fetch(`/professores?fkCursinho=${fkCursinho}`) // Rota adaptada para buscar os professores
+          .then((resposta) => resposta.ok ? resposta.json() : [])
+          .then((professores) => {
+            if (!professores || professores.length == 0) {
+              tbodyProfessores.innerHTML = `
+                <tr>
+                  <td colspan="6">Nenhum professor encontrado</td>
+                </tr>
+              `;
+              return;
+            }
+
+            tbodyProfessores.innerHTML = professores.map((professor) => `
+              
+            <tr>
+              <td>${professor.nome}</td> <td>${professor.email}</td>
+              <td>${professor.senha ? "********" : ""}</td>
+              <td>${professor.cargo || "Professor"}</td>
+              <td>
+                <button class="icon-btn" onclick="abrirEditar(${professor.id}, '${escaparTexto(professor.nome)}', '${escaparTexto(professor.email)}')">
+                  ✏️
+                </button>
+              </td>
+              <td>
+                <button class="icon-btn" onclick="excluirProfessor(${professor.id})">🗑️</button>
+              </td>
+            </tr>
+            `).join("");
+          })
+          .catch((erro) => console.log("Erro ao buscar professores", erro));
+      }
+
+      function cadastrarProfessor() {
+       var nomeProfessor = nome.value.trim();
+        var emailProfessor = email.value.trim();
+        var senhaProfessor = senha.value.trim();
+        var confirmarSenhaProfessor = confirmarSenha.value.trim();
+        var validacaoOk = true;
+
+        limparErrosModal('cadastro');
+
+        if (nomeProfessor == "") {
+          document.getElementById('erroNome').innerHTML = "Preencha o nome.";
+          document.getElementById('erroNome').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (emailProfessor == "" || emailProfessor.indexOf("@") == -1) {
+          document.getElementById('erroEmail').innerHTML = "Insira um e-mail válido.";
+          document.getElementById('erroEmail').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (senhaProfessor == "" || senhaProfessor.length < 6) {
+          document.getElementById('erroSenha').innerHTML = "A senha deve ter no mínimo 6 caracteres.";
+          document.getElementById('erroSenha').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (senhaProfessor !== confirmarSenhaProfessor) {
+          document.getElementById('erroConfirmarSenha').innerHTML = "As senhas não coincidem.";
+          document.getElementById('erroConfirmarSenha').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (!validacaoOk) return false;
+
+        fetch("/professores/cadastrar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: nomeProfessor,
+            email: emailProfessor,
+            senha: senhaProfessor,
+            confirmarSenha: confirmarSenhaProfessor,
+            fkCursinho: buscarFkCursinho()
+          })
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+
+            fecharModal();
+            limparCadastro();
+            carregarProfessores();
+          })
+          .catch((erro) => alert("Erro ao cadastrar professor: " + erro));
+      }
+
+      function atualizarProfessor() {
+        var id = editarId.value;
+        var nomeProfessor = editarNome.value.trim();
+        var emailProfessor = editarEmail.value.trim();
+        var senhaProfessor = editarSenha.value.trim();
+        var validacaoOk = true;
+
+        limparErrosModal('edicao');
+
+        if (nomeProfessor == "") {
+          document.getElementById('erroEditarNome').innerHTML = "Preencha o nome.";
+          document.getElementById('erroEditarNome').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (emailProfessor == "" || emailProfessor.indexOf("@") == -1) {
+          document.getElementById('erroEditarEmail').innerHTML = "Insira um e-mail válido.";
+          document.getElementById('erroEditarEmail').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (senhaProfessor !== "" && senhaProfessor.length < 6) {
+           document.getElementById('erroEditarSenha').innerHTML = "A nova senha deve ter no mínimo 6 caracteres.";
+           document.getElementById('erroEditarSenha').style.display = 'block';
+           validacaoOk = false;
+        }
+
+        if (!validacaoOk) return false;
+
+        fetch(`/professores/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: nomeProfessor,
+            email: emailProfessor,
+            senha: senhaProfessor
+          })
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              return resposta.text().then((mensagem) => Promise.reject(mensagem));
+            }
+
+            fecharEditar();
+            carregarProfessores();
+          })
+          .catch((erro) => alert("Erro ao atualizar professor: " + erro));
+      }
+
+      function excluirProfessor(id) {
+        if (confirm("Tem certeza que deseja excluir este professor?")) {
+          fetch(`/professores/${id}?fkCursinho=${buscarFkCursinho()}`, { method: "DELETE" })
+            .then((resposta) => {
+              if (resposta.ok) {
+                carregarProfessores();
+              } else {
+                return resposta.text().then((mensagem) => Promise.reject(mensagem));
+              }
+            })
+            .catch((erro) => alert("Erro ao excluir professor: " + erro));
+        }
+      }
+
+      function escaparTexto(texto) {
+        return String(texto || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+      }
+
+      function abrirModal() {
+        document.getElementById("modalCadastro").style.display = "flex";
+      }
+
+      function fecharModal() {
+        document.getElementById("modalCadastro").style.display = "none";
+      }
+
+      function abrirEditar(id, nomeProfessor, emailProfessor) {
+        editarId.value = id;
+        editarNome.value = nomeProfessor || "";
+        editarEmail.value = emailProfessor || "";
+        editarSenha.value = "";
+>>>>>>> dashboard
         document.getElementById("modalEditar").style.display = "flex";
       }
 

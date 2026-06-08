@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> dashboard
 /* ── ÁREA DE ROLAGEM ── */
 .area-rolagem {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 13px 16px;
   display: flex;
   flex-direction: column;
@@ -65,13 +69,18 @@
 .grade-dificuldades > .bloco-grafico {
   flex: 1;
   min-width: 0;
-  
 }
 
+/* bloco-grafico usado dentro da grade (abaixo/acima) mantém altura relativa */
+.grade-dificuldades > .bloco-grafico {
+  height: 35vh;
+}
+
+/* bloco-grafico standalone (impacto) não limita altura — 
+   quem controla é o .envoltorio-grafico-med interno */
 .bloco-grafico {
   display: flex;
   flex-direction: column;
-    height: 35vh;
 }
 
 .titulo-bloco-grafico {
@@ -112,9 +121,46 @@
 
 /* ── ALTURAS DOS GRÁFICOS ── */
 .envoltorio-grafico     { height: 290px; }
-.envoltorio-grafico-med { height: 230px; }
-.envoltorio-radar       { height: 225px; }
-.envoltorio-pilha       { height: 290px; width: 900px; }
+.envoltorio-grafico-med {
+  position: relative;
+  height: 280px;   /* altura fixa para o Chart.js renderizar corretamente */
+  width: 100%;
+}
+.envoltorio-radar { 
+  height: 525px; 
+  width: 100%;
+  position: relative; 
+}
+
+.envoltorio-pilha       {
+  height: 290px; 
+  width: 100%; 
+  position: relative; }
+
+/* ── LEGENDA INLINE DE NÍVEIS COGNITIVOS (chart de impacto) ── */
+.legenda-niveis-inline {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.legenda-niveis-inline .item-nivel-inline {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.legenda-niveis-inline .ponto-nivel-inline {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 
 /* ── LEGENDA DE NÍVEIS ── */
 .legenda-niveis {
@@ -137,33 +183,54 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 3px solid;
   flex-shrink: 0;
 }
-.n1 { border-color: var(--nivel1); }
-.n2 { border-color: var(--nivel2); }
-.n3 { border-color: var(--nivel3); }
-.n4 { border-color: var(--nivel4); }
-.n5 { border-color: var(--nivel5); }
+.n1 { background-color: var(--nivel1); }
+.n2 { background-color: var(--nivel2); }
+.n3 { background-color: var(--nivel3); }
+.n4 { background-color: var(--nivel4); }
+.n5 { background-color: var(--nivel5); }
 
 .rotulo-nivel { font-weight: 700; }
 
 /* ── TABELA ── */
-.tabela-habilidades { width: 100%; border-collapse: collapse; }
+.tabela-habilidades { 
+  display: block; 
+  width: 100%; 
+  max-height: 245px; 
+  overflow-y: auto;
+  overflow-x: hidden; /* Permite scroll horizontal interno se a tela for muito pequena */
+  border-collapse: collapse; 
+  white-space: nowrap; /* Impede que o texto fique "espremido" quebrando de linha */
+}
+
+/* Scrollbar estilizada (adicionado height para a rolagem horizontal) */
+.tabela-habilidades::-webkit-scrollbar { width: 5px; height: 5px; }
+.tabela-habilidades::-webkit-scrollbar-track { background: transparent; }
+.tabela-habilidades::-webkit-scrollbar-thumb { background: #c0c8e0; border-radius: 3px; }
+
 .tabela-habilidades th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   background: var(--cor-base);
   color: #fff;
-  padding: 8px 10px;
+  padding: 8px 6px; /* Reduzimos um pouco o padding para ganhar espaço */
   text-align: left;
   font-weight: 700;
   font-size: 12px;
+  /* min-width removido para parar de forçar o vazamento! */
 }
+
 .tabela-habilidades td {
-  padding: 7px 10px;
+  padding: 7px 6px; /* Padding alinhado com o cabeçalho */
   border-bottom: 1px solid var(--cor-borda);
   font-size: 12px;
 }
-.tabela-habilidades tr:nth-child(even) td { background: var(--cinza); }
+
+.tabela-habilidades tr:nth-child(even) td { 
+  background: var(--cinza); 
+}
 
 .etiqueta-nivel {
   display: inline-flex;
@@ -173,7 +240,12 @@
   font-size: 12px;
   font-weight: 600;
 }
-.ponto-nivel { width: 9px; height: 9px; border-radius: 50%; }
+
+.ponto-nivel { 
+  width: 9px; 
+  height: 9px; 
+  border-radius: 50%; 
+}
 
 /* ── RECORRÊNCIA ── */
 .grade-recorrencia {
@@ -183,13 +255,11 @@
   align-items: flex-start;
 }
 
-/* Radar com largura fixa */
 .grade-recorrencia > div:first-child {
-  width: 570px;
-  flex-shrink: 0;
+  flex: 0 0 40%; /* Ocupa cerca de 40% do espaço em vez de travar em 570px */
+  min-width: 0;  /* Essencial para o Flexbox não estourar o limite */
 }
 
-/* Pilha ocupa o restante */
 .grade-recorrencia > div:last-child {
   flex: 1;
   min-width: 0;
@@ -206,18 +276,20 @@
 
 /* ── RESPONSIVIDADE ── */
 @media (max-width: 1400px) {
-  .secao-auxiliares { width: 265px; }
-  .envoltorio-grafico     { height: 190px; }
-  .envoltorio-grafico-med { height: 155px; }
-  .envoltorio-radar       { height: 200px; }
-  .envoltorio-pilha       { height: 190px; }
+  .secao-auxiliares               { width: 265px; }
+  .envoltorio-grafico             { height: 190px; }
+  .envoltorio-grafico-med         { height: 155px; }
+  .envoltorio-radar               { height: 200px; }
+  .envoltorio-pilha               { height: 190px; }
+  .grade-dificuldades > .bloco-grafico { height: 30vh; }
 }
 
 @media (max-width: 1200px) {
-  .secao-auxiliares { width: 240px; }
-  .barra-lateral    { width: 185px; }
-  .envoltorio-grafico     { height: 168px; }
-  .envoltorio-grafico-med { height: 140px; }
-  .envoltorio-radar       { height: 178px; }
-  .envoltorio-pilha       { height: 168px; }
+  .secao-auxiliares               { width: 240px; }
+  .barra-lateral                  { width: 185px; }
+  .envoltorio-grafico             { height: 168px; }
+  .envoltorio-grafico-med         { height: 140px; }
+  .envoltorio-radar               { height: 178px; }
+  .envoltorio-pilha               { height: 168px; }
+  .grade-dificuldades > .bloco-grafico { height: 28vh; }
 }

@@ -47,6 +47,7 @@ public class LeitorNotas extends BaseLeitor {
     }
 
 
+<<<<<<< HEAD
 
 
     public NotaMunicipal calcularMediaTemas() {
@@ -112,28 +113,82 @@ public class LeitorNotas extends BaseLeitor {
         info("Leitura da notas realizadas com sucesso!");
 
     }
+=======
+>>>>>>> dashboard
+
+
+
+<<<<<<< HEAD
+=======
+// 10 , 5 , 2 , 13 , 15 , 18
+        // 10 , 2,
+
+
+        Double mediaLc = notasLc.isEmpty() ? 0.0 :
+                notasLc.stream().mapToDouble(Double::doubleValue).sum() / notasLc.size();
+
+        Double mediaMt = notasMt.isEmpty() ? 0.0 :
+                notasMt.stream().mapToDouble(Double::doubleValue).sum() / notasMt.size();
+
+        Double mediaCn = notasCn.isEmpty() ? 0.0 :
+                notasCn.stream().mapToDouble(Double::doubleValue).sum() / notasCn.size();
+
+        Double mediaCh = notasCh.isEmpty() ? 0.0 :
+                notasCh.stream().mapToDouble(Double::doubleValue).sum() / notasCh.size();
+
+        NotaMunicipal notaMunicipal = new NotaMunicipal(mediaCn, mediaCh, mediaMt, mediaLc);
 
 
 
 
+        info(("[] - (LeitorNotas) - (calcularMediaTemas) - Inserção das notas %.2f %.2f %.2f %.2f Realizada com sucesso! ").formatted(mediaCn, mediaCh, mediaMt, mediaLc));
 
-    private Double extrairValorNumerico(Cell cell) {
-        switch (cell.getCellType()) {
-            case NUMERIC:
-                return cell.getNumericCellValue();
-            case STRING:
-                String valor = cell.getStringCellValue().trim();
-                if (valor.isEmpty()) return null;
-                try {
-                    return Double.parseDouble(valor);
-                } catch (NumberFormatException e) {
-                    return null;
+
+        System.out.println("\n" + notasCn.size() + " " + notasCh.size() + " " + notasMt.size() + " " + notasLc.size());
+
+        return notaMunicipal;
+    }
+>>>>>>> dashboard
+
+
+
+    @Override
+    public void processarLinha(Row row) {
+                Iterator<Cell> cellIterator = row.cellIterator();
+
+
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+
+                    switch (cell.getColumnIndex()) {
+                        case 22:
+                            Double notaCn = super.extrairValorNumerico(cell);
+                            if (notaCn != null) adicionarNotaCn(notaCn);
+                            break;
+                        case 23:
+                            Double notaCh = super.extrairValorNumerico(cell);
+                            if (notaCh != null) adicionarNotaCh(notaCh);
+                            break;
+                        case 24:
+                            Double notaLc = super.extrairValorNumerico(cell);
+                            if (notaLc != null) adicionarNotaLc(notaLc);
+                            break;
+                        case 25:
+                            Double notaMt = super.extrairValorNumerico(cell);
+                            if (notaMt != null) adicionarNotaMt(notaMt);
+                            break;
+                    }
                 }
-            case BLANK:
-                return null;
-            default:
-                return null;
-        }
+       // info("Leitura da notas realizadas com sucesso!");
+
     }
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+>>>>>>> dashboard
 }
