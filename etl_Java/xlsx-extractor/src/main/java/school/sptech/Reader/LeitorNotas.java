@@ -47,7 +47,6 @@ public class LeitorNotas extends BaseLeitor {
     }
 
 
-<<<<<<< HEAD
 
 
     public NotaMunicipal calcularMediaTemas() {
@@ -113,15 +112,7 @@ public class LeitorNotas extends BaseLeitor {
         info("Leitura da notas realizadas com sucesso!");
 
     }
-=======
->>>>>>> dashboard
 
-
-
-<<<<<<< HEAD
-=======
-// 10 , 5 , 2 , 13 , 15 , 18
-        // 10 , 2,
 
 
         Double mediaLc = notasLc.isEmpty() ? 0.0 :
@@ -148,7 +139,6 @@ public class LeitorNotas extends BaseLeitor {
 
         return notaMunicipal;
     }
->>>>>>> dashboard
 
 
 
@@ -183,12 +173,5 @@ public class LeitorNotas extends BaseLeitor {
 
     }
 
-<<<<<<< HEAD
-=======
 
-
-
-
-
->>>>>>> dashboard
 }

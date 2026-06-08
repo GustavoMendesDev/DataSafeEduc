@@ -8,10 +8,7 @@ import school.sptech.dao.QuestaoDao;
 import school.sptech.model.NotaMunicipal;
 import school.sptech.model.Questao;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
->>>>>>> dashboard
 import java.util.List;
 
 import static school.sptech.Log.info;
@@ -22,7 +19,6 @@ public class Main {
 
         tabelasBanco();
 
-<<<<<<< HEAD
 //        String caminhoHabilidades    = "src\\main\\resources\\matriz_referencia_enem.xlsx";
 //        String caminhoQuestoes       = "src\\main\\resources\\questoesEnem.xlsx";
 //        String caminhoNotasMunicipio = "src\\main\\resources\\municipioDeSaoPauloResutadosEnem.xlsx";
@@ -50,7 +46,6 @@ public class Main {
 
         QuestaoDao questaoDao = new QuestaoDao();
         questaoDao.inserirTodos(questoes);
-=======
         String caminhoHabilidades        = "matriz_referencia_enem.xlsx";
         String caminhoQuestoes           = "questoesEnem.xlsx";
         String caminhoQuestoes2023       = "questoesEnem2023.xlsx";
@@ -89,19 +84,16 @@ public class Main {
 
         leitor.lerArquivo(caminhoQuestoes2020);
         questaoDao.inserirQuestoes(leitor.getQuestoes(), 2020);
->>>>>>> dashboard
 
         // ── 3. Notas Municipais ───────────────────────────────────
         info("--- Carregando Notas ---");
         LeitorNotas leitorNotas = new LeitorNotas();
-<<<<<<< HEAD
         leitorNotas.lerArquivo(caminhoNotasMunicipio);
 
         NotaMunicipal nota = leitorNotas.calcularMediaTemas();
 
         NotaMunicipalDao notaMunicipalDao = new NotaMunicipalDao();
         notaMunicipalDao.inserir(nota);
-=======
         NotaMunicipalDao notaMunicipalDao = new NotaMunicipalDao();
 
         List<NotaMunicipal> todasAsNotas = new ArrayList<>();
@@ -122,7 +114,6 @@ public class Main {
         todasAsNotas.add(leitorNotas.calcularMediaTemas());
 
         notaMunicipalDao.inserirTodos(todasAsNotas);
->>>>>>> dashboard
 
     }
 }

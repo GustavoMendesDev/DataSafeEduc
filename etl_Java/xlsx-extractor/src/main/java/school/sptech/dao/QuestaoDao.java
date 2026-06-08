@@ -1,10 +1,8 @@
 // dao/QuestaoDao.java
 package school.sptech.dao;
 
-<<<<<<< HEAD
 import school.sptech.ConexaoBanco;
 import school.sptech.model.Questao;
-=======
 import org.apache.commons.dbcp2.BasicDataSource;
 import school.sptech.ConexaoBanco;
 import school.sptech.model.Questao;
@@ -12,7 +10,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
->>>>>>> dashboard
 
 import java.util.List;
 
@@ -21,7 +18,6 @@ import static school.sptech.Log.info;
 
 public class QuestaoDao {
 
-<<<<<<< HEAD
     public void inserirParametroTri(Questao questao) {
         try {
             ConexaoBanco.CONEXAO.update(
@@ -66,7 +62,6 @@ public class QuestaoDao {
         info("(QuestaoDao) - Inserção de questões finalizada!");
     }
 }
-=======
     private static Integer contador = 0;
 
 
@@ -127,4 +122,3 @@ public class QuestaoDao {
         }
     }
 
->>>>>>> dashboard
