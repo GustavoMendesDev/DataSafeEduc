@@ -109,3 +109,23 @@ body {
   font-weight: 700;
   letter-spacing: 1.5px;
 }
+
+.duck-ia-icone {
+  display: block;
+  justify-content: center;
+  align-items: center ;
+  height: 30%;
+  width: 75%;
+  object-fit: contain;
+}
+
+.btn-sair {
+  margin-top: auto; /* A mágica acontece aqui */
+  color: #ef4444; 
+  border-color: #ef4444;
+}
+
+.btn-sair:hover {
+  background: #fef2f2; /* Um fundo vermelhinho claro no hover para dar um efeito legal */
+  color: #ef4444;
+}

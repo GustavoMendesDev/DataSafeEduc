@@ -21,12 +21,23 @@
         <nav class="nav-lateral">
           <a href="analise-desempenho.html"><button class="nav-btn">Análise e Desempenho por Tema</button></a>
           <a href="dash-monitoramento.html"><button class="nav-btn">Monitoramento de Desempenho por habilidade</button></a>
-          <a href="lista-desempenho.html"><button class="nav-btn">Lista de Desempenho por questão</button></a>
           <a href="simulados.html"><button class="nav-btn">Simulados</button></a>
           <a href="gerenciamento-professores.html"><button class="nav-btn">Gerenciamento de professores</button></a>
           <a href="gerenciamento-coordenadores.html"><button class="nav-btn">Gerenciamento de Coordenadores</button></a>
           <a href="configuracao-notificacoes.html"><button class="nav-btn active">Configurações de Notificação</button></a>
+          <a href="duck-ia"
+            ><button class="nav-btn active duck">
+              <img
+                src="../assets/imgs/duckIA-removebg-preview.png"
+                alt="DuckIA_image"
+                class="duck-ia-icone"
+              /></button
+          ></a>
         </nav>
+
+        <button class="nav-btn btn-sair" id="btnSair" style="margin-top: auto; color: #ef4444; border-color: #ef4444;">
+          Sair do Sistema
+        </button>
       </aside>
 
       <main class="conteudo-principal">
@@ -128,6 +139,8 @@
         </section>
       </main>
     </div>
+
+    <script src="../js/sessao.js"></script>
 
     <script>
       var elSlackChannelId = document.getElementById("slackChannelId");

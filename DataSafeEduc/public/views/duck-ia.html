@@ -25,7 +25,6 @@
       <!-- BARRA LATERAL (padrão idêntico às outras páginas) -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
-          <div class="foto-perfil"></div>
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
@@ -37,9 +36,6 @@
             ><button class="nav-btn">
              Desempenho por habilidade
             </button></a
-          >
-          <a href="lista-desempenho"
-            ><button class="nav-btn">Desempenho por questão</button></a
           >
           <a href="simulados"><button class="nav-btn">Simulados</button></a>
           <a href="gerenciamento-professores"
@@ -61,6 +57,10 @@
               /></button
           ></a>
         </nav>
+
+        <button class="nav-btn btn-sair" id="btnSair" style="margin-top: auto; color: #ef4444; border-color: #ef4444;">
+          Sair do Sistema
+        </button>
       </aside>
 
       <!-- CONTEÚDO PRINCIPAL -->
@@ -241,6 +241,8 @@
       </main>
     </div>
     <!-- fim .dashboard-container -->
+
+    <script src="../js/sessao.js"></script>
 
     <script>
       /* ─────────────────────────────────────────────

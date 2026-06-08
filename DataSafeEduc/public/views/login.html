@@ -135,14 +135,17 @@
                     if (json.fkNivelAcesso == 1) {
                         setTimeout(function () {
                             window.location = "./dash-monitoramento.html";
+                            sessionStorage.CARGO_USUARIO = "Administrador";
                         }, 1000);
                     } else if (json.fkNivelAcesso == 2) {
                         setTimeout(function () {
                             window.location = "./dash-monitoramento.html";
+                            sessionStorage.CARGO_USUARIO = "Coordenador";
                         }, 1000);
                     } else if (json.fkNivelAcesso == 3) {
                         setTimeout(function () {
                             window.location = "./simulados.html";
+                            sessionStorage.CARGO_USUARIO = "Professor"; 
                         }, 1000);
                     }
                 });
