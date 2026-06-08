@@ -21,9 +21,9 @@ public class BaseLeitor {
         long tempoInicial = System.currentTimeMillis();
 
 
-        try (InputStream arquivo = S3Service.getArquivo(nomeArquivo);
-       //try(InputStream arquivo = S3Service.getArquivo(nomeArquivo);   como instalar o maven linux ubuntu
-               //InputStream arquivo = getClass().getClassLoader().getResourceAsStream(nomeArquivo);
+       // try (InputStream arquivo = S3Service.getArquivo(nomeArquivo);
+       try(//InputStream arquivo = S3Service.getArquivo(nomeArquivo);   como instalar o maven linux ubuntu
+               InputStream arquivo = getClass().getClassLoader().getResourceAsStream(nomeArquivo);
         // Workbook workbook = StreamingReader.builder().rowCacheSize(10).bufferSize(256).open(arquivo)
        Workbook workbook =  new XSSFWorkbook(arquivo)
        ) {
