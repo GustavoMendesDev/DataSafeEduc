@@ -1,14 +1,4 @@
 var express = require("express");
-<<<<<<< HEAD
-var router = express.Router();
-var path = require("path");
-
-router.get("/", function (req, res) {
-    res.sendFile(path.resolve(__dirname, "../../public/views/index.html"));
-});
-
-module.exports = router;
-=======
 var path = require("path");
 var router = express.Router();
 
@@ -42,4 +32,3 @@ router.get("/:pagina", function (req, res, next) {
 });
 
 module.exports = router;
->>>>>>> dashboard

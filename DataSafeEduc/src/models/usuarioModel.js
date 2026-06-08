@@ -1,12 +1,5 @@
 var database = require("../database/config")
 
-<<<<<<< HEAD
-function autenticar(nome, senha) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", nome, senha)
-    var instrucaoSql = `
-        SELECT nome, senha FROM usuario WHERE nome = '${nome}' AND senha = '${senha}';
-    `;
-=======
 function escapar(valor) {
     return String(valor).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
@@ -41,22 +34,11 @@ function registrarAcesso(idUsuario, ip) {
         VALUES ('${escapar(ip)}', NOW(), ${Number(idUsuario)});
     `;
 
->>>>>>> dashboard
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucaoSql
-<<<<<<< HEAD
-function cadastrar(nome,senha) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, senha);
-    
-    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
-    //  e na ordem de inserção dos dados.
-    var instrucaoSql = `
-        INSERT INTO usuario (nome, senha) VALUES ('${nome}', '${senha}');
-    `;
-=======
 async function cadastrar(nome,email,senha,codigoConvite) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email,senha);
     
@@ -174,17 +156,12 @@ function excluir(idUsuario) {
         DELETE FROM usuario WHERE id = ${idUsuario};
     `;
 
->>>>>>> dashboard
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 module.exports = {
     autenticar,
-<<<<<<< HEAD
-    cadastrar
-};
-=======
     registrarAcesso,
     cadastrar,
     listarPorNivel,
@@ -192,4 +169,3 @@ module.exports = {
     atualizar,
     excluir
 };
->>>>>>> dashboard

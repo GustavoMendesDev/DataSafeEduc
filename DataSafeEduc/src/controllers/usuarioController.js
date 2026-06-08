@@ -1,39 +1,23 @@
 var usuarioModel = require("../models/usuarioModel");
 
 function autenticar(req, res) {
-<<<<<<< HEAD
-    var nome = req.body.nomeServer;
-    var senha = req.body.senhaServer;
-
-    if (nome == undefined) {
-        res.status(400).send("Seu nome está undefined");
-=======
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
 
     if (email == undefined) {
         res.status(400).send("Seu email está undefined");
->>>>>>> dashboard
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está indefinida!");
     } else {
 
-<<<<<<< HEAD
-        usuarioModel.autenticar(nome, senha)
-            .then(
-                function (resultadoAutenticar) {
-=======
         usuarioModel
             .autenticar(email, senha)
             .then(function (resultadoAutenticar) {
->>>>>>> dashboard
                     console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
                     console.log(`Resultados: ${JSON.stringify(resultadoAutenticar)}`); // transforma JSON em String
 
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
-<<<<<<< HEAD
-=======
 
                         var usuarioAutenticado = resultadoAutenticar[0];
                         var ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || req.ip || "";
@@ -53,7 +37,6 @@ function autenticar(req, res) {
                                 console.log("\nHouve um erro ao registrar o acesso! Erro: ", erro.sqlMessage);
                                 res.status(500).json(erro.sqlMessage);
                             });
->>>>>>> dashboard
                     } else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Senha inválido(s)");
                     } else {
@@ -74,32 +57,21 @@ function autenticar(req, res) {
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nome = req.body.nomeServer;
-<<<<<<< HEAD
-    var senha = req.body.senhaServer;
-=======
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
     var codigoConvite = req.body.conviteServer;
->>>>>>> dashboard
 
     // Faça as validações dos valores
     if (nome == undefined) {
         res.status(400).send("Seu nome está undefined!");
-<<<<<<< HEAD
-=======
     }else if (email == undefined) {
         res.status(400).send("Seu email está undefined!");
->>>>>>> dashboard
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
     } else {
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-<<<<<<< HEAD
-        usuarioModel.cadastrar(nome, senha)
-=======
         usuarioModel
         .cadastrar(nome, email, senha, codigoConvite)
->>>>>>> dashboard
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -117,12 +89,6 @@ function cadastrar(req, res) {
     }
 }
 
-<<<<<<< HEAD
-module.exports = {
-    autenticar,
-    cadastrar
-};
-=======
 function cadastrarCoordenador(res, res){
     var nomeCursinho = req.body.nomeCursinho;
     var email = req.body.email;
@@ -252,4 +218,3 @@ module.exports = {
     atualizar,
     excluir
 };
->>>>>>> dashboard

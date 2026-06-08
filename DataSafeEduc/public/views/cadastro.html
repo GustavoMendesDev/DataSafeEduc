@@ -11,9 +11,6 @@
   <script src="../js/sessao.js"></script>
 
   <link rel="stylesheet" href="../css/cadastro.css">
-<<<<<<< HEAD
-  <link rel="icon" href="../assets/imgs/logo.png" type="img">
-=======
   <link rel="icon" href="../assets/imgs/LogoUpdate.png" type="img">
 
 <link rel="stylesheet"
@@ -21,7 +18,6 @@
     <link rel="stylesheet"
         href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css"/>
 
->>>>>>> dashboard
 
 </head>
 
@@ -29,17 +25,10 @@
   <main>
     <div class="container">
       
-<<<<<<< HEAD
-      <a class="ancora" href="./index" ><img class="voltar" src="../assets/icon/arrow_back.png" alt=""></a>
-
-
-      <h1>Cadastre-se na <br>Datasafe</h1>
-=======
       <a class="ancora" href="../views/index.html" ><img src="../assets/icon/arrow_back.png" alt=""></a>
 
 
       <h1>Bem-vindo à DataSafe</h1>
->>>>>>> dashboard
 
     </div>
 
@@ -54,19 +43,6 @@
 
       <div class="input">
         <label for="nome" id="nome_input">Nome Completo:</label><br>
-<<<<<<< HEAD
-        <input type="text" id="nome">
-      </div>
-
-      <div class="input">
-        <label for="mensagem" id="senha_input">Senha:</label><br>
-        <input type="password" id="senha">
-      </div>
-
-      <button onclick="cadastrar()">Cadastrar</button>
-
-      <p>Já tem uma conta? <a href="./login">Entrar</a></p>
-=======
         <input type="text" id="iptNome">
         <span id="erroNome" class="msg-erro"></span>
       </div>
@@ -96,7 +72,6 @@
                 <div id="mensagem_erro"></div>
 
       <p>Já tem uma conta? <a href="./login.html">Entrar</a></p>
->>>>>>> dashboard
     </div>
 
   </main>
@@ -105,28 +80,6 @@
 </html>
 
 <script>
-<<<<<<< HEAD
-  function cadastrar() {
-    // aguardar();
-
-    //Recupere o valor da nova input pelo nome do id
-    // Agora vá para o método fetch logo abaixo
-    var nomeVar = nome.value;
-    var senhaVar = senha.value;
-
-    // Verificando se há algum campo em branco
-    if (
-      nomeVar == "" ||
-      senhaVar == ""
-    ) {
-      // cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
-
-      // finalizarAguardar();
-      return false;
-    } 
-=======
 
 const toggleSenha = document.getElementById('toggleSenha');
     const iptSenha = document.getElementById('iptSenha');
@@ -212,7 +165,6 @@ const toggleSenha = document.getElementById('toggleSenha');
     if (!validacaoOk) {
       return false;
     }
->>>>>>> dashboard
 
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
@@ -224,13 +176,9 @@ const toggleSenha = document.getElementById('toggleSenha');
         // crie um atributo que recebe o valor recuperado aqui
         // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
-<<<<<<< HEAD
-        senhaServer: senhaVar
-=======
         emailServer: emailVar,
         senhaServer: senhaVar,
         conviteServer: conviteVar
->>>>>>> dashboard
       }),
     })
       .then(function (resposta) {
@@ -239,13 +187,7 @@ const toggleSenha = document.getElementById('toggleSenha');
         if (resposta.ok) {
           // cardErro.style.display = "block";
 
-<<<<<<< HEAD
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
-=======
             mensagem_erro.innerHTML = `<p style="color:#70F000; font-weight: bold;">Cadastro realizado com sucesso! Redirecionando para tela de Login...</p>`;
->>>>>>> dashboard
           setTimeout(() => {
             window.location = "login.html";
           }, "2000");

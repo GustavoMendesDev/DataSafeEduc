@@ -6,19 +6,12 @@ var usuarioController = require("../controllers/usuarioController");
 //Recebendo os dados do html e direcionando para a função cadastrar de usuarioController.js
 router.post("/cadastrar", function (req, res) {
     usuarioController.cadastrar(req, res);
-<<<<<<< HEAD
-})
-=======
 });
->>>>>>> dashboard
 
 router.post("/autenticar", function (req, res) {
     usuarioController.autenticar(req, res);
 });
 
-<<<<<<< HEAD
-module.exports = router;
-=======
 router.post("/cadastrarCoodenador", function(req,res){
     usuarioController.cadastrarCoordenador(req,res)
 });
@@ -42,4 +35,3 @@ router.delete("/:id", function (req, res) {
 });
 
 module.exports = router;
->>>>>>> dashboard

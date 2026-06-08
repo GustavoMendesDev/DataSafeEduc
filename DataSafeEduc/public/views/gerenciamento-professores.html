@@ -13,53 +13,23 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans&family=Sora:wght@700&display=swap"
       rel="stylesheet"
     />
-<<<<<<< HEAD
-=======
     <link rel="icon" href="../assets/imgs/LogoUpdate.png" type="img">
->>>>>>> dashboard
   </head>
 
   <body>
     <div class="dashboard-container">
-<<<<<<< HEAD
-      <!-- BARRA LATERAL -->
       <aside class="barra-lateral">
         <div class="perfil-lateral">
-          <div class="foto-perfil"></div>
-=======
-      <aside class="barra-lateral">
-        <div class="perfil-lateral">
->>>>>>> dashboard
           <p class="nome-perfil">Lavínia Todarelli</p>
           <p class="cargo-perfil">Administrador</p>
         </div>
         <nav class="nav-lateral">
-<<<<<<< HEAD
-           <a href="analise-desempenho"> <button class="nav-btn">Análise e Desempenho por Tema</button></a>
-          <a href="dash-monitoramento"
-=======
            <a href="analise-desempenho.html"> <button class="nav-btn">Análise e Desempenho por Tema</button></a>
           <a href="dash-monitoramento.html"
->>>>>>> dashboard
             ><button class="nav-btn">
               Monitoramento de Desempenho por habilidade
             </button></a
           >
-<<<<<<< HEAD
-          <a href="lista-desempenho"
-            ><button class="nav-btn">Lista de Desempenho por questão</button></a
-          >
-          <a href="simulados"
-            ><button class="nav-btn">Simulados</button></a
-          >
-          <a href="gerenciamento-professores"
-            ><button class="nav-btn active">Gerenciamento de professores</button></a
-          >
-          <a href="gerenciamento-coordenadores"
-            ><button class="nav-btn">Gerenciamento de Coordenadores</button></a
-          >
-        </nav>
-=======
           <a href="simulados.html"
             ><button class="nav-btn">Simulados</button></a
           >
@@ -85,7 +55,6 @@
         <button class="nav-btn btn-sair" id="btnSair" style="margin-top: auto; color: #ef4444; border-color: #ef4444;">
           Sair do Sistema
         </button>
->>>>>>> dashboard
       </aside>
 
       <main class="main-content">
@@ -103,11 +72,7 @@
                 align-items: center;
               "
             >
-<<<<<<< HEAD
-              <h2>Lista de usuários</h2>
-=======
               <h2>Lista de Professores</h2>
->>>>>>> dashboard
               <button class="btn-add" onclick="abrirModal()">
                 Adicionar usuário
               </button>
@@ -117,11 +82,7 @@
               <table class="details-table">
                 <thead>
                   <tr>
-<<<<<<< HEAD
-                    <th>Cod</th>
-=======
                     <th>Nome</th>
->>>>>>> dashboard
                     <th>Email</th>
                     <th>Senha</th>
                     <th>Cargo</th>
@@ -130,25 +91,8 @@
                   </tr>
                 </thead>
 
-<<<<<<< HEAD
-                <tbody>
-                  <tr>
-                    <td>01</td>
-                    <td>prof@gmail.com</td>
-                    <td>********</td>
-                    <td>Professor</td>
-                    <td>
-                      <button class="icon-btn" onclick="abrirEditar()">
-                        ✏️
-                      </button>
-                    </td>
-                    <td><button class="icon-btn">🗑️</button></td>
-                  </tr>
-                </tbody>
-=======
                 <tbody id="tbodyProfessores">
                   </tbody>
->>>>>>> dashboard
               </table>
             </div>
           </div>
@@ -156,25 +100,6 @@
       </main>
     </div>
 
-<<<<<<< HEAD
-    <!-- MODAL -->
-    <div class="modal" id="modal">
-      <div class="modal-box">
-        <h2>Cadastro de Usuário</h2>
-
-        <input placeholder="Email" />
-        <input placeholder="Senha" />
-        <input placeholder="Confirmar senha" />
-
-        <select>
-          <option>Professor</option>
-          <option>Coordenador</option>
-        </select>
-
-        <div class="modal-actions">
-          <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
-          <button class="btn-add">Cadastrar</button>
-=======
     <div class="modal" id="modalCadastro">
       <div class="modal-box">
         <h2>Cadastro de Usuário</h2>
@@ -197,24 +122,14 @@
         <div class="modal-actions">
           <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
           <button class="btn-add" onclick="cadastrarProfessor()">Cadastrar</button>
->>>>>>> dashboard
         </div>
       </div>
     </div>
 
-<<<<<<< HEAD
-    <!-- MODAL EDITAR -->
-=======
->>>>>>> dashboard
     <div class="modal" id="modalEditar">
       <div class="modal-box">
         <h2>Editar cadastro Professor</h2>
 
-<<<<<<< HEAD
-        <input value="gestor@gmail.com" />
-
-        <select>
-=======
         <input placeholder="Nome" id="editarNome" />
         <span id="erroEditarNome" class="msg-erro"></span>
 
@@ -227,33 +142,16 @@
         <input type="hidden" id="editarId" />
 
         <select disabled>
->>>>>>> dashboard
           <option>Professor</option>
         </select>
 
         <div class="modal-actions">
           <button onclick="fecharEditar()" class="btn-cancel">Cancelar</button>
-<<<<<<< HEAD
-          <button class="btn-add">Atualizar</button>
-=======
           <button class="btn-add" onclick="atualizarProfessor()">Atualizar</button>
->>>>>>> dashboard
         </div>
       </div>
     </div>
 
-<<<<<<< HEAD
-    <script>
-      function abrirModal() {
-        document.getElementById("modal").style.display = "flex";
-      }
-
-      function fecharModal() {
-        document.getElementById("modal").style.display = "none";
-      }
-
-      function abrirEditar() {
-=======
     <script src="../js/sessao.js"></script>
 
     <script>
@@ -456,7 +354,6 @@
         editarNome.value = nomeProfessor || "";
         editarEmail.value = emailProfessor || "";
         editarSenha.value = "";
->>>>>>> dashboard
         document.getElementById("modalEditar").style.display = "flex";
       }
 
