@@ -34,7 +34,7 @@ public class NotificacaoConfig implements ObservadorInatividade {
     public static NotificacaoConfig carregar() {
         NotificacaoConfig config = new NotificacaoConfig();
 
-        config.tokenSlack = lerVariavel("SLACK_BOT_TOKEN", "xoxb-11164360058514-11303959108915-txefPYwhy932C0mo3YHTEi3K");
+        config.tokenSlack = lerVariavel("SLACK_BOT_TOKEN", "");
         config.canalSlack = lerVariavel("SLACK_CHANNEL_ID", "#equipe-datasafe");
         config.periodicidadeMinutos = lerNumero("PERIODICIDADE_MINUTOS", 180);
         config.intervaloCentralSegundos = lerNumero("INTERVALO_CENTRAL_SEGUNDOS", 30);
