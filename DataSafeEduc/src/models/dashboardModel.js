@@ -1,38 +1,31 @@
 var database = require("../database/config");
-
 function buscarNotasMunicipais() {
     var instrucaoSql = `
         SELECT
-            municipio.id                 AS idMunicipio,
-            municipio.nome               AS municipio,
-            municipio.estado,
-            notaMunicipal.matematica,
-            notaMunicipal.codigosELinguagens,
-            notaMunicipal.cienciasDaNatureza,
-            notaMunicipal.cienciasHumanas
-        FROM municipio
-        JOIN notaMunicipal ON municipio.fkNotaMunicipal = notaMunicipal.id
-        ORDER BY notaMunicipal.id DESC
+            matematica,
+            codigosELinguagens,
+            cienciasDaNatureza,
+            cienciasHumanas
+        FROM notaMunicipal
+        WHERE anoExame = 2024 AND id != 1
         LIMIT 1;
     `;
-    console.log("SQL buscarNotasMunicipais:\n", instrucaoSql);
     return database.executar(instrucaoSql);
 }
-
 function buscarEvolucaoNotas() {
     var instrucaoSql = `
         SELECT
-            notaMunicipal.id,
-            municipio.nome               AS municipio,
-            notaMunicipal.matematica,
-            notaMunicipal.codigosELinguagens,
-            notaMunicipal.cienciasDaNatureza,
-            notaMunicipal.cienciasHumanas
+            anoExame,
+            AVG(matematica)         AS matematica,
+            AVG(codigosELinguagens) AS codigosELinguagens,
+            AVG(cienciasDaNatureza) AS cienciasDaNatureza,
+            AVG(cienciasHumanas)    AS cienciasHumanas
         FROM notaMunicipal
-        LEFT JOIN municipio ON municipio.fkNotaMunicipal = notaMunicipal.id
-        ORDER BY notaMunicipal.id;
+        WHERE anoExame BETWEEN 2020 AND 2024
+          AND id != 1
+        GROUP BY anoExame
+        ORDER BY anoExame ASC;
     `;
-    console.log("SQL buscarEvolucaoNotas:\n", instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
@@ -153,23 +146,25 @@ function buscarQuestoesPorArea() {
 }
 
 function buscarQuestoesPorNivel(sigla) {
-    var filtroArea = sigla && sigla !== "todos"
-        ? `WHERE areaConhecimento.sigla = '${sigla}'`
-        : "";
-    var instrucaoSql = `
+    const filtroArea = sigla && sigla !== 'todos'
+        ? `AND ac.sigla = '${sigla}'`
+        : '';
+
+    const instrucaoSql = `
         SELECT
-            questao.anoExame,
-            parametroTri.nivel,
-            COUNT(questao.codigoItem) AS quantidade
-        FROM questao
-        JOIN habilidade       ON questao.fkHabilidade      = habilidade.id
-        JOIN areaConhecimento ON habilidade.fkAreaConhecimento = areaConhecimento.id
-        JOIN parametroTri     ON questao.fkParametroTri    = parametroTri.id
-        ${filtroArea}
-        GROUP BY questao.anoExame, parametroTri.nivel
-        ORDER BY questao.anoExame, parametroTri.nivel;
+            q.anoExame,
+            ac.sigla    AS area,
+            h.numero    AS habilidade,
+            COUNT(q.codigoItem) AS quantidade
+        FROM questao q
+        JOIN habilidade       h  ON q.fkHabilidade      = h.id
+        JOIN areaConhecimento ac ON h.fkAreaConhecimento = ac.id
+        WHERE q.anoExame IN (2020, 2021, 2022, 2023, 2024)
+          ${filtroArea}
+        GROUP BY q.anoExame, ac.sigla, h.numero
+        ORDER BY q.anoExame, ac.sigla, h.numero;
     `;
-    console.log("SQL buscarQuestoesPorNivel:\n", instrucaoSql);
+    console.log('SQL buscarQuestoesPorNivel:\n', instrucaoSql);
     return database.executar(instrucaoSql);
 }
 

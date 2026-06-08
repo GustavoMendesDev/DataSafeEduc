@@ -6,9 +6,7 @@ import school.sptech.dao.HabilidadeDao;
 import school.sptech.dao.NotaMunicipalDao;
 import school.sptech.dao.QuestaoDao;
 import school.sptech.model.NotaMunicipal;
-import school.sptech.model.Questao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static school.sptech.Log.info;
@@ -31,7 +29,7 @@ public class Main {
         String caminhoNotasMunicipio2021 = "municipioDeSaoPauloResultadosEnem2021.xlsx";
         String caminhoNotasMunicipio2020 = "municipioDeSaoPauloResultadosEnem2020.xlsx";
 
-        // ── 1. Habilidades ────────────────────────────────────────
+        // ── 1. Habilidades ────────────────────────────────────────────────────
         info("--- Carregando Habilidades ---");
         LeitorQuestoes leitor = new LeitorQuestoes(caminhoHabilidades);
 
@@ -39,7 +37,7 @@ public class Main {
         habilidadeDao.inserirAreaConhecimento();
         habilidadeDao.inserirTodos(leitor.getHabilidades());
 
-        // ── 2. Questões ───────────────────────────────────────────
+        // ── 2. Questões ───────────────────────────────────────────────────────
         info("--- Carregando Questoes ---");
         QuestaoDao questaoDao = new QuestaoDao();
 
@@ -58,29 +56,24 @@ public class Main {
         leitor.lerArquivo(caminhoQuestoes2020);
         questaoDao.inserirQuestoes(leitor.getQuestoes(), 2020);
 
-        // ── 3. Notas Municipais ───────────────────────────────────
+        // ── 3. Notas Municipais ───────────────────────────────────────────────
         info("--- Carregando Notas ---");
         LeitorNotas leitorNotas = new LeitorNotas();
         NotaMunicipalDao notaMunicipalDao = new NotaMunicipalDao();
 
-        List<NotaMunicipal> todasAsNotas = new ArrayList<>();
-
         leitorNotas.lerArquivo(caminhoNotasMunicipio);
-        todasAsNotas.add(leitorNotas.calcularMediaTemas());
+        notaMunicipalDao.inserirTodos(List.of(leitorNotas.calcularMediaTemas()), 2024);
 
         leitorNotas.lerArquivo(caminhoNotasMunicipio2023);
-        todasAsNotas.add(leitorNotas.calcularMediaTemas());
+        notaMunicipalDao.inserirTodos(List.of(leitorNotas.calcularMediaTemas()), 2023);
 
         leitorNotas.lerArquivo(caminhoNotasMunicipio2022);
-        todasAsNotas.add(leitorNotas.calcularMediaTemas());
+        notaMunicipalDao.inserirTodos(List.of(leitorNotas.calcularMediaTemas()), 2022);
 
         leitorNotas.lerArquivo(caminhoNotasMunicipio2021);
-        todasAsNotas.add(leitorNotas.calcularMediaTemas());
+        notaMunicipalDao.inserirTodos(List.of(leitorNotas.calcularMediaTemas()), 2021);
 
         leitorNotas.lerArquivo(caminhoNotasMunicipio2020);
-        todasAsNotas.add(leitorNotas.calcularMediaTemas());
-
-        notaMunicipalDao.inserirTodos(todasAsNotas);
-
+        notaMunicipalDao.inserirTodos(List.of(leitorNotas.calcularMediaTemas()), 2020);
     }
 }

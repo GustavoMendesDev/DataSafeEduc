@@ -43,14 +43,27 @@ const COR_NIVEL = {
     5: '#ef4444',
 };
 
+const COR_NIVEL_PILHA = {
+    1: '#4BB8FA',
+    2: '#3b82f6',
+    3: '#a855f7',
+    4: '#FFC94D',
+    5: '#ef4444',
+};
+
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function validarArea(sigla, permitirTodos) {
     if (permitirTodos && sigla === 'todos') return true;
     return AREAS_VALIDAS.has(sigla);
 }
 
+function normalizarChave(habilidade) {
+    const s = String(habilidade);
+    return s.startsWith('H') ? s : `H${s.padStart(2, '0')}`;
+}
+
 function corPorNivel(sigla, habilidade) {
-    const chave = String(habilidade).startsWith('H') ? habilidade : `H${habilidade}`;
+    const chave = normalizarChave(habilidade); // ← era: `H${habilidade}` sem pad, gerava H1, H2...
     const nivel = NIVEL_COGNITIVO[sigla]?.[chave] ?? 1;
     return COR_NIVEL[nivel];
 }
@@ -73,7 +86,6 @@ function serializarResultado(resultado) {
         vazio:        resultado.length === 0,
     };
 }
-
 // ── CONTROLLERS ───────────────────────────────────────────────────────────────
 function buscarNotasMunicipais(req, res) {
     dashboardModel.buscarNotasMunicipais()
@@ -93,19 +105,18 @@ function buscarNotasMunicipais(req, res) {
 function buscarEvolucaoNotas(req, res) {
     dashboardModel.buscarEvolucaoNotas()
         .then(resultado => {
-            if (resultado.length > 0) {
-                res.status(200).json({
-                    labels: resultado.map(item => item.municipio || `Registro ${item.id}`),
-                    datasets: [
-                        { label: "Matemática", data: resultado.map(item => Number(item.matematica)) },
-                        { label: "Natureza",   data: resultado.map(item => Number(item.cienciasDaNatureza)) },
-                        { label: "Humanas",    data: resultado.map(item => Number(item.cienciasHumanas)) },
-                        { label: "Linguagens", data: resultado.map(item => Number(item.codigosELinguagens)) },
-                    ],
-                });
-            } else {
-                res.status(204).send("Nenhuma nota municipal encontrada!");
+            if (!resultado.length) {
+                return res.status(204).send("Nenhuma nota encontrada!");
             }
+            res.status(200).json({
+                labels: resultado.map(item => String(item.anoExame)), // ✅ era item.municipio
+                datasets: [
+                    { label: "Matemática", data: resultado.map(item => Number(item.matematica).toFixed(2)) },
+                    { label: "Natureza",   data: resultado.map(item => Number(item.cienciasDaNatureza).toFixed(2)) },
+                    { label: "Humanas",    data: resultado.map(item => Number(item.cienciasHumanas).toFixed(2)) },
+                    { label: "Linguagens", data: resultado.map(item => Number(item.codigosELinguagens).toFixed(2)) },
+                ],
+            });
         })
         .catch(erro => {
             console.error('[buscarEvolucaoNotas]', erro);
@@ -180,21 +191,55 @@ function buscarQuestoesPorNivel(req, res) {
     const sigla = req.params.sigla || 'todos';
     if (!validarArea(sigla, true)) return res.status(400).send('Área inválida!');
 
-    const coresNiveis = { 'Fácil': '#4BB8FA', 'Médio': '#3b82f6', 'Difícil': '#ef4444' };
+    const COR_NIVEL_PILHA = {
+        1: '#4BB8FA',
+        2: '#3b82f6',
+        3: '#a855f7',
+        4: '#FFC94D',
+        5: '#ef4444',
+    };
 
     dashboardModel.buscarQuestoesPorNivel(sigla)
         .then(resultado => {
-            const anos   = [...new Set(resultado.map(item => String(item.anoExame)))];
-            const niveis = [...new Set(resultado.map(item => item.nivel))];
+            const anos   = ['2020', '2021', '2022', '2023', '2024'];
+            const niveis = [1, 2, 3, 4, 5];
+
+            // ✅ NOVO: contadores para diagnóstico
+            let semNivel = 0;
+
+            const linhasComNivel = resultado.map(item => {
+                const areaSigla = sigla !== 'todos' ? sigla : item.area;
+                const chave = String(item.habilidade).startsWith('H')
+                    ? item.habilidade
+                    : `H${String(item.habilidade).padStart(2, '0')}`;
+
+                const nivelEncontrado = NIVEL_COGNITIVO[areaSigla]?.[chave];
+
+                // ✅ NOVO: loga os casos onde o nível não foi encontrado
+                if (nivelEncontrado === undefined) {
+                    semNivel++;
+                    console.warn(
+                        `[buscarQuestoesPorNivel] Nível não encontrado: area="${areaSigla}" chave="${chave}" habilidade="${item.habilidade}"`
+                    );
+                }
+
+                const nivel = nivelEncontrado ?? 1;
+                return { ano: String(item.anoExame), nivel, quantidade: Number(item.quantidade) };
+            });
+
+            // ✅ NOVO: resumo no log
+            console.log(`[buscarQuestoesPorNivel] Total linhas: ${resultado.length} | Sem nível mapeado: ${semNivel}`);
+
             res.status(200).json({
                 labels: anos,
                 datasets: niveis.map(nivel => ({
-                    label:  nivel,
-                    color:  coresNiveis[nivel] ?? '#314595',
-                    values: anos.map(ano => {
-                        const item = resultado.find(l => String(l.anoExame) === ano && l.nivel === nivel);
-                        return item ? Number(item.quantidade) : 0;
-                    }),
+                    label:  `Nível ${nivel}`,
+                    color:  COR_NIVEL_PILHA[nivel],
+                    values: anos.map(ano =>
+                        linhasComNivel
+                            .filter(l => l.ano === ano && l.nivel === nivel)
+                            .reduce((acc, l) => acc + l.quantidade, 0)
+                    ),
                 })),
             });
         })

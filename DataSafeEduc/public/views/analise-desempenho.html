@@ -68,7 +68,7 @@
          
           
          <div class="tituloSection">
-           <p class="kpi-secao-titulo">Nota média do município de São Paulo</p>
+           <p class="kpi-secao-titulo">Nota média do município de São Paulo (2024)</p>
          </div>
         <section class="cards-top">
           <div class="mini-card laranja">
@@ -101,59 +101,27 @@
     <script src="../js/sessao.js"></script>
 
     <script>
-      const ctx = document.getElementById("linhaChart");
-
-      let linhaChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: ["2019", "2021", "2022", "2023", "2024"],
-          datasets: [
-            {
-              label: "Matemática",
-              data: [500, 502, 480, 520, 530],
-              borderColor: "#ec9731",
-              tension: 0.4,
-            },
-            {
-              label: "Natureza",
-              data: [500, 498, 512, 500, 488],
-              borderColor: "#4caf50",
-              tension: 0.4,
-            },
-            {
-              label: "Humanas",
-              data: [515, 510, 520, 505, 522],
-              borderColor: "#2196f3",
-              tension: 0.4,
-            },
-            {
-              label: "Linguagens",
-              data: [510, 482, 508, 500, 520],
-              borderColor: "#9c27b0",
-              tension: 0.4,
-            },
-          ],
+    const ctx = document.getElementById("linhaChart");
+let linhaChart = new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: ["2020", "2021", "2022", "2023", "2024"], // ✅ corrigido
+        datasets: [
+            { label: "Matemática",  data: [], borderColor: "#ec9731", tension: 0.4 },
+            { label: "Natureza",    data: [], borderColor: "#4caf50", tension: 0.4 },
+            { label: "Humanas",     data: [], borderColor: "#2196f3", tension: 0.4 },
+            { label: "Linguagens",  data: [], borderColor: "#9c27b0", tension: 0.4 },
+        ],
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: "top" } },
+        scales: {
+            y: { min: 400, max: 700, ticks: { stepSize: 25 } },
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false, /* ADICIONE ESTA LINHA */
-          plugins: {
-            legend: {
-              position: "top",
-            },
-          },
-               scales: {
-  y: {
-    min: 400,       // valor mínimo do eixo
-    max: 700,       // valor máximo do eixo
-    ticks: {
-      stepSize: 25  // de quanto em quanto os valores aparecem
-    }
-  }
-}
-        },
-   
-      });
+    },
+});      
 
       carregarNotasMunicipais();
       carregarEvolucaoNotas();

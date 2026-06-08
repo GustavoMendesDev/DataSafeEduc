@@ -1,17 +1,12 @@
 package school.sptech;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import school.sptech.enums.SiglaEnum;
 import static school.sptech.Log.*;
 
-
 public class TabelasBanco {
-
     public static void tabelasBanco() {
-
         ConexaoBanco dbConnectionProvider = new ConexaoBanco();
         JdbcTemplate connection = dbConnectionProvider.getConnection();
-
 
         connection.execute("""
             CREATE TABLE IF NOT EXISTS notaMunicipal (
@@ -20,6 +15,7 @@ public class TabelasBanco {
               codigosELinguagens DECIMAL(5,2)  NULL,
               cienciasDaNatureza DECIMAL(5,2)  NULL,
               cienciasHumanas    DECIMAL(5,2)  NULL,
+              anoExame           YEAR          NOT NULL,
               PRIMARY KEY (id)
             )
         """);
@@ -45,7 +41,6 @@ public class TabelasBanco {
             )
         """);
 
-        // NOVA TABELA: cursinho
         connection.execute("""
             CREATE TABLE IF NOT EXISTS cursinho (
               id            INT         NOT NULL AUTO_INCREMENT,
@@ -60,7 +55,6 @@ public class TabelasBanco {
             )
         """);
 
-        // TABELA ALTERADA: usuario — adicionados campos email e fkCursinho
         connection.execute("""
             CREATE TABLE IF NOT EXISTS usuario (
               id            INT          NOT NULL AUTO_INCREMENT,
@@ -80,7 +74,6 @@ public class TabelasBanco {
             )
         """);
 
-        // NOVA TABELA: controleNotificacao
         connection.execute("""
             CREATE TABLE IF NOT EXISTS controleNotificacao (
               id                 INT          NOT NULL AUTO_INCREMENT,
@@ -97,7 +90,6 @@ public class TabelasBanco {
             )
         """);
 
-        // NOVA TABELA: controleNotificacaoEnvio
         connection.execute("""
             CREATE TABLE IF NOT EXISTS controleNotificacaoEnvio (
               id                    INT         NOT NULL AUTO_INCREMENT,
@@ -122,7 +114,6 @@ public class TabelasBanco {
             )
         """);
 
-        // NOVA TABELA: logAcesso (substituiu a tabela log genérica)
         connection.execute("""
             CREATE TABLE IF NOT EXISTS logAcesso (
               id          INT         NOT NULL AUTO_INCREMENT,
@@ -137,14 +128,14 @@ public class TabelasBanco {
         """);
 
         connection.execute("""
-          CREATE TABLE IF NOT EXISTS log (
-            id          INT          NOT NULL AUTO_INCREMENT,
-            mensagem    VARCHAR(999) NULL,
-            nivel       VARCHAR(20)  NULL,
-            ip          VARCHAR(45)  NULL,
-            dataCriacao DATETIME     NULL,
-            PRIMARY KEY (id)
-          )
+            CREATE TABLE IF NOT EXISTS log (
+              id          INT          NOT NULL AUTO_INCREMENT,
+              mensagem    VARCHAR(999) NULL,
+              nivel       VARCHAR(20)  NULL,
+              ip          VARCHAR(45)  NULL,
+              dataCriacao DATETIME     NULL,
+              PRIMARY KEY (id)
+            )
         """);
 
         connection.execute("""
@@ -212,19 +203,19 @@ public class TabelasBanco {
 
         info("[] - Tabelas criadas com sucesso!");
 
-        // -------------------------------------------------------
-        // INSERTS
-        // -------------------------------------------------------
+        // ── INSERTS ──────────────────────────────────────────────────────────
 
+        // ✅ CORRIGIDO: anoExame adicionado (era obrigatório — NOT NULL)
         connection.execute("""
-            INSERT INTO notaMunicipal (matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas)
-            SELECT 400, 350, 300, 200
+            INSERT INTO notaMunicipal (matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas, anoExame)
+            SELECT 400, 350, 300, 200, 2024
             WHERE NOT EXISTS (SELECT 1 FROM notaMunicipal WHERE id = 1)
         """);
 
+        // ✅ CORRIGIDO: vírgula faltando entre estado e fkNotaMunicipal, e valor 'SP' entre aspas
         connection.execute("""
-            INSERT INTO municipio (nome, fkNotaMunicipal)
-            SELECT 'São Paulo', 1
+            INSERT INTO municipio (nome, estado, fkNotaMunicipal)
+            SELECT 'São Paulo', 'SP', 1
             WHERE NOT EXISTS (SELECT 1 FROM municipio WHERE id = 1)
         """);
 
