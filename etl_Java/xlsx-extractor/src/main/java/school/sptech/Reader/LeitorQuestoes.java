@@ -25,7 +25,6 @@ public class LeitorQuestoes extends BaseLeitor {
         LeitorHabilidades leitorHabilidades = new LeitorHabilidades();
         leitorHabilidades.lerArquivo(nomeArquivoHabilidades);
         this.habilidades = leitorHabilidades.getHabilidades();
-
     }
 
     public void adicionarQuestao(Questao questao) {
@@ -35,15 +34,12 @@ public class LeitorQuestoes extends BaseLeitor {
     @Override
     public void processarLinha(Row row) {
 
-
         Boolean questaoDuplicada = false;
         String dificuldadeQuestao = "";
         Iterator<Cell> cellIterator = row.cellIterator();
 
         Questao questao = new Questao();
-
         Dificuldade dificuldade = new Dificuldade();
-
         SiglaEnum sigla;
 
         while (cellIterator.hasNext()) {
@@ -57,7 +53,6 @@ public class LeitorQuestoes extends BaseLeitor {
 
                 case 2:
                     int codigoExcel = (int) cell.getNumericCellValue();
-
                     if (questao.jaExisteEsseCodigo(questoes, codigoExcel)) {
                         questaoDuplicada = true;
                     } else {
@@ -67,68 +62,44 @@ public class LeitorQuestoes extends BaseLeitor {
 
                 case 3:
                     questao.setGabarito(cell.getStringCellValue());
-
                     break;
 
                 case 4:
-
                     Integer numero = (int) cell.getNumericCellValue();
-
                     Habilidade habilidade = buscarHabilidade(habilidades, questao.getArea(), numero);
                     questao.setHabilidade(habilidade);
-
                     break;
-                case 7:
 
+                case 7:
                     dificuldade.setParametro_a(cell.getNumericCellValue());
                     break;
-                case 8:
-                    dificuldadeQuestao = dificuldade.calcularDificuldade(cell.getNumericCellValue());
-                    dificuldade.setParametro_b(cell.getNumericCellValue());
-                    break;
-                case 9:
 
-                    dificuldade.setParametro_c(cell.getNumericCellValue());
-                   Double parametroA = super.extrairValorNumerico(cell);
-                    dificuldade.setParametro_a(parametroA);
-                    break;
                 case 8:
                     Double parametroB = super.extrairValorNumerico(cell);
                     dificuldadeQuestao = dificuldade.calcularDificuldade(cell.getNumericCellValue());
                     dificuldade.setParametro_b(parametroB);
                     break;
+
                 case 9:
                     Double parametroC = super.extrairValorNumerico(cell);
                     dificuldade.setParametro_c(parametroC);
                     questao.setDificuldade(dificuldade);
                     break;
             }
-
-
         }
-
 
         if (!questaoDuplicada) {
             id++;
             dificuldade.setId(id);
-
             adicionarQuestao(questao);
-
             info("[] - (LeitorQuestoes) - (Reader) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
         }
         info(questoes.size() + " questoes encontradas.");
-
     }
 
-           // info("[] - (LeitorQuestoes) - (Reader) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
-        }
-      //  info(questoes.size() + " questoes encontradas.");
-
-    }
-
-    public void apresentarQuestoes (List <Questao> questoes) {
+    public void apresentarQuestoes(List<Questao> questoes) {
         for (Questao questao : questoes) {
-            if(questao.getDificuldade() != null) {
+            if (questao.getDificuldade() != null) {
                 System.out.println(questao.getDificuldade().toString());
             }
         }
@@ -150,5 +121,3 @@ public class LeitorQuestoes extends BaseLeitor {
         this.id = id;
     }
 }
-
-
