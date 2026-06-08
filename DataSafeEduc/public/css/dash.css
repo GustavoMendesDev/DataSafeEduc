@@ -1,12 +1,9 @@
 /* ── ÁREA DE ROLAGEM ── */
 .area-rolagem {
   flex: 1;
+  min-height: 0;    /* ← linha nova */
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 13px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
 }
 
 .area-rolagem::-webkit-scrollbar { width: 5px; }
