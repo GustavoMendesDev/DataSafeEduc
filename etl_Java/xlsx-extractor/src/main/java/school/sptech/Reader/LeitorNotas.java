@@ -109,7 +109,7 @@ public class LeitorNotas extends BaseLeitor {
                             break;
                     }
                 }
-        info("Leitura da notas realizadas com sucesso!");
+        //info("Leitura da notas realizadas com sucesso!");
 
     }
 

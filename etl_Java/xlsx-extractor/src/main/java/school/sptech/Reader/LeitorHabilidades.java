@@ -52,8 +52,8 @@ public class LeitorHabilidades  extends  BaseLeitor{
         habilidade.setId(id);
         adicionarHabilidade(habilidade);
 
-        info("[] - (LeitorHabilidades) - (processarLinha) - Habilidade " + habilidade.getNumero()
-                + " [" + habilidade.getSigla() + "] carregada.");
+//        info("[] - (LeitorHabilidades) - (processarLinha) - Habilidade " + habilidade.getNumero()
+//                + " [" + habilidade.getSigla() + "] carregada.");
        // info("[] - (LeitorHabilidades) - (processarLinha) - Habilidade " + habilidade.getNumero()
          //       + " [" + habilidade.getSigla() + "] carregada.");
     }

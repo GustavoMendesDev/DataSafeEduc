@@ -92,9 +92,9 @@ public class LeitorQuestoes extends BaseLeitor {
             id++;
             dificuldade.setId(id);
             adicionarQuestao(questao);
-            info("[] - (LeitorQuestoes) - (Reader) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
+         //   info("[] - (LeitorQuestoes) - (Reader) - Inserção da questão  " + questao.getCodigoItem() + " Realizada com sucesso! ");
         }
-        info(questoes.size() + " questoes encontradas.");
+      //  info(questoes.size() + " questoes encontradas.");
     }
 
     public void apresentarQuestoes(List<Questao> questoes) {
