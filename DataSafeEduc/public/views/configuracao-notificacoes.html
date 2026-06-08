@@ -51,7 +51,7 @@
 
             <label class="rotulo-secao" for="slackChannelId">Canal do Slack da equipe-datasafe</label>
             <div class="linha-formulario">
-              <input class="campo-texto" id="slackChannelId" placeholder="#equipe-datasafe" />
+              <input class="campo-texto" id="slackChannelId" placeholder="C0B4W61GC73" />
             </div>
             <br>
 
@@ -131,6 +131,7 @@
 
             <div class="acoes-configuracao">
               <button class="botao-primario" type="button" onclick="salvarConfiguracao()">Salvar configurações</button>
+              <button class="botao-secundario" type="button" onclick="enviarTesteSlack()">Enviar mensagem no Slack</button>
               <button class="botao-secundario" type="button" onclick="restaurarPadrao()">Restaurar padrão</button>
             </div>
             <p class="mensagem-retorno" id="resumoConfiguracao"></p>
@@ -151,7 +152,7 @@
       var elResumoConfiguracao = document.getElementById("resumoConfiguracao");
 
       document.addEventListener("DOMContentLoaded", function () {
-        elSlackChannelId.value = "#equipe-datasafe";
+        elSlackChannelId.value = "C0B4W61GC73";
         carregarConfiguracao();
       });
 
@@ -180,7 +181,7 @@
               return;
             }
 
-            elSlackChannelId.value = configuracao.slackChannelId || "#equipe-datasafe";
+            elSlackChannelId.value = configuracao.slackChannelId || "C0B4W61GC73";
             elAlertaSisu.checked = Boolean(configuracao.alertaSisu);
             elAlertaRegiao.checked = Boolean(configuracao.alertaRegiao);
             elAlertaTendencias.checked = Boolean(configuracao.alertaTendencias);
@@ -222,8 +223,42 @@
           });
       }
 
+      function enviarTesteSlack() {
+        if (elSlackChannelId.value.trim() == "") {
+          exibirMensagem("Informe o canal do Slack.", true);
+          return;
+        }
+
+        exibirMensagem("Enviando mensagem para a API do Slack...", false);
+
+        fetch("/notificacoes/teste-slack", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            slackChannelId: elSlackChannelId.value,
+            alertaSisu: elAlertaSisu.checked,
+            alertaRegiao: elAlertaRegiao.checked,
+            alertaTendencias: elAlertaTendencias.checked
+          })
+        })
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              return resposta.text().then(function (mensagem) {
+                return Promise.reject(mensagem);
+              });
+            }
+            return resposta.json();
+          })
+          .then(function () {
+            exibirMensagem("Mensagem enviada. Abra o canal informado no Slack para visualizar.", false);
+          })
+          .catch(function (erro) {
+            exibirMensagem("Erro ao enviar mensagem para o Slack: " + erro, true);
+          });
+      }
+
       function restaurarPadrao() {
-        elSlackChannelId.value = "#equipe-datasafe";
+        elSlackChannelId.value = "C0B4W61GC73";
         elAlertaSisu.checked = true;
         elAlertaRegiao.checked = false;
         elAlertaTendencias.checked = false;

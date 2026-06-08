@@ -1,35 +1,6 @@
-<<<<<<< HEAD
-CREATE DATABASE dataSafe;
+CREATE DATABASE IF NOT EXISTS dataSafe;
 USE dataSafe;
 
--- MUNICIPIO
-CREATE TABLE municipio (
-    idMunicipio INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(45) NOT NULL,
-    estado CHAR(2) NOT NULL
-);
-
--- NIVEL_ACESSO
-CREATE TABLE nivel_acesso (
-    idnivel_acesso INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(45) NOT NULL
-);
-
--- USUARIO
-CREATE TABLE usuario (
-    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(80) NOT NULL,
-    senha VARCHAR(255) NOT NULL,
-    data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    nivel_acesso_idnivel_acesso INT,
-    municipio_idMunicipio INT,
-    
-    FOREIGN KEY (nivel_acesso_idnivel_acesso)
-        REFERENCES nivel_acesso(idnivel_acesso),
-        
-    FOREIGN KEY (municipio_idMunicipio)
-        REFERENCES municipio(idMunicipio)
-=======
 
 -- =============================================
 -- CRIAÇÃO DAS TABELAS - school.sptech
@@ -76,14 +47,18 @@ CREATE TABLE IF NOT EXISTS usuario (
   senha         VARCHAR(255) NULL,
   dataCriacao   DATETIME     NULL,
   fkNivelAcesso INT          NOT NULL,
-  fkMunicipio   INT          NOT NULL,
+  fkMunicipio   INT          NULL,
+  fkCursinho    INT          NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT fkNivelAcesso
     FOREIGN KEY (fkNivelAcesso)
     REFERENCES nivelAcesso (id),
   CONSTRAINT fkMunicipio
     FOREIGN KEY (fkMunicipio)
-    REFERENCES municipio (id)
+    REFERENCES municipio (id),
+  CONSTRAINT fkUsuarioCursinho
+    FOREIGN KEY (fkCursinho)
+    REFERENCES cursinho (id)
 );
 
 CREATE TABLE IF NOT EXISTS simulado (
@@ -159,104 +134,7 @@ CREATE TABLE IF NOT EXISTS questaoSimulado (
   CONSTRAINT fkSimulado
     FOREIGN KEY (fkSimulado)
     REFERENCES simulado (id)
->>>>>>> dashboard
 );
-
-
-
-<<<<<<< HEAD
--- AREA_CONHECIMENTO
-CREATE TABLE area_conhecimento (
-    id_AreaConhecimento INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(45) NOT NULL,
-    sigla CHAR(3)
-);
-
--- DIFICULDADE
-CREATE TABLE dificuldade (
-    idDificuldade INT PRIMARY KEY AUTO_INCREMENT,
-    nivel VARCHAR(45),
-    parametro_a DECIMAL(5,2),
-    parametro_b DECIMAL(5,2),
-    parametro_c DECIMAL(5,2)
-);
-
--- HABILIDADE
-CREATE TABLE habilidade (
-    idHabilidade INT PRIMARY KEY AUTO_INCREMENT,
-    numero CHAR(5),
-    descricao VARCHAR(45)
-);
-
--- QUESTAO
-CREATE TABLE questao (
-    idQuestao INT PRIMARY KEY AUTO_INCREMENT,
-    codigoItem VARCHAR(20),
-    ano_exame YEAR,
-    habilidade_idHabilidade INT,
-    area_conhecimento_id_AreaConhecimento INT,
-    dificuldade_idDificuldade INT,
-    
-    FOREIGN KEY (habilidade_idHabilidade)
-        REFERENCES habilidade(idHabilidade),
-        
-    FOREIGN KEY (area_conhecimento_id_AreaConhecimento)
-        REFERENCES area_conhecimento(id_AreaConhecimento),
-        
-    FOREIGN KEY (dificuldade_idDificuldade)
-        REFERENCES dificuldade(idDificuldade)
-);
-
--- SIMULADO
-CREATE TABLE simulado (
-    idSimulado INT PRIMARY KEY AUTO_INCREMENT,
-    quantidadeQuestoes INT,
-    usuario_idUsuario INT,
-    nomeSimulado VARCHAR(45),
-    
-    FOREIGN KEY (usuario_idUsuario)
-        REFERENCES usuario(idUsuario)
-);
-
--- TABELA DE RELAÇÃO (N:N)
-CREATE TABLE questao_has_simulado (
-    questao_idQuestao INT,
-    simulado_idSimulado INT,
-    
-    PRIMARY KEY (questao_idQuestao, simulado_idSimulado),
-    
-    FOREIGN KEY (questao_idQuestao)
-        REFERENCES questao(idQuestao),
-        
-    FOREIGN KEY (simulado_idSimulado)
-        REFERENCES simulado(idSimulado)
-);
-
--- LOG_ACESSO
-CREATE TABLE log_acesso (
-    idlog_acesso INT PRIMARY KEY AUTO_INCREMENT,
-    ip VARCHAR(45),
-    dataCriacao DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-SELECT * FROM usuario;
-=======
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 -- =============================================
 -- INSERTS ENEM 2024 - Gerado a partir de dados reais do INEP
@@ -1178,6 +1056,9 @@ INSERT INTO questao (codigoItem, anoExame, fkHabilidade, fkParametroTri) VALUES 
 -- Inserir um nível de acesso
 INSERT INTO nivelAcesso (nome) VALUES ('Admin');
 
+-- Inserir um cursinho
+INSERT INTO cursinho (nome, cnpj, codigoConvite) VALUES ('Data Safe Educ', '00.000.000/0001-00', 'SAFE');
+
 -- Inserir uma nota municipal (obrigatória para município)
 INSERT INTO notaMunicipal (matematica, codigosELinguagens, cienciasDaNatureza, cienciasHumanas) 
 VALUES (0, 0, 0, 0);
@@ -1186,6 +1067,5 @@ VALUES (0, 0, 0, 0);
 INSERT INTO municipio (nome, estado, fkNotaMunicipal) VALUES ('São Paulo', 'SP', 1);
 
 -- Inserir o usuário
-INSERT INTO usuario (nome, email, senha, dataCriacao, fkNivelAcesso, fkMunicipio)
-VALUES ('Usuário Data Safe', 'user@gmail.com', '123', NOW(), 1, 1);
->>>>>>> dashboard
+INSERT INTO usuario (nome, email, senha, dataCriacao, fkNivelAcesso, fkMunicipio, fkCursinho)
+VALUES ('Usuário Data Safe', 'user@gmail.com', '123', NOW(), 1, 1, 1);

@@ -1,6 +1,11 @@
 package school.sptech;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NotificacaoConfig implements ObservadorInatividade {
 
@@ -24,11 +29,12 @@ public class NotificacaoConfig implements ObservadorInatividade {
     private ControleNotificacao controleNotificacao;
     private transient SlackBot slackBot;
     private transient EmailService emailService;
+    private static Map<String, String> variaveisArquivoEnv;
 
     public static NotificacaoConfig carregar() {
         NotificacaoConfig config = new NotificacaoConfig();
 
-        config.tokenSlack = lerVariavel("SLACK_BOT_TOKEN", "");
+        config.tokenSlack = lerVariavel("SLACK_BOT_TOKEN", "xoxb-11164360058514-11303959108915-txefPYwhy932C0mo3YHTEi3K");
         config.canalSlack = lerVariavel("SLACK_CHANNEL_ID", "#equipe-datasafe");
         config.periodicidadeMinutos = lerNumero("PERIODICIDADE_MINUTOS", 180);
         config.intervaloCentralSegundos = lerNumero("INTERVALO_CENTRAL_SEGUNDOS", 30);
@@ -62,8 +68,74 @@ public class NotificacaoConfig implements ObservadorInatividade {
     private static String lerVariavel(String nome, String valorPadrao) {
         String valor = System.getenv(nome);
 
-        if (valor == null || valor.isBlank()) {
-            return valorPadrao;
+        if (valor != null && !valor.isBlank()) {
+            return valor;
+        }
+
+        valor = carregarVariaveisArquivoEnv().get(nome);
+
+        if (valor != null && !valor.isBlank()) {
+            return valor;
+        }
+
+        return valorPadrao;
+    }
+
+    private static Map<String, String> carregarVariaveisArquivoEnv() {
+        if (variaveisArquivoEnv != null) {
+            return variaveisArquivoEnv;
+        }
+
+        variaveisArquivoEnv = new HashMap<>();
+
+        Path[] caminhosPossiveis = {
+                Path.of(".env"),
+                Path.of("../.env"),
+                Path.of("../../DataSafeEduc/.env"),
+                Path.of("DataSafeEduc/.env")
+        };
+
+        for (Path caminho : caminhosPossiveis) {
+            if (Files.isRegularFile(caminho)) {
+                carregarArquivoEnv(caminho);
+                break;
+            }
+        }
+
+        return variaveisArquivoEnv;
+    }
+
+    private static void carregarArquivoEnv(Path caminho) {
+        try {
+            for (String linha : Files.readAllLines(caminho)) {
+                String linhaTratada = linha.trim();
+
+                if (linhaTratada.isBlank() || linhaTratada.startsWith("#") || !linhaTratada.contains("=")) {
+                    continue;
+                }
+
+                String[] partes = linhaTratada.split("=", 2);
+                String chave = partes[0].trim();
+
+                if (chave.startsWith("export ")) {
+                    chave = chave.substring("export ".length()).trim();
+                }
+
+                variaveisArquivoEnv.put(chave, removerAspas(partes[1].trim()));
+            }
+        } catch (IOException erro) {
+            System.err.println("Erro ao ler arquivo .env: " + erro.getMessage());
+        }
+    }
+
+    private static String removerAspas(String valor) {
+        if (valor.length() >= 2) {
+            boolean aspasSimples = valor.startsWith("'") && valor.endsWith("'");
+            boolean aspasDuplas = valor.startsWith("\"") && valor.endsWith("\"");
+
+            if (aspasSimples || aspasDuplas) {
+                return valor.substring(1, valor.length() - 1);
+            }
         }
 
         return valor;

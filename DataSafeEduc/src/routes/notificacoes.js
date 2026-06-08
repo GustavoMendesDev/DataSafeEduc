@@ -11,4 +11,8 @@ router.post("/configuracao", function (req, res) {
     notificacaoController.salvar(req, res);
 });
 
+router.post("/teste-slack", function (req, res) {
+    notificacaoController.testarSlack(req, res);
+});
+
 module.exports = router;

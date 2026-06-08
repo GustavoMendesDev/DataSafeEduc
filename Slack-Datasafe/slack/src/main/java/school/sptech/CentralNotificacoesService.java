@@ -8,6 +8,7 @@ import java.util.Map;
 public class CentralNotificacoesService {
 
     private static final DateTimeFormatter FORMATADOR_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private static final String TIPO_SISU_NOTAS_CORTE = "SISU_NOTAS_CORTE";
 
     private final InatividadeRepository inatividadeRepository;
     private final NotificacaoEnvioRepository envioRepository;
@@ -30,6 +31,18 @@ public class CentralNotificacoesService {
         inatividadeRepository.listarControlesNotificacaoAtivos().forEach(this::processarControle);
     }
 
+    public void enviarAlertaNotaCorteAoIniciar(ControleNotificacao controle) {
+        if (controle != null) {
+            slackBot.definirCanal(controle.canalSlack());
+        }
+
+        boolean enviado = slackBot.enviarMensagem(mensagemSisuNotasCorte());
+
+        if (enviado && controle != null && controle.id() != null) {
+            envioRepository.registrarEnvio(controle.id(), TIPO_SISU_NOTAS_CORTE);
+        }
+    }
+
     private void processarControle(ControleNotificacao controle) {
         if (controle == null || controle.id() == null) {
             System.out.println("Nenhuma configuração de notificação cadastrada no banco.");
@@ -48,7 +61,7 @@ public class CentralNotificacoesService {
 
         if (Boolean.TRUE.equals(controle.notificarSistema())) {
             mensagens.put("ATUALIZACAO_ENEM", mensagemAtualizacaoEnem());
-            mensagens.put("SISU_NOTAS_CORTE", mensagemSisuNotasCorte());
+            mensagens.put(TIPO_SISU_NOTAS_CORTE, mensagemSisuNotasCorte());
         }
 
         if (Boolean.TRUE.equals(controle.notificarEmail())) {
@@ -92,8 +105,9 @@ public class CentralNotificacoesService {
 
     private String mensagemSisuNotasCorte() {
         return cabecalho("Alertas de SISU e notas de corte")
-                + "O alerta de mudanças no SISU e notas de corte foi ativado para este cliente.\n"
-                + "Revise regras, pesos, cronograma e impactos esperados nas aprovações acompanhadas pelo cursinho.\n\n"
+                + "Acompanhe as atualizações de notas de corte e mudanças do SISU.\n"
+                + "Revise regras, pesos, cronograma e possíveis impactos nas aprovações acompanhadas pelo cursinho.\n"
+                + "Use esta notificação como lembrete padrão para validar os indicadores no DataSafe Educ.\n\n"
                 + "Painel: " + config.getLinkSistema();
     }
 
