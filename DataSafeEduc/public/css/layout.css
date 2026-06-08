@@ -129,3 +129,12 @@ body {
   background: #fef2f2; /* Um fundo vermelhinho claro no hover para dar um efeito legal */
   color: #ef4444;
 }
+
+.msg-erro {
+      color: red; /* <-- É só mudar aqui! */
+      font-size: 13px;
+      font-weight: bold;
+      display: none; /* Escondido por padrão */
+      margin-top: 2px;
+      margin-bottom: 5px;
+    }

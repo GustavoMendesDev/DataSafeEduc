@@ -154,6 +154,15 @@ input{
     box-shadow: 0 8px 24px rgba(0,0,0,0); transform: translateY(-3px);
 }
 
+.msg-erro {
+      color: red; /* <-- É só mudar aqui! */
+      font-size: 13px;
+      font-weight: bold;
+      display: none; /* Escondido por padrão */
+      margin-top: 2px;
+      margin-bottom: 5px;
+    }
+
 button{
     background-color: var(--main);
     color: var(--terciaria);

@@ -35,6 +35,7 @@
         <div class="input">
             <label for="email" id="email">Endereço de e-mail:</label><br>
             <input type="text" id="iptEmail">
+            <span id="erroEmail" class="msg-erro"></span>
         </div>
 
         <div class="input">
@@ -43,6 +44,7 @@
                 <input type="password" id="iptSenha">
                 <i class="fi fi-rs-eye toggle-senha" id="toggleSenha"></i>
             </div>
+            <span id="erroSenha" class="msg-erro"></span>
         </div>
 
         <button onclick="entrar()">Entrar</button>
@@ -78,32 +80,43 @@
     });
 
     function entrar() {
-        // aguardar();
+       var emailVar = iptEmail.value.trim();
+        var senhaVar = iptSenha.value.trim();
+        var validacaoOk = true;
 
-        var emailVar = iptEmail.value;
-        var senhaVar = iptSenha.value;
+        var erroEmail = document.getElementById('erroEmail');
+        var erroSenha = document.getElementById('erroSenha');
 
-        // if (emailVar == "" || senhaVar == "" || emailVar == null || senhaVar == null) {
-        //     cardErro.style.display = "block"
-        //     mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-        //     finalizarAguardar();
-        //     return false;
-        // }
-        // if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".") == -1) {
-        //     cardErro.style.display = "block"
-        //     mensagem_erro.innerHTML = "(Mensagem de erro para formato de email inválido)";
-        //     finalizarAguardar();
-        //     return false;
-        // }
-        // if (senhaVar.length < 6 || senhaVar.length > 50) {
-        //     cardErro.style.display = "block"
-        //     mensagem_erro.innerHTML = "(Mensagem de erro para senha com limitação de caracteres)";
-        //     finalizarAguardar();
-        //     return false;
-        // }
-        // else {
-        //     setInterval(sumirMensagem, 5000)
-        // }
+        // 1. Oculta mensagens de erro anteriores antes de validar novamente
+        erroEmail.style.display = 'none';
+        erroSenha.style.display = 'none';
+
+        // 2. Validação do campo de E-mail
+        if (emailVar == "") {
+            erroEmail.innerHTML = "O campo de e-mail não pode ficar vazio.";
+            erroEmail.style.display = 'block';
+            validacaoOk = false;
+        } else if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".") == -1) {
+            erroEmail.innerHTML = "Insira um e-mail válido (deve conter '@' e '.').";
+            erroEmail.style.display = 'block';
+            validacaoOk = false;
+        }
+
+        // 3. Validação do campo de Senha
+        if (senhaVar == "") {
+            erroSenha.innerHTML = "O campo de senha não pode ficar vazio.";
+            erroSenha.style.display = 'block';
+            validacaoOk = false;
+        } else if (senhaVar.length < 6) {
+            erroSenha.innerHTML = "A senha deve conter no mínimo 6 caracteres.";
+            erroSenha.style.display = 'block';
+            validacaoOk = false;
+        }
+
+        // Se alguma validação falhar, interrompe a execução
+        if (!validacaoOk) {
+            return false;
+        }
 
         console.log("FORM LOGIN: ", emailVar);
         console.log("FORM SENHA: ", senhaVar);
@@ -134,12 +147,12 @@
 
                     if (json.fkNivelAcesso == 1) {
                         setTimeout(function () {
-                            window.location = "./dash-monitoramento.html";
+                            window.location = "./analise-desempenho.html";
                             sessionStorage.CARGO_USUARIO = "Administrador";
                         }, 1000);
                     } else if (json.fkNivelAcesso == 2) {
                         setTimeout(function () {
-                            window.location = "./dash-monitoramento.html";
+                            window.location = "./analise-desempenho.html";
                             sessionStorage.CARGO_USUARIO = "Coordenador";
                         }, 1000);
                     } else if (json.fkNivelAcesso == 3) {

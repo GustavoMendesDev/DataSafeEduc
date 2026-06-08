@@ -13,6 +13,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans&family=Sora:wght@700&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" href="../assets/imgs/LogoUpdate.png" type="img">
   </head>
 
   <body>
@@ -71,7 +72,7 @@
                 align-items: center;
               "
             >
-              <h2>Lista de usuários</h2>
+              <h2>Lista de Professores</h2>
               <button class="btn-add" onclick="abrirModal()">
                 Adicionar usuário
               </button>
@@ -103,15 +104,21 @@
       <div class="modal-box">
         <h2>Cadastro de Usuário</h2>
 
-        <input placeholder="Nome" id="nome"/>
+       <input placeholder="Nome" id="nome"/>
+        <span id="erroNome" class="msg-erro"></span>
+
         <input placeholder="Email" id="email"/>
+        <span id="erroEmail" class="msg-erro"></span>
+
         <input type="password" placeholder="Senha" id="senha"/>
+        <span id="erroSenha" class="msg-erro"></span>
+
         <input type="password" placeholder="Confirmar senha" id="confirmarSenha"/>
+        <span id="erroConfirmarSenha" class="msg-erro"></span>
 
         <select id="cargoSelect">
           <option value="Professor">Professor</option>
         </select>
-
         <div class="modal-actions">
           <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
           <button class="btn-add" onclick="cadastrarProfessor()">Cadastrar</button>
@@ -124,8 +131,14 @@
         <h2>Editar cadastro Professor</h2>
 
         <input placeholder="Nome" id="editarNome" />
+        <span id="erroEditarNome" class="msg-erro"></span>
+
         <input placeholder="Email" id="editarEmail" />
-        <input type="password" placeholder="Nova senha" id="editarSenha" />
+        <span id="erroEditarEmail" class="msg-erro"></span>
+
+        <input type="password" placeholder="Nova senha (opcional)" id="editarSenha" />
+        <span id="erroEditarSenha" class="msg-erro"></span>
+
         <input type="hidden" id="editarId" />
 
         <select disabled>
@@ -149,6 +162,19 @@
         email.value = "";
         senha.value = "";
         confirmarSenha.value = "";
+      }
+
+      function limparErrosModal(tipo) {
+        if (tipo === 'cadastro') {
+          document.getElementById('erroNome').style.display = 'none';
+          document.getElementById('erroEmail').style.display = 'none';
+          document.getElementById('erroSenha').style.display = 'none';
+          document.getElementById('erroConfirmarSenha').style.display = 'none';
+        } else {
+          document.getElementById('erroEditarNome').style.display = 'none';
+          document.getElementById('erroEditarEmail').style.display = 'none';
+          document.getElementById('erroEditarSenha').style.display = 'none';
+        }
       }
 
       function buscarFkCursinho() {
@@ -191,20 +217,39 @@
       }
 
       function cadastrarProfessor() {
-        var nomeProfessor = nome.value;
-        var emailProfessor = email.value;
-        var senhaProfessor = senha.value;
-        var confirmarSenhaProfessor = confirmarSenha.value;
+       var nomeProfessor = nome.value.trim();
+        var emailProfessor = email.value.trim();
+        var senhaProfessor = senha.value.trim();
+        var confirmarSenhaProfessor = confirmarSenha.value.trim();
+        var validacaoOk = true;
 
-        if (emailProfessor == "" || senhaProfessor == "" || confirmarSenhaProfessor == "") {
-          alert("Preencha todos os campos.");
-          return false;
+        limparErrosModal('cadastro');
+
+        if (nomeProfessor == "") {
+          document.getElementById('erroNome').innerHTML = "Preencha o nome.";
+          document.getElementById('erroNome').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (emailProfessor == "" || emailProfessor.indexOf("@") == -1) {
+          document.getElementById('erroEmail').innerHTML = "Insira um e-mail válido.";
+          document.getElementById('erroEmail').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (senhaProfessor == "" || senhaProfessor.length < 6) {
+          document.getElementById('erroSenha').innerHTML = "A senha deve ter no mínimo 6 caracteres.";
+          document.getElementById('erroSenha').style.display = 'block';
+          validacaoOk = false;
         }
 
         if (senhaProfessor !== confirmarSenhaProfessor) {
-          alert("As senhas não coincidem.");
-          return false;
+          document.getElementById('erroConfirmarSenha').innerHTML = "As senhas não coincidem.";
+          document.getElementById('erroConfirmarSenha').style.display = 'block';
+          validacaoOk = false;
         }
+
+        if (!validacaoOk) return false;
 
         fetch("/professores/cadastrar", {
           method: "POST",
@@ -231,14 +276,32 @@
 
       function atualizarProfessor() {
         var id = editarId.value;
-        var nomeProfessor = editarNome.value;
-        var emailProfessor = editarEmail.value;
-        var senhaProfessor = editarSenha.value;
+        var nomeProfessor = editarNome.value.trim();
+        var emailProfessor = editarEmail.value.trim();
+        var senhaProfessor = editarSenha.value.trim();
+        var validacaoOk = true;
 
-        if (emailProfessor == "") {
-          alert("Preencha o email.");
-          return false;
+        limparErrosModal('edicao');
+
+        if (nomeProfessor == "") {
+          document.getElementById('erroEditarNome').innerHTML = "Preencha o nome.";
+          document.getElementById('erroEditarNome').style.display = 'block';
+          validacaoOk = false;
         }
+
+        if (emailProfessor == "" || emailProfessor.indexOf("@") == -1) {
+          document.getElementById('erroEditarEmail').innerHTML = "Insira um e-mail válido.";
+          document.getElementById('erroEditarEmail').style.display = 'block';
+          validacaoOk = false;
+        }
+
+        if (senhaProfessor !== "" && senhaProfessor.length < 6) {
+           document.getElementById('erroEditarSenha').innerHTML = "A nova senha deve ter no mínimo 6 caracteres.";
+           document.getElementById('erroEditarSenha').style.display = 'block';
+           validacaoOk = false;
+        }
+
+        if (!validacaoOk) return false;
 
         fetch(`/professores/${id}`, {
           method: "PUT",

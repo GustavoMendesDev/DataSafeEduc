@@ -140,6 +140,15 @@ a:hover{
     color: var(--main);
 }
 
+.msg-erro {
+      color: red; /* <-- É só mudar aqui! */
+      font-size: 13px;
+      font-weight: bold;
+      display: none; /* Escondido por padrão */
+      margin-top: 2px;
+      margin-bottom: 5px;
+    }
+
 .input-senha-wrapper {
   position: relative;
   display: inline-block;

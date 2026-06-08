@@ -44,24 +44,28 @@
       <div class="input">
         <label for="nome" id="nome_input">Nome Completo:</label><br>
         <input type="text" id="iptNome">
+        <span id="erroNome" class="msg-erro"></span>
       </div>
 
-        <div class="input">
+      <div class="input">
         <label for="email" id="email">Email:</label><br>
         <input type="text" id="iptEmail">
+        <span id="erroEmail" class="msg-erro"></span>
       </div>
 
-       <div class="input">
-            <label for="senha" id="senha">Senha:</label><br>
-            <div class="input-senha-wrapper">
-                <input type="password" id="iptSenha">
-                <i class="fi fi-rs-eye toggle-senha" id="toggleSenha"></i>
-            </div>
+      <div class="input">
+        <label for="senha" id="senha">Senha:</label><br>
+        <div class="input-senha-wrapper">
+          <input type="password" id="iptSenha">
+          <i class="fi fi-rs-eye toggle-senha" id="toggleSenha"></i>
         </div>
+        <span id="erroSenha" class="msg-erro"></span>
+      </div>
 
       <div class="input">
         <label for="convite" id="codigoConvite">Convite:</label><br>
         <input type="text" id="iptConvite">
+        <span id="erroConvite" class="msg-erro"></span>
       </div>
 
       <button onclick="cadastrar()">Cadastrar</button>
@@ -101,26 +105,66 @@ const toggleSenha = document.getElementById('toggleSenha');
 
 
   function cadastrar() {
-    var nomeVar = iptNome.value;
-    var emailVar = iptEmail.value;
-    var senhaVar = iptSenha.value;
-    var conviteVar = iptConvite.value;
+    var nomeVar = iptNome.value.trim();
+    var emailVar = iptEmail.value.trim();
+    var senhaVar = iptSenha.value.trim();
+    var conviteVar = iptConvite.value.trim();
+    
+    var validacaoOk = true;
 
-  var mensagem_erro = document.getElementById("mensagem_erro");
+    // Elementos de erro
+    var erroNome = document.getElementById('erroNome');
+    var erroEmail = document.getElementById('erroEmail');
+    var erroSenha = document.getElementById('erroSenha');
+    var erroConvite = document.getElementById('erroConvite');
 
-    // Verificando se há algum campo em branco
-    if (
-      nomeVar == "" ||
-      emailVar == "" ||
-      senhaVar == "" ||
-      conviteVar == ""
-    ) {
-      // cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        '<p style="color:#fc0500; font-weight: bold;">Todos os campos precisam estar preenchidos</p>';
-      // finalizarAguardar();
+    // 1. Reseta todos os erros (esconde tudo antes de validar novamente)
+    erroNome.style.display = 'none';
+    erroEmail.style.display = 'none';
+    erroSenha.style.display = 'none';
+    erroConvite.style.display = 'none';
+    
+
+    // 2. Validação do Nome
+    if (nomeVar == "") {
+      erroNome.innerHTML = "Por favor, preencha o seu nome completo.";
+      erroNome.style.display = 'block';
+      validacaoOk = false;
+    }
+
+    // 3. Validação do Email
+    if (emailVar == "") {
+      erroEmail.innerHTML = "O campo de e-mail não pode ficar vazio.";
+      erroEmail.style.display = 'block';
+      validacaoOk = false;
+    } else if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".") == -1) {
+      erroEmail.innerHTML = "Insira um e-mail válido (deve conter '@' e '.').";
+      erroEmail.style.display = 'block';
+      validacaoOk = false;
+    }
+
+    // 4. Validação da Senha
+    if (senhaVar == "") {
+      erroSenha.innerHTML = "Por favor, crie uma senha.";
+      erroSenha.style.display = 'block';
+      validacaoOk = false;
+    } else if (senhaVar.length < 6) {
+      erroSenha.innerHTML = "A senha deve ter no mínimo 6 caracteres.";
+      erroSenha.style.display = 'block';
+      validacaoOk = false;
+    }
+
+    // 5. Validação do Convite
+    if (conviteVar == "") {
+      erroConvite.innerHTML = "O código de convite é obrigatório.";
+      erroConvite.style.display = 'block';
+      validacaoOk = false;
+    }
+
+    // Se alguma validação falhou, interrompe a função
+    if (!validacaoOk) {
       return false;
-    } 
+    }
 
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
